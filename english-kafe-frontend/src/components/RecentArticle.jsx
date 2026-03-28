@@ -1,0 +1,34 @@
+import logo from '../assets/Nav/EnglishkafeLogo-Transparent.png'
+
+function RecentArticle({ title, description, date, showReadMore = true }) {
+  return (
+    <div>
+      <h3 className="font-bold text-gray-900 mb-2 text-sm">
+        {title}
+      </h3>
+      {description && (
+        <p className="text-gray-600 text-xs mb-3">
+          {description}
+        </p>
+      )}
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <img 
+              src={logo}
+              alt="English Kafe" 
+              className="h-5 w-auto"
+            />
+            <span className="text-xs font-semibold text-gray-900">English Kafe</span>
+          </div>
+          <p className="text-gray-600 text-xs">{date}</p>
+        </div>
+        {showReadMore && (
+          <a href="#" className="text-gray-600 text-xs hover:text-gray-900">read more</a>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default RecentArticle
