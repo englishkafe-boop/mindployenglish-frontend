@@ -22,11 +22,11 @@ function Navbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-50 flex items-center justify-between px-10 py-2 bg-white shadow-sm">
+    <nav className="sticky top-0 z-50  flex items-center justify-between px-30 py-2 bg-white shadow-sm">
       
       {/* Logo */}
-      <div className="flex items-center gap-2">
-        <img src={logo} alt="English Kafe Logo" className="h-12 w-auto" />
+      <div className="flex items-center ">
+        <img src={logo} alt="English Kafe Logo" className="size-12 object-fill scale-200 " />
       </div>
 
       {/* Menu */}
@@ -79,7 +79,7 @@ function Navbar() {
             <img 
               src={localStorage.getItem('profileImage') || 'https://via.placeholder.com/40?text=User'}
               alt="Profile"
-              className="w-10 h-10 rounded-full object-cover border-2 border-gray-300"
+              className="w-10 h-10 rounded-full object-cover border-2 border-gray-300 size-12  scale-120 "
             />
           </button>
 
