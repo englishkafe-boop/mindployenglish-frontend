@@ -33,28 +33,28 @@ function Navbar() {
       <ul className="hidden md:flex gap-8 font-medium">
         <li 
           onClick={() => navigate('/')}
-          className="text-black px-4 py-2 rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all" 
+          className="text-black px-6 py-2 rounded-full cursor-pointer  hover:shadow-md transition-all" 
           style={{backgroundColor: isActive('/') ? "#CDEAFA" : "transparent"}}
         >
           Home
         </li>
         <li 
           onClick={() => navigate('/courses')}
-          className="text-black px-4 py-2 rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all"
+          className="text-black px-6 py-2 rounded-full cursor-pointer  hover:shadow-md transition-all"
           style={{backgroundColor: isActive('/courses') ? "#CDEAFA" : "transparent"}}
         >
           Courses
         </li>
         <li 
           onClick={() => navigate('/blog')}
-          className="text-black px-4 py-2 rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all"
+          className="text-black px-6 py-2 rounded-full cursor-pointer  hover:shadow-md transition-all"
           style={{backgroundColor: isActive('/blog') ? "#CDEAFA" : "transparent"}}
         >
           Blogs
         </li>
         <li 
           onClick={() => navigate('/service')}
-          className="text-black px-4 py-2 rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all"
+          className="text-black px-6 py-2 rounded-full cursor-pointer  hover:shadow-md transition-all"
           style={{backgroundColor: isActive('/service') ? "#CDEAFA" : "transparent"}}
         >
           Services
