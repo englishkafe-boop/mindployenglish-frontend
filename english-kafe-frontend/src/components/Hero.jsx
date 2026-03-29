@@ -8,21 +8,23 @@ function Hero() {
         <div className="absolute -left-100 -bottom-40 w-full md:w-165 h-full md:h-160 rounded-full pointer-events-none z-0 hidden md:block" style={{backgroundColor: "#FCDCE2"}}></div>
 
         {/* Left Content */}
-        <div className="relative z-40">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-gray-900">
+        <div className="relative z-40 ">
+          <h1 className="leading-15 w-196 text-2xl sm:text-2xl md:text-3xl lg:text-5xl font-bold  text-gray-900">
             Speak English with Confidence<br />
-            Master Grammar at <span className="text-pink-500">English Kafé</span>
+            Master Grammar at English Kafé
           </h1>
 
-          <p className="text-gray-600 mt-3 sm:mt-4 md:mt-6 text-sm sm:text-base leading-relaxed">
-            Where English learning feels relaxed, practical, and enjoyable.
+          <p className="text-[#8B6F61] mt-2 sm:mt-4 md:mt-6  sm:text-base lg:text-2xl leading-7">
+            Where English learning feels relaxed, practical,<br /> and enjoyable.
           </p>
 
-          <button className="mt-6 md:mt-8 bg-black text-white px-5 sm:px-6 md:px-8 py-2 md:py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors flex items-center gap-2 text-xs sm:text-sm md:text-base w-fit">
+          <button className="mt-6 md:mt-8 bg-black text-white px-5 sm:px-6 md:px-8 py-2 md:py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors cursor-pointer flex items-center gap-2 text-xs sm:text-sm md:text-base w-40 sm:w-48 md:w-56 h-15 justify-center">
             Explore Courses →
           </button>
 
-          <div className="mt-6 sm:mt-8 md:mt-10 space-y-4">
+          <div className="w-full sm:w-28 md:w-100 h-0.1 sm:h-0.5 bg-black mt-12 sm:mb-0"></div>
+          
+          <div className=" mt-6 sm:mt-8 md:mt-10 space-y-4">
             <div>
               <h3 className="font-semibold text-gray-800 mb-2 sm:mb-3 text-sm md:text-base">What we offer:</h3>
               <ul className="space-y-1.5 sm:space-y-2 text-gray-700 text-xs sm:text-sm">
@@ -51,30 +53,28 @@ function Hero() {
         </div>
 
         {/* Right Images Section */}
-        <div className="relative h-60 sm:h-80 md:h-full flex items-center justify-center mt-8 md:mt-0">
+        <div className=" relative h-60 sm:h-80 md:h-full flex items-center justify-center mt-8 md:mt-0">
           
           {/* Center Image - Girl with Book */}
-          <div className="relative z-20 md:-ml-110 w-full md:w-auto">
+          <div className=" relative top-40  z-20 md:-ml-110 w-full md:w-auto">
             <img
               src="/src/assets/hero/landing0.png"
               alt="student learning"
-              className="rounded-2xl md:rounded-4xl w-full h-full object-cover"
+              className="rounded-2xl scale-100 md:rounded-4xl w-full h-full object-cover"
             />
           </div>
 
           {/* Top Right Image - Girl with Headphones (Blue Background) */}
-          <div className="absolute top-8 sm:top-12 lg:top-15 right-0 z-10 transform -translate-y-1/2 translate-x-2 sm:translate-x-4 lg:translate-x-8">
-            <div className="bg-blue-300 shadow-lg rounded-2xl overflow-hidden w-32 h-28 sm:w-48 sm:h-40 md:w-56 md:h-48 lg:w-80 lg:h-64">
+          <div className="border-4 border-indigo-500 absolute  left-50 top-0 right-10  z-10  ">
               <img
                 src="/src/assets/hero/landing.jpg"
                 alt="girl with headphones"
-                className="w-full h-full object-cover"
+                className="rounded-xl scale-130 w-130 h-80 object-cover"
               />
-            </div>
           </div>
 
           {/*  Right Course Card - Grammar */}
-          <div className="hidden md:block absolute -top-32 lg:-top-40 left-4 lg:left-10 z-20 rounded-xl shadow-lg p-2 md:p-3 w-56 md:w-64 lg:w-75" style={{backgroundColor: "#FCDCE2"}}>
+          <div className="md:block absolute lg:-top-10 lg:left-20 top-10 left-4 z-30 rounded-xl shadow-lg p-2 md:p-3 w-56 md:w-64 lg:w-75" style={{backgroundColor: "#FCDCE2"}}>
             <div className="flex items-start gap-2">
               <span className="text-lg md:text-xl">✏️</span>
               <div>
@@ -85,9 +85,9 @@ function Hero() {
           </div>
 
           {/* Bottom Right Course Card - Communication */}
-          <div className="hidden md:block absolute bottom-32 lg:bottom-47 right-4 lg:right-10 z-20 rounded-xl shadow-lg p-2 md:p-3 w-56 md:w-64 lg:w-70" style={{backgroundColor: "#DDF1FC"}}>
+          <div className="hidden md:block absolute bottom-54 lg:bottom-47 right-4 lg:right-10 z-20 rounded-xl shadow-lg p-2 md:p-3 w-56 md:w-64 lg:w-70" style={{backgroundColor: "#DDF1FC"}}>
             <div className="flex items-start gap-2">
-              <span className="text-lg md:text-xl">🎤</span>
+              <span className="text-lg md:text-xl">✏️</span>
               <div>
                 <h4 className="font-bold text-gray-900 text-xs md:text-sm leading-tight">Master English Communication</h4>
                 <p className="text-xs text-gray-500 mt-1">15 LESSONS • 50 MINUTES</p>
