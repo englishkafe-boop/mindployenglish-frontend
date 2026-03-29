@@ -5,11 +5,22 @@ function Courses() {
   const navigate = useNavigate()
 
   return (
-    <section className="px-4 sm:px-6 md:px-10 py-8 sm:py-12 md:py-16 bg-gray-50">
-      <div className="max-w-6xl mx-auto">
+    <section className="px-4 sm:px-6 md:px-10 py-8 sm:py-12 md:py-16 bg-[#FEF7F9] overflow-hidden">
+     
+      <div className="relative max-w-6xl mx-auto">
+         {/* Decorative blue shap on Left */}
+        <div className="absolute -left-10 -top-30 w-30 md:w-30 h-30 md:h-30 rounded-full pointer-events-none z-10  " style={{ backgroundColor: "#B5E0F8" }}></div>
+
+        <div className="absolute -left-55 -top-25 w-60 md:w-60 h-30 md:h-30 rounded-xl pointer-events-none z-10  " style={{ backgroundColor: "#B5E0F8" }}></div>
+
+        {/* Decorative blue shap on right */}
+        <div className="absolute -right-10 -bottom-30 w-30 md:w-30 h-30 md:h-30 rounded-full pointer-events-none z-10  " style={{ backgroundColor: "#B5E0F8" }}></div>
+
+        <div className="absolute -right-55 -bottom-25 w-60 md:w-60 h-30 md:h-30 rounded-xl pointer-events-none z-10  " style={{ backgroundColor: "#B5E0F8" }}></div>
+        
         <div className="flex justify-center mb-6 sm:mb-8 md:mb-10">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 pb-2 sm:pb-3 border-b-4 border-black">
-            Our Courses
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 pb-2 sm:pb-3 border-b-9 border-black">
+            Courses
           </h2>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
