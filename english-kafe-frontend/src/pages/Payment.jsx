@@ -68,14 +68,14 @@ function Payment() {
           {/* Main Content */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7 md:gap-8">
             {/* Left Side - Course Card */}
-            <div className="bg-white rounded-3xl p-6 sm:p-7 md:p-8 shadow-lg">
+            <div className="bg-white rounded-3xl p-5 sm:p-7 md:p-8 shadow-lg">
               <div className="flex flex-col">
                 {/* Course Image */}
                 <div className="mb-4 sm:mb-5 md:mb-6">
                   <img
                     src={course.image}
                     alt={course.title}
-                    className="w-full h-40 sm:h-48 md:h-64 object-cover rounded-2xl"
+                    className="w-full h-40 sm:h-48 md:h-104 object-cover rounded-2xl"
                   />
                 </div>
 
@@ -258,7 +258,7 @@ function Payment() {
 
                   {/* Illustration */}
                   <div className="bg-gray-50 rounded-xl p-8 sm:p-12 flex items-center justify-center min-h-40 sm:min-h-48">
-                    <svg className="w-32 sm:w-40 h-32 sm:h-40 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-32 sm:w-40 h-32 sm:h-20 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
                       <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2"/>
                       <path d="M12 6v6l4 2"/>
                     </svg>
