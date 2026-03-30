@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import logo from '../assets/Nav/EnglishkafeLogo-Transparent.png'
+const logo = '/Nav/EnglishkafeLogo-Transparent.png'
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -33,7 +33,7 @@ function Login() {
         <div className="hidden md:flex justify-center">
           <div className="relative">
             <img 
-              src="/src/assets/login/young-students-learning-together-group-study.jpg" 
+              src="/login/young-students-learning-together-group-study.jpg" 
               alt="English Kafé" 
               className="w-full object-cover rounded-2xl"
               style={{ height: '500px' }}

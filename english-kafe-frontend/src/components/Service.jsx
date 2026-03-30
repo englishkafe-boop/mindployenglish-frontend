@@ -1,7 +1,7 @@
 import ServiceCard from "./ServiceCard"
-import asianMotherImage from "../assets/service/asian-mother-enjoy-teach-explain-homework-child-daughter-online-study-homeschooling-home-home-quarantine-online-learning-new-normal-lifestyle.jpg"
-import languageLearningImage from "../assets/service/close-up-people-learning-language.jpg"
-import teacherImage from "../assets/service/medium-shot-smiley-teacher-with-whiteboard.jpg"
+const asianMotherImage = "/service/asian-mother-enjoy-teach-explain-homework-child-daughter-online-study-homeschooling-home-home-quarantine-online-learning-new-normal-lifestyle.jpg"
+const languageLearningImage = "/service/close-up-people-learning-language.jpg"
+const teacherImage = "/service/medium-shot-smiley-teacher-with-whiteboard.jpg"
 
 function Service() {
   return (

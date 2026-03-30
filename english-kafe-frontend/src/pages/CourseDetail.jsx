@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import CourseCard from '../components/CourseCard'
+const logoTransparent = '/Nav/EnglishkafeLogo-Transparent.png'
 import { getCourseById, coursesData } from '../services/courseService'
 
 function CourseDetail() {
@@ -233,7 +234,7 @@ function CourseDetail() {
               {/* Right Side - Logo/Image */}
               <div className="flex items-center justify-center order-first md:order-last mt-6 md:mt-0">
                 <img 
-                  src="/src/assets/Nav/EnglishkafeLogo-Transparent.png" 
+                  src={logoTransparent} 
                   alt="English Kafé Logo"
                   className="w-full max-w-xs sm:max-w-sm md:max-w-md h-auto"
                 />

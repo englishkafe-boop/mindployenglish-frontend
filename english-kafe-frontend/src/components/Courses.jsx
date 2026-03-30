@@ -1,5 +1,9 @@
 import CourseCard from "./CourseCard"
 import { useNavigate } from "react-router-dom"
+import ieltsSpeakingImg from "../assets/courses/IELTS speaking.jpg"
+import ieltsWritingImg from "../assets/courses/ielts writing.jpg"
+import dailyEnglishImg from "../assets/courses/daily english.jpg"
+import grammarImg from "../assets/courses/grammer.jpg"
 
 function Courses() {
   const navigate = useNavigate()
@@ -26,7 +30,7 @@ function Courses() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
           <CourseCard
             id={2}
-            image="/src/assets/courses/ielts speaking.jpg"
+            image={ieltsSpeakingImg}
             title="IELTS Speaking"
             description="Build confidence with guided speaking practice and real exam-style questions."
             price="3000 บาท "
@@ -35,7 +39,7 @@ function Courses() {
           />
           <CourseCard
             id={3}
-            image="/src/assets/courses/ielts writing.jpg"
+            image={ieltsWritingImg}
             title="IELTS WRITING"
             description="Clear structure, grammar guidance, and scoring strategies for stronger essays."
             price="4500 บาท "
@@ -44,7 +48,7 @@ function Courses() {
           />
           <CourseCard
             id={4}
-            image="/src/assets/courses/daily english.jpg"
+            image={dailyEnglishImg}
             title="Everyday English"
             description="Practice real-life conversations and vocabulary for daily communication."
             price="3500 บาท "
@@ -53,7 +57,7 @@ function Courses() {
           />
           <CourseCard
             id={1}
-            image="/src/assets/courses/grammer.jpg"
+            image={grammarImg}
             title="Grammar Essentials"
             description="Understand grammar simply and apply it confidently in speaking and writing."
             price="2500 บาท "

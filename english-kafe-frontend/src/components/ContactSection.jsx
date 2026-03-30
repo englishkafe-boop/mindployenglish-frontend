@@ -1,6 +1,6 @@
-import lineIcon from "../assets/logo/Line.svg"
-import facebookIcon from "../assets/logo/facebook.svg"
-import instagramIcon from "../assets/logo/instagram.svg"
+const lineIcon = "/logo/Line.svg"
+const facebookIcon = "/logo/facebook.svg"
+const instagramIcon = "/logo/instagram.svg"
 
 function ContactSection() {
   return (

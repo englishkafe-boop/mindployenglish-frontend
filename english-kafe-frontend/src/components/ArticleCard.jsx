@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+const defaultAuthorLogo = "/Nav/EnglishkafeLogo-Transparent.png"
 
 function ArticleCard({ id, image, title, description, authorLogo, authorName, date }) {
   const navigate = useNavigate()
@@ -7,12 +8,22 @@ function ArticleCard({ id, image, title, description, authorLogo, authorName, da
     navigate('/blog')
   }
 
+  const resolvedImage = image && image.startsWith('/src/assets')
+    ? new URL(image.replace('/src/assets/', '../assets/'), import.meta.url).href
+    : image
+
+  const resolvedAuthorLogo = authorLogo
+    ? authorLogo.startsWith('/src/assets')
+      ? new URL(authorLogo.replace('/src/assets/', '../assets/'), import.meta.url).href
+      : authorLogo
+    : defaultAuthorLogo
+
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-md px-2 py-2 w-80 h-110 gap-5 hover:shadow-lg transition-shadow ">
       {/* Image Container */}
       <div className="relative w-full h-48 bg-gray-300 overflow-hidden rounded-xl">
         <img 
-          src={image} 
+          src={resolvedImage} 
           alt={title} 
           className="w-full h-full object-cover"
         />
@@ -35,7 +46,7 @@ function ArticleCard({ id, image, title, description, authorLogo, authorName, da
           {/* Author Info */}
           <div className="flex items-center gap-2">
             <img 
-              src="/src/assets/Nav/EnglishkafeLogo-Transparent.png" 
+              src={resolvedAuthorLogo} 
               alt={authorName} 
               className="w-12 h-12 rounded-full border-2 border-[#F5C6D8] object-cover"
             />

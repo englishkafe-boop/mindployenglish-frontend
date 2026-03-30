@@ -3,7 +3,7 @@ import RecentArticle from '../components/RecentArticle'
 import ArticleCard from '../components/ArticleCard'
 import ContactSection from '../components/ContactSection'
 import Footer from '../components/Footer'
-import logo from '../assets/Nav/EnglishkafeLogo-Transparent.png'
+const logo = "/Nav/EnglishkafeLogo-Transparent.png"
 import article1 from '../assets/articles/Why Do Many Learners Struggle with English Grammar — and How Can You Fix It_.jpg'
 import article2 from '../assets/articles/Effective Ways to Remember and Use New English Vocabulary Daily.jpg'
 import article3 from '../assets/articles/How Should You Prepare for IELTS with Less Stress_.jpg'
@@ -84,7 +84,7 @@ function Blog() {
               {/* Featured Image */}
               <div className="mt-8">
                 <img 
-                  src="/src/assets/courses/daily english.jpg" 
+                  src={article2} 
                   alt="Featured article"
                   className="w-full h-full object-cover rounded-2xl"
                 />

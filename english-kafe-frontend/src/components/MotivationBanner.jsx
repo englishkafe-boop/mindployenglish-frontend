@@ -1,3 +1,7 @@
+const logoMotivation = "/moti/EnglishkafeLogo-Transparent.png"
+const openIcon = "/moti/open.svg"
+const closeIcon = "/moti/close.svg"
+
 function MotivationBanner() {
   return (
     <section className="relative px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-12" style={{backgroundColor: "#F5D4DC"}}>
@@ -8,7 +12,7 @@ function MotivationBanner() {
           {/* Left - Logo */}
           <div className=" flex justify-center md:justify-center">
             <img 
-              src="/src/assets/moti/EnglishkafeLogo-Transparent.png" 
+              src={logoMotivation} 
               alt="English Kafé Logo" 
               className="size-12 object-fill scale-800"
             />
@@ -19,7 +23,7 @@ function MotivationBanner() {
             {/* Top Left Icon - Open */}
             <div className="absolute -left-25 sm:-left-20 md:-left-15 top-0">
               <img 
-                src="/src/assets/moti/open.svg" 
+                src={openIcon} 
                 alt="Open Icon" 
                 className="w-8 sm:w-10 md:w-18 lg:w-20 h-8 sm:h-10 md:h-16 lg:h-20"
               />
@@ -46,7 +50,7 @@ function MotivationBanner() {
           {/* Bottom Right Icon - Close */}
           <div className="absolute bottom-0 right-0 md:bottom-0 md:right-4">
             <img 
-              src="/src/assets/moti/close.svg" 
+              src={closeIcon} 
               alt="Close Icon" 
               className="w-8 sm:w-10 md:w-18 lg:w-20 h-8 sm:h-10 md:h-16 lg:h-20"
             />

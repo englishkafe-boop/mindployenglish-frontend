@@ -1,4 +1,4 @@
-import logo from '../assets/Nav/EnglishkafeLogo-Transparent.png'
+const logo = '/Nav/EnglishkafeLogo-Transparent.png'
 
 function RecentArticle({ title, description, date, showReadMore = true }) {
   return (

@@ -1,6 +1,6 @@
 import TestimonialVideo from "./TestimonialVideo"
-import student1 from "../assets/review/its-you-congratulations-smiling-asian-corporate-woman-ceo-manager-suit-glasses-pointing-finge.jpg"
-import student2 from "../assets/review/young-chinese-woman-standing-white-background-showing-palm-hand-doing-ok-gesture-with-thumbs-up-smiling-happy-cheerful.jpg"
+const student1 = "/review/its-you-congratulations-smiling-asian-corporate-woman-ceo-manager-suit-glasses-pointing-finge.jpg"
+const student2 = "/review/young-chinese-woman-standing-white-background-showing-palm-hand-doing-ok-gesture-with-thumbs-up-smiling-happy-cheerful.jpg"
 
 function StudentReview() {
   return (

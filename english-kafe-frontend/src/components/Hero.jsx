@@ -1,3 +1,9 @@
+const lineIcon = "/logo/Line.svg"
+const facebookIcon = "/logo/facebook.svg"
+const instagramIcon = "/logo/instagram.svg"
+const landing0 = "/hero/Landing0.png"
+const landing = "/hero/landing.jpg"
+
 function Hero() {
   return (
     <section className="relative px-4 sm:px-6 md:px-10 py-8 sm:py-12 md:py-20 bg-white overflow-hidden">
@@ -39,13 +45,13 @@ function Hero() {
             <p className="font-semibold text-gray-800 mb-2 sm:mb-3 text-sm md:text-base">Contact us via:</p>
             <div className="flex gap-3 sm:gap-4">
               <a href="#" className="hover:opacity-70 transition-opacity">
-                <img src="/src/assets/logo/Line.svg" alt="LINE" className="w-5 sm:w-6 md:w-8 h-5 sm:h-6 md:h-8" />
+                <img src={lineIcon} alt="LINE" className="w-5 sm:w-6 md:w-8 h-5 sm:h-6 md:h-8" />
               </a>
               <a href="#" className="hover:opacity-70 transition-opacity">
-                <img src="/src/assets/logo/facebook.svg" alt="Facebook" className="w-5 sm:w-6 md:w-8 h-5 sm:h-6 md:h-8" />
+                <img src={facebookIcon} alt="Facebook" className="w-5 sm:w-6 md:w-8 h-5 sm:h-6 md:h-8" />
               </a>
               <a href="#" className="hover:opacity-70 transition-opacity">
-                <img src="/src/assets/logo/instagram.svg" alt="Instagram" className="w-5 sm:w-6 md:w-8 h-5 sm:h-6 md:h-8" />
+                <img src={instagramIcon} alt="Instagram" className="w-5 sm:w-6 md:w-8 h-5 sm:h-6 md:h-8" />
               </a>
             </div>
           </div>
@@ -58,7 +64,7 @@ function Hero() {
           {/* Center Image - Girl with Book */}
           <div className=" relative top-40  z-20 md:-ml-110 w-full md:w-auto">
             <img
-              src="/src/assets/hero/landing0.png"
+              src={landing0}
               alt="student learning"
               className="rounded-2xl scale-100 md:rounded-4xl w-full h-full object-cover"
             />
@@ -67,7 +73,7 @@ function Hero() {
           {/* Top Right Image - Girl with Headphones (Blue Background) */}
           <div className="border-4 border-indigo-500 absolute  left-50 top-0 right-10  z-10  ">
               <img
-                src="/src/assets/hero/landing.jpg"
+                src={landing}
                 alt="girl with headphones"
                 className="rounded-xl scale-130 w-130 h-80 object-cover"
               />

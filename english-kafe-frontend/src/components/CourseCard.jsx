@@ -7,12 +7,16 @@ function CourseCard({ id, image, title, description, price, rating, reviews }) {
     navigate(`/courses/${id}`)
   }
 
+  const resolvedImage = image && image.startsWith('/src/assets')
+    ? new URL(image.replace('/src/assets/', '../assets/'), import.meta.url).href
+    : image
+
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow flex flex-col sm:flex-row gap-2 sm:gap-3 p-2 sm:p-3">
       {/* Image Container - Left */}
       <div className=" relative w-full sm:w-48 md:w-56 lg:w-64 h-32 sm:h-auto bg-gray-300 overflow-hidden shrink-0 rounded-lg">
         <img 
-          src={image} 
+          src={resolvedImage} 
           alt={title} 
           className="w-full h-full object-cover"
         />

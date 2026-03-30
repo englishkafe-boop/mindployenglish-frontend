@@ -2,8 +2,8 @@ import Navbar from "../components/Navbar"
 import ContactSection from "../components/ContactSection"
 import Footer from "../components/Footer"
 import ServiceComponent from "../components/Service"
-import lineIcon from "../assets/logo/Line.svg"
-import coachImage from "../assets/service/medium-shot-smiley-teacher-with-whiteboard.jpg"
+const lineIcon = "/logo/Line.svg"
+const coachImage = "/service/medium-shot-smiley-teacher-with-whiteboard.jpg"
 
 function Service() {
   return (

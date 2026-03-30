@@ -1,4 +1,4 @@
-import logo from "../assets/Nav/EnglishkafeLogo-Transparent.png"
+const logo = "/Nav/EnglishkafeLogo-Transparent.png"
 import { useNavigate, useLocation } from "react-router-dom"
 import { useState } from "react"
 

@@ -1,3 +1,6 @@
+const instructor1Url = "/instructors/instructor1.jpg"
+const instructor2Url = "/instructors/instructor2.jpg"
+
 function Instructors() {
   return (
     <section className=" relative px-4 sm:px-6 md:px-10 py-10 sm:py-12 md:py-20 bg-[#F8FCFE]">
@@ -26,7 +29,7 @@ function Instructors() {
           <div className=" relative group w-1/2 left-60 rounded-3xl overflow-hidden">
             <div className="h-48 sm:h-64 md:h-80 lg:h-96" style={{backgroundColor: "#D4899B"}}>
               <img 
-                src="/src/assets/instructors/instructor1.jpg" 
+                src={instructor1Url} 
                 alt="Ms.Patiln Jintanawong" 
                 className="w-full h-full object-cover"
               />
@@ -42,7 +45,7 @@ function Instructors() {
           <div className="relative group w-1/2 rounded-3xl overflow-hidden">
             <div className="h-48 sm:h-64 md:h-80 lg:h-96" style={{backgroundColor: "#C0C0C0"}}>
               <img 
-                src="/src/assets/instructors/instructor2.jpg" 
+                src={instructor2Url} 
                 alt="Ms.Panida Mounjoy" 
                 className="w-full h-full object-cover"
               />
