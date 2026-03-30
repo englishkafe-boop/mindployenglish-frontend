@@ -130,7 +130,7 @@ function CourseDetail() {
                   </div>
                   <button 
                     onClick={() => navigate(`/enroll/${course.id}`)}
-                    className="w-full sm:w-auto bg-pink-300 hover:bg-pink-400 text-gray-900 font-bold py-3 sm:py-4 px-8 sm:px-12 rounded-full transition-colors text-sm sm:text-base md:text-lg"
+                    className="w-full sm:w-auto bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-3 sm:py-4 px-8 sm:px-12 rounded-full transition-colors text-sm sm:text-base md:text-lg"
                   >
                     Enroll Now
                   </button>

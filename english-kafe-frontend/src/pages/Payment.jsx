@@ -189,7 +189,7 @@ function Payment() {
                     </button>
                     <button
                       onClick={() => setCurrentStep(2)}
-                      className="flex-1 bg-pink-300 hover:bg-pink-400 text-gray-900 font-bold py-2 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
+                      className="flex-1 bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
                     >
                       Upload Receipt
                     </button>
@@ -232,7 +232,7 @@ function Payment() {
                     </button>
                     <button
                       onClick={handleUploadReceipt}
-                      className="flex-1 bg-pink-300 hover:bg-pink-400 text-gray-900 font-bold py-2 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
+                      className="flex-1 bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
                     >
                       Submit Payment
                     </button>
@@ -266,7 +266,7 @@ function Payment() {
 
                   <button
                     onClick={() => navigate('/my-course-order')}
-                    className="w-full bg-pink-300 hover:bg-pink-400 text-gray-900 font-bold py-2 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
+                    className="w-full bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
                   >
                     View My Course Orders
                   </button>

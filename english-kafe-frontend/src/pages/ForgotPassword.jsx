@@ -75,8 +75,7 @@ function ForgotPassword() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full hover:opacity-90 disabled:opacity-70 text-gray-900 font-normal py-2 sm:py-3 rounded-lg transition-opacity text-sm sm:text-base"
-              style={{ backgroundColor: '#F8B2C0' }}
+              className="w-full bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-normal py-2 sm:py-3 rounded-lg transition-opacity text-sm sm:text-base"
             >
               {loading ? 'Sending...' : 'Send Reset link'}
             </button>

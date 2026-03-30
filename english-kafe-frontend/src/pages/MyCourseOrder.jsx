@@ -48,7 +48,7 @@ function MyCourseOrder() {
       <Navbar />
 
       {/* Header */}
-      <div className="px-4 md:px-10 py-12 text-center bg-white border-b-4 border-pink-400">
+      <div className="px-4 md:px-10 py-12 text-center bg-white ">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
           My Course Order
         </h1>
@@ -74,7 +74,7 @@ function MyCourseOrder() {
                   {/* Content Container - Right */}
                   <div className="flex-1 flex flex-col justify-between">
                     {/* Badge */}
-                    <div className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-4 py-2 rounded-full mb-3 w-fit">
+                    <div className="inline-block bg-blue-100 text-gray-900 text-xs font-semibold px-4 py-2 rounded-full mb-3 w-full text-center">
                       {course.title.split(' ').slice(0, 2).join(' ')}
                     </div>
 
@@ -97,7 +97,7 @@ function MyCourseOrder() {
                     {/* Check Status Button */}
                     <button
                       onClick={() => navigate(`/order-status/${order.id}`)}
-                      className="w-full bg-pink-300 hover:bg-pink-400 text-gray-900 font-bold py-2 px-4 rounded-full transition-colors text-sm"
+                      className="w-full bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2 px-4 rounded-full transition-colors text-sm"
                     >
                       Check Status
                     </button>
@@ -109,7 +109,7 @@ function MyCourseOrder() {
 
           {/* Pagination Indicator */}
           <div className="flex justify-center mt-12">
-            <div className="h-2 w-8 bg-pink-400 rounded-full"></div>
+            <div className="h-2 w-8 bg-[#F8B2C0] rounded-full"></div>
           </div>
         </div>
       </div>

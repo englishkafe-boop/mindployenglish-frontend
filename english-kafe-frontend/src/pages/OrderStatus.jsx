@@ -95,7 +95,7 @@ function OrderStatus() {
       {/* Button */}
       <button
         onClick={() => navigate(`/course-lessons/${course.id}`)}
-        className="w-full bg-pink-300 hover:bg-pink-400 text-white font-bold py-3 px-6 rounded-full transition-colors mb-2"
+        className="w-full bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-3 px-6 rounded-full transition-colors mb-2"
       >
         Go To Course
       </button>
@@ -151,7 +151,7 @@ function OrderStatus() {
       {/* Button */}
       <button
         onClick={() => navigate('/payment/' + course.id)}
-        className="w-full bg-pink-300 hover:bg-pink-400 text-white font-bold py-3 px-6 rounded-full transition-colors mb-4"
+        className="w-full bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-3 px-6 rounded-full transition-colors mb-4"
       >
         Resubmit Receipt
       </button>
@@ -213,7 +213,7 @@ function OrderStatus() {
       {/* Button */}
       <button
         onClick={() => navigate('/my-course-order')}
-        className="w-full bg-pink-300 hover:bg-pink-400 text-white font-bold py-3 px-6 rounded-full transition-colors mb-4"
+        className="w-full bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-3 px-6 rounded-full transition-colors mb-4"
       >
         Back to Orders
       </button>

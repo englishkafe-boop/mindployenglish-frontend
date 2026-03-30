@@ -172,7 +172,7 @@ function Enroll() {
                     </button>
                     <button 
                       onClick={handleEnrollClick}
-                      className="flex-1 bg-pink-300 hover:bg-pink-400 text-gray-900 font-bold py-3 px-4 rounded-full transition-colors"
+                      className="flex-1 bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-3 px-4 rounded-full transition-colors"
                     >
                       Enroll Now
                     </button>
