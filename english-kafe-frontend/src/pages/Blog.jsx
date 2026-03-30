@@ -92,10 +92,10 @@ function Blog() {
             </div>
 
             {/* Recent Articles Sidebar - Right Side (1 col) */}
-            <div className="md:col-span-1">
-              <h2 className="text-lg font-bold text-gray-900 mb-6">Recents</h2>
+            <div className=" md:col-span-1 mt-20 ">
+              <h2 className="text-lg font-bold text-gray-900 mb-4">Recents</h2>
               
-              <div className="space-y-6">
+              <div className="space-y-2">
                 <RecentArticle 
                   title="Why Most English Learners Plateau — And How to Break Through"
                   description="Progress often slows when learners repeat the same study habits. Discover smarter practice techniques that help you move beyond the intermediate stage with"
@@ -120,11 +120,6 @@ function Blog() {
                   date="2/3/2025"
                 />
                 
-                <RecentArticle 
-                  title="What Are Effective Ways to Remember and Use New English Vocabulary Daily?"
-                  date="2/3/2025"
-                  showReadMore={false}
-                />
               </div>
             </div>
           </div>

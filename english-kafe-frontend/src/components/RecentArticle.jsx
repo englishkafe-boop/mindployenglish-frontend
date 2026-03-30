@@ -2,7 +2,7 @@ const logo = '/Nav/EnglishkafeLogo-Transparent.png'
 
 function RecentArticle({ title, description, date, showReadMore = true }) {
   return (
-    <div>
+    <div className="border-2 border-gray-300 p-4 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
       <h3 className="font-bold text-gray-900 mb-2 text-sm">
         {title}
       </h3>
