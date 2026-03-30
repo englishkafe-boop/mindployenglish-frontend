@@ -12,7 +12,7 @@ import MyCourseOrder from "./pages/MyCourseOrder"
 import MyProfile from "./pages/MyProfile"
 import CourseLessons from "./pages/CourseLessons"
 import OrderStatus from "./pages/OrderStatus"
-import Blog from "./pages/blog"
+import Blog from "./pages/Blog"
 import Service from "./pages/Service"
 
 function App() {
