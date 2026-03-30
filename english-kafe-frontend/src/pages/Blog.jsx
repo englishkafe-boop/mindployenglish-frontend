@@ -74,7 +74,7 @@ function Blog() {
                 </div>
                 <button 
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className="bg-pink-300 text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-pink-400 transition-colors flex items-center gap-2"
+                  className="bg-[#F8B2C0] text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-[#F8C2C0] transition-colors flex items-center gap-2"
                 >
                   {isExpanded ? 'Read Less' : 'Read More'}
                   <span>{isExpanded ? '↑' : '↓'}</span>
@@ -132,18 +132,18 @@ function Blog() {
       </div>
 
       {/* English Learning Insights Section */}
-      <div className="px-4 md:px-10 py-16 bg-blue-50">
-        <div className="max-w-7xl mx-auto">
+      <div className="px-4 md:px-10 py-12 bg-blue-50">
+        <div className=" max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               English Learning Insights
             </h2>
-            <div className="h-1 w-32 bg-black mx-auto"></div>
+            <div className="h-2 w-52 bg-black mx-auto"></div>
           </div>
 
           {/* Articles Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className=" justify-items-center grid grid-cols-1 md:grid-cols-3 gap-2 mb-8">
             <ArticleCard 
               image={article1}
               title="Why Do Many Learners Struggle with English Grammar — and How Can You Fix It?"

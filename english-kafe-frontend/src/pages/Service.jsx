@@ -7,7 +7,7 @@ import coachImage from "../assets/service/medium-shot-smiley-teacher-with-whiteb
 
 function Service() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#E8F5FD]">
       {/* Navbar */}
       <Navbar />
 
@@ -27,9 +27,9 @@ function Service() {
 
             {/* Contact via LINE Button */}
             <div className="pt-2 sm:pt-3 md:pt-4">
-              <button className="flex items-center gap-2 sm:gap-3 bg-pink-300 hover:bg-pink-400 transition-colors px-6 sm:px-7 md:px-8 py-2 sm:py-3 md:py-4 rounded-2xl font-semibold text-sm sm:text-base md:text-lg">
+              <button className="flex items-center gap-2 sm:gap-3 bg-[#F8B2C0] hover:bg-[#F8C2C0] transition-colors px-6 sm:px-7 md:px-8 py-2 sm:py-3 md:py-4 rounded-2xl font-semibold text-sm sm:text-base md:text-lg">
                 <img src={lineIcon} alt="LINE" className="w-6 sm:w-7 md:w-8 h-6 sm:h-7 md:h-8" />
-                Contact vai LINE
+                Contact via LINE
               </button>
             </div>
           </div>
