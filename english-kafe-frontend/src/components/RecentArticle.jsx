@@ -1,6 +1,6 @@
 const logo = '/Nav/EnglishkafeLogo-Transparent.png'
 
-function RecentArticle({ title, description, date, showReadMore = true }) {
+function RecentArticle({ title, description, date, showReadMore = true, onReadMore }) {
   return (
     <div className="border-2 border-gray-300 p-4 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
       <h3 className="font-bold text-gray-900 mb-2 text-sm">
@@ -24,7 +24,13 @@ function RecentArticle({ title, description, date, showReadMore = true }) {
           <p className="text-gray-600 text-xs">{date}</p>
         </div>
         {showReadMore && (
-          <a href="#" className="text-gray-600 text-xs hover:text-gray-900">read more</a>
+          <button
+            type="button"
+            onClick={onReadMore}
+            className="text-gray-600 text-xs hover:text-gray-900"
+          >
+            read more
+          </button>
         )}
       </div>
     </div>

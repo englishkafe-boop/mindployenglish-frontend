@@ -8,21 +8,30 @@ function MyProfile() {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("info");
   const { user, setUser } = useAuth();
 
   const userEmail = user?.email || "user@example.com";
   const userName = user?.name || "John Doe";
-  const profileImage = user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${userEmail}`;
 
   const [formData, setFormData] = useState({
     userName: userName,
     email: userEmail,
+    avatarFile: null,
+    avatarPreview: "",
   });
+
+  const profileImage =
+    formData.avatarPreview ||
+    user?.avatar ||
+    `https://api.dicebear.com/7.x/avataaars/svg?seed=${userEmail}`;
 
   useEffect(() => {
     setFormData({
       userName,
       email: userEmail,
+      avatarFile: null,
+      avatarPreview: "",
     });
   }, [userEmail, userName]);
 
@@ -34,17 +43,44 @@ function MyProfile() {
     }));
   };
 
+  const handleAvatarChange = (e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+    setFormData((prev) => ({
+      ...prev,
+      avatarFile: file,
+      avatarPreview: previewUrl,
+    }));
+    setMessage("");
+  };
+
   const handleSave = async () => {
     setIsSaving(true);
     setMessage("");
+    setMessageType("info");
 
     try {
-      const updatedUser = await updateProfile({ name: formData.userName });
+      const updatedUser = await updateProfile({
+        name: formData.userName,
+        avatarFile: formData.avatarFile,
+      });
       setUser(updatedUser);
       setIsEditing(false);
+      setFormData((prev) => ({
+        ...prev,
+        avatarFile: null,
+        avatarPreview: "",
+      }));
       setMessage("Profile updated successfully.");
+      setMessageType("success");
     } catch (error) {
       setMessage(error.message);
+      setMessageType("error");
     } finally {
       setIsSaving(false);
     }
@@ -54,8 +90,11 @@ function MyProfile() {
     setFormData({
       userName: userName,
       email: userEmail,
+      avatarFile: null,
+      avatarPreview: "",
     });
     setIsEditing(false);
+    setMessage("");
   };
 
   return (
@@ -76,11 +115,25 @@ function MyProfile() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               {/* Left Side - Profile Image */}
               <div className="flex justify-center">
-                <img
-                  src={profileImage}
-                  alt="Profile"
-                  className="w-68 h-68 rounded-full object-cover border-4 border-gray-300 shadow-lg"
-                />
+                <div className="flex flex-col items-center gap-4">
+                  <img
+                    src={profileImage}
+                    alt="Profile"
+                    className="w-68 h-68 rounded-full object-cover border-4 border-gray-300 shadow-lg"
+                  />
+
+                  {isEditing ? (
+                    <label className="cursor-pointer rounded-lg bg-[#F8B2C0] px-5 py-2 text-sm font-semibold text-gray-900 transition hover:bg-[#F8C2C0]">
+                      Change Photo
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleAvatarChange}
+                        className="hidden"
+                      />
+                    </label>
+                  ) : null}
+                </div>
               </div>
 
 
@@ -92,7 +145,15 @@ function MyProfile() {
 
                 <div className="space-y-6">
                   {message ? (
-                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+                    <div
+                      className={`rounded-lg px-4 py-3 text-sm ${
+                        messageType === "success"
+                          ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
+                          : messageType === "error"
+                            ? "border border-red-200 bg-red-50 text-red-700"
+                            : "border border-gray-200 bg-gray-50 text-gray-700"
+                      }`}
+                    >
                       {message}
                     </div>
                   ) : null}
@@ -113,6 +174,7 @@ function MyProfile() {
                         name="userName"
                         value={formData.userName}
                         onChange={handleChange}
+                        placeholder="Enter your name"
                         className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                       />
                     )}

@@ -1,186 +1,196 @@
-import Navbar from '../components/Navbar'
-import RecentArticle from '../components/RecentArticle'
-import ArticleCard from '../components/ArticleCard'
-import ContactSection from '../components/ContactSection'
-import Footer from '../components/Footer'
-const logo = "/Nav/EnglishkafeLogo-Transparent.png"
-import article1 from '../assets/articles/Why Do Many Learners Struggle with English Grammar — and How Can You Fix It_.jpg'
-import article2 from '../assets/articles/Effective Ways to Remember and Use New English Vocabulary Daily.jpg'
-import article3 from '../assets/articles/How Should You Prepare for IELTS with Less Stress_.jpg'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from "react";
+import Navbar from "../components/Navbar";
+import RecentArticle from "../components/RecentArticle";
+import ArticleCard from "../components/ArticleCard";
+import ContactSection from "../components/ContactSection";
+import Footer from "../components/Footer";
+import { fetchBlogs } from "../services/blogService";
+
+const logo = "/Nav/EnglishkafeLogo-Transparent.png";
+const fallbackImage =
+  "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&h=900&fit=crop";
 
 function Blog() {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [blogs, setBlogs] = useState([]);
+  const [selectedBlogId, setSelectedBlogId] = useState("");
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadBlogs() {
+      try {
+        setIsLoading(true);
+        setError("");
+        const data = await fetchBlogs();
+
+        if (!isMounted) {
+          return;
+        }
+
+        setBlogs(data);
+        setSelectedBlogId(data[0]?.id || "");
+      } catch (loadError) {
+        if (isMounted) {
+          setError(loadError.message || "Failed to load blogs");
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadBlogs();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    setIsExpanded(false);
+  }, [selectedBlogId]);
+
+  const featuredBlog = useMemo(() => {
+    if (!blogs.length) {
+      return null;
+    }
+
+    return blogs.find((blog) => blog.id === selectedBlogId) || blogs[0];
+  }, [blogs, selectedBlogId]);
+
+  const recentBlogs = useMemo(
+    () => blogs.filter((blog) => blog.id !== featuredBlog?.id).slice(0, 4),
+    [blogs, featuredBlog]
+  );
+
+  const insightBlogs = useMemo(
+    () => blogs.filter((blog) => blog.id !== featuredBlog?.id).slice(0, 6),
+    [blogs, featuredBlog]
+  );
+
+  const selectBlog = (id) => {
+    setSelectedBlogId(id);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      
-      {/* Featured Blog Article Section */}
-      <div className="px-4 md:px-10 py-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            {/* Main Article - Left Side (2 cols) */}
-            <div className="md:col-span-2">
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-                How to Build Real English Confidence Without Memorizing Grammar Rules
-              </h1>
-              
-              <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-                Many learners believe fluency comes from memorizing grammar charts — but real confidence develops when grammar becomes a practical tool, not a rigid rulebook. When learners shift their focus from perfection to communication, English starts to feel natural instead of stressful.
-              </p>
 
-              {/* Expanded Content */}
-              {isExpanded && (
-                <div className="mb-8 space-y-4">
-                  <p className="text-gray-600 text-lg leading-relaxed">
-                    Real progress happens when grammar is practiced inside real situations — conversations, storytelling, and repeated exercises. Confidence grows when learners practice in context — hearing it, using it, and correcting mistakes — the brain builds patterns naturally instead of being forced.
-                  </p>
-                  
-                  <h3 className="text-xl font-semibold text-gray-900 mt-6">
-                    Why Memorization Alone Doesn't Build Confidence
-                  </h3>
-                  
-                  <p className="text-gray-600 text-lg leading-relaxed">
-                    Memorizing rules can help with awareness, but it often creates hesitation. Learners pause mid-sentence trying to recall formulas instead of expressing ideas. This overthinking interrupts flow and creates speaking hesitation.
-                  </p>
-                  
-                  <p className="text-gray-600 text-lg leading-relaxed">
-                    When grammar is learned through context — hearing it, using it, and correcting mistakes — the brain builds patterns naturally. Over time, correct structures become instinctive instead of forced.
-                  </p>
+      <div className="bg-gray-50 px-4 py-12 md:px-10">
+        <div className="mx-auto max-w-7xl">
+          {error ? (
+            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          ) : null}
 
-                  <h3 className="text-xl font-semibold text-gray-900 mt-6">
-                    Learning Grammar Through Real Communication
-                  </h3>
-                  
-                  <p className="text-gray-600 text-lg leading-relaxed">
-                    Confidence improves fastest when learners use English actively. Speaking in guided conversations, repeating useful sentence patterns, and receiving supportive feedback helps you develop natural, automatic responses. This active practice builds confidence much faster than theory alone.
-                  </p>
-                </div>
-              )}
+          {isLoading ? (
+            <div className="rounded-2xl bg-white p-10 text-center text-gray-600 shadow-sm">
+              Loading blog posts...
+            </div>
+          ) : !featuredBlog ? (
+            <div className="rounded-2xl bg-white p-10 text-center text-gray-600 shadow-sm">
+              No blog posts available yet.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+              <div className="md:col-span-2">
+                <h1 className="mb-6 text-2xl font-bold text-gray-900 md:text-3xl">{featuredBlog.title}</h1>
 
-              {/* Author Info and Read More Button */}
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-3">
-                  <img 
-                    src={logo}
-                    alt="English Kafe" 
-                    className="h-10 w-auto"
+                <p className="mb-8 text-lg leading-relaxed text-gray-600">{featuredBlog.excerpt}</p>
+
+                {isExpanded ? (
+                  <div
+                    className="prose prose-gray mb-8 max-w-none"
+                    dangerouslySetInnerHTML={{ __html: featuredBlog.content }}
                   />
-                  <div>
-                    <p className="font-semibold text-gray-900">English Kafe</p>
-                    <p className="text-gray-600 text-sm">2/3/2025</p>
+                ) : null}
+
+                <div className="mb-8 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <img src={logo} alt="English Kafe" className="h-10 w-auto" />
+                    <div>
+                      <p className="font-semibold text-gray-900">{featuredBlog.authorName}</p>
+                      <p className="text-sm text-gray-600">{featuredBlog.date}</p>
+                    </div>
                   </div>
+                  <button
+                    onClick={() => setIsExpanded((current) => !current)}
+                    className="flex items-center gap-2 rounded-full bg-[#F8B2C0] px-8 py-3 font-semibold text-gray-900 transition-colors hover:bg-[#F8C2C0]"
+                  >
+                    {isExpanded ? "Read Less" : "Read More"}
+                    <span>{isExpanded ? "↑" : "↓"}</span>
+                  </button>
                 </div>
-                <button 
-                  onClick={() => setIsExpanded(!isExpanded)}
-                  className="bg-[#F8B2C0] text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-[#F8C2C0] transition-colors flex items-center gap-2"
-                >
-                  {isExpanded ? 'Read Less' : 'Read More'}
-                  <span>{isExpanded ? '↑' : '↓'}</span>
-                </button>
+
+                <div className="mt-8">
+                  <img
+                    src={featuredBlog.image || fallbackImage}
+                    alt={featuredBlog.title}
+                    className="h-full w-full rounded-2xl object-cover"
+                  />
+                </div>
               </div>
 
-              {/* Featured Image */}
-              <div className="mt-8">
-                <img 
-                  src={article2} 
-                  alt="Featured article"
-                  className="w-full h-full object-cover rounded-2xl"
-                />
-              </div>
-            </div>
+              <div className="mt-20 md:col-span-1">
+                <h2 className="mb-4 text-lg font-bold text-gray-900">Recents</h2>
 
-            {/* Recent Articles Sidebar - Right Side (1 col) */}
-            <div className=" md:col-span-1 mt-20 ">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">Recents</h2>
-              
-              <div className="space-y-2">
-                <RecentArticle 
-                  title="Why Most English Learners Plateau — And How to Break Through"
-                  description="Progress often slows when learners repeat the same study habits. Discover smarter practice techniques that help you move beyond the intermediate stage with"
-                  date="2/3/2025"
-                />
-                
-                <RecentArticle 
-                  title="Speaking English Smoothly: Training Your Brain, Not Just Your Vocabulary"
-                  description="Fluency is about processing speed and comfort. Learn exercises that retrain your thinking patterns for more natural speech."
-                  date="2/3/2025"
-                />
-                
-                <RecentArticle 
-                  title="Common Grammar Mistakes That Quietly Hurt Your Communication"
-                  description="Small grammar errors can change meaning and clarity. Here are the most important fixes that instantly improve your English."
-                  date="2/3/2025"
-                />
-                
-                <RecentArticle 
-                  title="Study Smarter: How Short Daily Practice Beats Long Study Sessions"
-                  description="Consistency builds stronger language memory than occasional long sessions. This guide shows how to structure smarter daily learning."
-                  date="2/3/2025"
-                />
-                
+                <div className="space-y-2">
+                  {recentBlogs.map((blog) => (
+                    <RecentArticle
+                      key={blog.id}
+                      title={blog.title}
+                      description={blog.excerpt}
+                      date={blog.date}
+                      onReadMore={() => selectBlog(blog.id)}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
-      {/* English Learning Insights Section */}
-      <div className="px-4 md:px-10 py-12 bg-blue-50">
-        <div className=" max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              English Learning Insights
-            </h2>
-            <div className="h-2 w-52 bg-black mx-auto"></div>
+      <div className="bg-blue-50 px-4 py-12 md:px-10">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 text-center">
+            <h2 className="mb-6 text-4xl font-bold text-gray-900 md:text-5xl">English Learning Insights</h2>
+            <div className="mx-auto h-2 w-52 bg-black" />
           </div>
 
-          {/* Articles Grid */}
-          <div className=" justify-items-center grid grid-cols-1 md:grid-cols-3 gap-2 mb-8">
-            <ArticleCard 
-              image={article1}
-              title="Why Do Many Learners Struggle with English Grammar — and How Can You Fix It?"
-              description="This guide simplifies common grammar challenges with clear explanations and relatable examples you can apply immediately."
-              authorName="English Kafe"
-              date="2/3/2025"
-            />
-            
-            <ArticleCard 
-              image={article2}
-              title="What Are Effective Ways to Remember and Use New English Vocabulary Daily?"
-              description="Discover memorization techniques and contextual practice methods that make new vocabulary easier to retain and use naturally."
-              authorName="English Kafe"
-              date="2/3/2025"
-            />
-            
-            <ArticleCard 
-              image={article3}
-              title="How Should You Prepare for IELTS to Achieve Better Results with Less Stress?"
-              description="Focused preparation strategies for exam success. Understand smart study approaches, time management, and skill-building techniques that boost confidence and..."
-              authorName="English Kafe"
-              date="2/3/2025"
-            />
-          </div>
-
-          {/* View More Button */}
-          <div className="flex justify-center">
-            <button className="bg-gray-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
-              View More
-            </button>
-          </div>
+          {insightBlogs.length ? (
+            <div className="mb-8 grid grid-cols-1 justify-items-center gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {insightBlogs.map((blog) => (
+                <ArticleCard
+                  key={blog.id}
+                  id={blog.id}
+                  image={blog.image}
+                  title={blog.title}
+                  description={blog.excerpt}
+                  authorName={blog.authorName}
+                  date={blog.date}
+                  onReadMore={selectBlog}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl bg-white p-10 text-center text-gray-600 shadow-sm">
+              More articles will appear here once blogs are published.
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Contact Section */}
       <ContactSection />
-
-      {/* Footer */}
       <Footer />
     </div>
-  )
+  );
 }
 
-export default Blog
-
+export default Blog;

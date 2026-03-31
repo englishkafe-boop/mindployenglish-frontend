@@ -1,6 +1,7 @@
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ArticleCard from "./ArticleCard";
+import { fetchBlogs } from "../services/blogService";
 
 function Article() {
   const navigate = useNavigate();
@@ -8,6 +9,39 @@ function Article() {
   const [isDown, setIsDown] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadArticles() {
+      try {
+        setIsLoading(true);
+        setError("");
+        const blogs = await fetchBlogs();
+
+        if (isMounted) {
+          setArticles(blogs.slice(0, 6));
+        }
+      } catch (loadError) {
+        if (isMounted) {
+          setError(loadError.message || "Failed to load articles");
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadArticles();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleMouseDown = (e) => {
     setIsDown(true);
@@ -101,89 +135,34 @@ function Article() {
             tabIndex={0}
             style={{ userSelect: "none", WebkitOverflowScrolling: "touch" }}
           >
-            <div
-              className="flex gap-10 sm:gap-10 md:gap-15"
-              style={{ minWidth: "min-content" }}
-            >
-              <div
-                className="shrink-0"
-                style={{ width: "280px", minWidth: "280px" }}
-              >
-                <ArticleCard
-                  image="/src/assets/articles/How Can You Build Confidence When Speaking English in Everyday Situations_.jpg"
-                  title="How Can You Build Confidence When Speaking English in Everyday Situations?"
-                  description="Practical techniques that help you communicate more naturally. Learn simple speaking habits, pronunciation tips, and ..."
-                  authorLogo="/Nav/EnglishkafeLogo-Transparent.png"
-                  authorName="English Kafe"
-                  date="2/3/2025"
-                />
+            {isLoading ? (
+              <div className="rounded-3xl bg-white px-6 py-8 text-center text-gray-600 shadow-sm">
+                Loading articles...
               </div>
-              <div
-                className="shrink-0"
-                style={{ width: "280px", minWidth: "280px" }}
-              >
-                <ArticleCard
-                  image="/src/assets/articles/Why Do Many Learners Struggle with English Grammar — and How Can You Fix It_.jpg"
-                  title="Why Do Many Learners Struggle with English Grammar — and How Can You Fix It?"
-                  description="This guide simplifies common grammar challenges with clear explanations and relatable examples you can apply immediately......"
-                  authorLogo="/Nav/EnglishkafeLogo-Transparent.png"
-                  authorName="English Kafe"
-                  date="5/3/2025"
-                />
+            ) : error ? (
+              <div className="rounded-3xl border border-red-200 bg-red-50 px-6 py-8 text-center text-red-700 shadow-sm">
+                {error}
               </div>
-              <div
-                className="shrink-0"
-                style={{ width: "280px", minWidth: "280px" }}
-              >
-                <ArticleCard
-                  image="/src/assets/articles/Effective Ways to Remember and Use New English Vocabulary Daily.jpg"
-                  title="What Are Effective Ways to Remember and Use New English Vocabulary Daily?"
-                  description="Discover memorization techniques and contextual practice methods that make new vocabulary easier to retain and use naturally......"
-                  authorLogo="/Nav/EnglishkafeLogo-Transparent.png"
-                  authorName="English Kafe"
-                  date="8/3/2025"
-                />
+            ) : articles.length === 0 ? (
+              <div className="rounded-3xl bg-white px-6 py-8 text-center text-gray-600 shadow-sm">
+                No articles available yet.
               </div>
-              <div
-                className="shrink-0"
-                style={{ width: "280px", minWidth: "280px" }}
-              >
-                <ArticleCard
-                  image="/src/assets/articles/How Should You Prepare for IELTS with Less Stress_.jpg"
-                  title="How Should You Prepare for IELTS to Achieve Better Results with Less Stress?"
-                  description="Focused preparation strategies for exam success.Understand smart study approaches, time management, and skill-building techniques that boost confidence and ...."
-                  authorLogo="/Nav/EnglishkafeLogo-Transparent.png"
-                  authorName="English Kafe"
-                  date="10/3/2025"
-                />
+            ) : (
+              <div className="flex gap-6 sm:gap-7 md:gap-8" style={{ minWidth: "min-content" }}>
+                {articles.map((article) => (
+                  <ArticleCard
+                    key={article.id}
+                    id={article.id}
+                    image={article.image}
+                    title={article.title}
+                    description={article.excerpt}
+                    authorLogo="/Nav/EnglishkafeLogo-Transparent.png"
+                    authorName={article.authorName}
+                    date={article.date}
+                  />
+                ))}
               </div>
-              <div
-                className="shrink-0"
-                style={{ width: "280px", minWidth: "280px" }}
-              >
-                <ArticleCard
-                  image="/src/assets/articles/How Can You Overcome Fear and Speak English More Comfortably_.jpg"
-                  title="How Can You Overcome Fear and Speak English More Comfortably?"
-                  description="Build confidence through guided mindset and speaking tips.Learn approachable techniques that reduce hesitation ..."
-                  authorLogo="/Nav/EnglishkafeLogo-Transparent.png"
-                  authorName="English Kafe"
-                  date="12/3/2025"
-                />
-              </div>
-              <div
-                className="shrink-0"
-                style={{ width: "280px", minWidth: "280px" }}
-              >
-                <ArticleCard
-                  image={`/src/assets/articles/What Daily Habits Help You Improve English Faster_".jpg`}
-                  title="What Daily Habits Help You Improve English Faster and More Consistently?"
-                  description="Create routines that support steady language growth.Explore realistic practice ideas that fit into your schedule and turn learning into a sustainable habit....."
-                  authorLogo="/Nav/EnglishkafeLogo-Transparent.png"
-                  authorName="English Kafe"
-                  date="15/3/2025"
-                />
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </section>

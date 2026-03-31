@@ -1,47 +1,74 @@
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import MyCourseCard from '../components/MyCourseCard'
-import { coursesData } from '../services/courseService'
+import { fetchMyEnrollments } from '../services/enrollmentService'
 
 function MyCourses() {
-  const navigate = useNavigate()
+  const [enrollments, setEnrollments] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  // For now, show all courses as "enrolled" 
-  // Later, this will show only user's purchased courses from backend
-  const enrolledCourses = coursesData.slice(0, 5)
+  useEffect(() => {
+    async function loadEnrollments() {
+      try {
+        setLoading(true)
+        setError('')
+        setEnrollments(await fetchMyEnrollments())
+      } catch (loadError) {
+        setError(loadError.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadEnrollments()
+  }, [])
 
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
 
-      {/* Header */}
       <div className="px-4 md:px-10 py-12 text-center bg-blue-50">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
           My Courses
         </h1>
       </div>
 
-      {/* Courses Grid */}
       <div className="px-4 md:px-10 py-16">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {enrolledCourses.map((course) => (
-              <MyCourseCard
-                key={course.id}
-                id={course.id}
-                image={course.image}
-                title={course.title}
-                description={course.description}
-                lessons={course.lessons}
-                buttonText="Learn Now"
-              />
-            ))}
-          </div>
+          {error ? (
+            <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          ) : null}
+
+          {loading ? (
+            <div className="rounded-lg bg-gray-50 px-4 py-10 text-center text-gray-500">
+              Loading enrolled courses...
+            </div>
+          ) : enrollments.length === 0 ? (
+            <div className="rounded-lg bg-gray-50 px-4 py-10 text-center text-gray-500">
+              You do not have any approved courses yet.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {enrollments.map((enrollment) => (
+                <MyCourseCard
+                  key={enrollment.id}
+                  id={enrollment.course?.id}
+                  image={enrollment.course?.image}
+                  title={enrollment.course?.title}
+                  description={enrollment.course?.description}
+                  lessons="Access available"
+                  buttonText="Learn Now"
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Footer */}
       <Footer />
     </div>
   )

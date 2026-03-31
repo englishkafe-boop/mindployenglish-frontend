@@ -39,6 +39,8 @@ function Service() {
             <img 
               src={coachImage} 
               alt="Personal English Coaching" 
+              loading="eager"
+              decoding="async"
               className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-lg shadow-lg"
             />
           </div>

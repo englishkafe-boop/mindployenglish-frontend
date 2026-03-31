@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function ServiceCard({ image, title, description, features, className }) {
+function ServiceCard({ image, title, description, features, className, imageLoading = 'lazy' }) {
   const [isFlipped, setIsFlipped] = useState(false)
 
   return (
@@ -34,6 +34,8 @@ function ServiceCard({ image, title, description, features, className }) {
           <img 
             src={image} 
             alt={title}
+            loading={imageLoading}
+            decoding="async"
             className="w-full h-full object-cover"
           />
           {/* Overlay */}
