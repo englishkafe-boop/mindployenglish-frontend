@@ -1,11 +1,13 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import { LayoutGrid, BookOpen, FileText, Users, CreditCard, LogOut, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
+import { useAuth } from '../contexts/AuthContext'
 
 function Sidebar() {
   const navigate = useNavigate()
   const location = useLocation()
   const [isOpen, setIsOpen] = useState(true)
+  const { logout } = useAuth()
 
   const isActive = (path) => {
     if (path === '/') {
@@ -15,12 +17,7 @@ function Sidebar() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('adminLoggedIn')
-    localStorage.removeItem('adminEmail')
-    localStorage.removeItem('adminName')
-    localStorage.removeItem('adminProfileImage')
-    // Trigger storage event
-    window.dispatchEvent(new Event('storage'))
+    logout()
     navigate('/login')
   }
 

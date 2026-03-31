@@ -1,32 +1,45 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 
 function AdminLogin() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const navigate = useNavigate()
+  const location = useLocation()
+  const { login, logout, isAuthenticated } = useAuth()
 
-  const handleLogin = (e) => {
+  const redirectTo = location.state?.from?.pathname || '/'
+
+  const handleLogin = async (e) => {
     e.preventDefault()
     setLoading(true)
+    setError('')
 
-    // Simulate API call
-    setTimeout(() => {
-      if (email && password) {
-        // Mock admin verification
-        localStorage.setItem('adminLoggedIn', 'true')
-        localStorage.setItem('adminEmail', email)
-        localStorage.setItem('adminName', email.split('@')[0])
-        localStorage.setItem('adminProfileImage', `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`)
-        // Trigger storage event for other components
-        window.dispatchEvent(new Event('storage'))
-        // Navigate to dashboard
-        navigate('/')
+    try {
+      const user = await login({ email, password })
+
+      if (user.role !== 'admin') {
+        logout()
+        setError('This account does not have admin access.')
+        return
       }
+
+      navigate(redirectTo, { replace: true })
+    } catch (loginError) {
+      setError(loginError.message)
+    } finally {
       setLoading(false)
-    }, 1000)
+    }
   }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(redirectTo, { replace: true })
+    }
+  }, [isAuthenticated, navigate, redirectTo])
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-3 sm:px-4 py-6 sm:py-8">
@@ -64,6 +77,12 @@ function AdminLogin() {
           </p>
 
           <form onSubmit={handleLogin} className="space-y-4 sm:space-y-6">
+            {error ? (
+              <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {error}
+              </div>
+            ) : null}
+
             {/* Email Input */}
             <div>
               <label className="block text-gray-700 font-semibold text-sm sm:text-base mb-1.5 sm:mb-2">
@@ -111,13 +130,6 @@ function AdminLogin() {
               {loading ? 'Logging in...' : 'Login'}
             </button>
           </form>
-
-          {/* Demo Info */}
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <p className="text-xs sm:text-sm text-gray-700 font-semibold mb-2">Demo Credentials:</p>
-            <p className="text-xs text-gray-600">Email: admin@example.com</p>
-            <p className="text-xs text-gray-600">Password: (any value)</p>
-          </div>
         </div>
       </div>
     </div>

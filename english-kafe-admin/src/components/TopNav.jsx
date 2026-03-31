@@ -1,20 +1,17 @@
 import { useNavigate } from 'react-router-dom'
 import { User, LogOut } from 'lucide-react'
 import { useState } from 'react'
+import { useAuth } from '../contexts/AuthContext'
 
 function TopNav() {
   const navigate = useNavigate()
   const [showProfile, setShowProfile] = useState(false)
-  const adminEmail = localStorage.getItem('adminEmail') || 'admin@example.com'
-  const adminName = localStorage.getItem('adminName') || 'Admin'
+  const { user, logout } = useAuth()
+  const adminEmail = user?.email || 'admin@example.com'
+  const adminName = user?.name || 'Admin'
 
   const handleLogout = () => {
-    localStorage.removeItem('adminLoggedIn')
-    localStorage.removeItem('adminEmail')
-    localStorage.removeItem('adminName')
-    localStorage.removeItem('adminProfileImage')
-    // Trigger storage event
-    window.dispatchEvent(new Event('storage'))
+    logout()
     navigate('/login')
   }
 
