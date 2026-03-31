@@ -45,10 +45,6 @@ function EditBlog() {
           imageFile: null,
         });
         setIsEditorEmpty(!data.content.replace(/<[^>]*>/g, "").trim());
-
-        if (contentRef.current) {
-          contentRef.current.innerHTML = data.content || "Start writing...";
-        }
       } catch (loadError) {
         if (isMounted) {
           setError(loadError.message || "Failed to load blog");
@@ -66,6 +62,18 @@ function EditBlog() {
       isMounted = false;
     };
   }, [id]);
+
+  useEffect(() => {
+    if (!contentRef.current) {
+      return;
+    }
+
+    const nextContent = formData.content || "Start writing...";
+
+    if (contentRef.current.innerHTML !== nextContent) {
+      contentRef.current.innerHTML = nextContent;
+    }
+  }, [formData.content]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
