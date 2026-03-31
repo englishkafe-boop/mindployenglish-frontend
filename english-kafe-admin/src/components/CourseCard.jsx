@@ -3,75 +3,85 @@ import { useNavigate } from 'react-router-dom'
 
 function CourseCard({ course, onEdit, onDelete }) {
   const navigate = useNavigate()
+  const image = course.image || 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&h=700&fit=crop'
 
   const handleAddLesson = () => {
     navigate(`/courses/${course.id}`)
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="flex flex-col md:flex-row md:items-start gap-4 p-4">
-        {/* Course Image - Left Side */}
-        <div className="w-full md:w-40 lg:w-52 h-40 md:h-36 lg:h-44 shrink-0 rounded-lg overflow-hidden">
-          <img
-            src={course.image}
-            alt={course.title}
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-          />
+    <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg">
+      <div className="h-48 w-full overflow-hidden bg-gray-100">
+        <img
+          src={image}
+          alt={course.title}
+          className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+        />
+      </div>
+
+      <div className="flex min-h-[20rem] flex-col p-4 sm:p-5">
+        <div className="mb-3 ">
+          <span
+            className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+              course.isPublished
+                ? 'bg-emerald-100 text-emerald-700'
+                : 'bg-amber-100 text-amber-700'
+            }`}
+          >
+            {course.isPublished ? 'Published' : 'Draft'}
+          </span>
         </div>
 
-        {/* Course Info - Right Side */}
-        <div className="flex-1 flex flex-col">
-          {/* Category Badge (using title as label) */}
-          <div className="inline-block bg-blue-200 text-blue-900 text-xs font-bold px-3 py-1 rounded-full mb-3 w-fit">
-            {course.title.length > 18 ? course.title.substring(0, 18) + '...' : course.title}
+        <h3 className="mb-2 line-clamp-2 text-lg font-bold text-gray-900">{course.title}</h3>
+
+        <p className="mb-4 line-clamp-3 text-sm leading-6 text-gray-600">
+          {course.description || 'No course description yet.'}
+        </p>
+
+        <div className="mb-4 flex flex-wrap items-center gap-2 text-sm text-gray-600">
+          <span className="text-lg font-bold text-gray-900">{course.price}</span>
+          <span className="rounded-full bg-gray-100 px-3 py-1 font-medium">
+            {course.lessons} lessons
+          </span>
+        </div>
+
+        <div className="mb-5 flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                size={13}
+                className={i < Math.floor(course.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
+              />
+            ))}
           </div>
+          <span className="text-sm text-gray-600">({course.rating})</span>
+        </div>
 
-          {/* Description */}
-          <p className="text-xs md:text-sm text-gray-900 mb-3 line-clamp-2">
-            {course.description}
-          </p>
+        <div className="mt-auto space-y-2">
+          <button
+            onClick={handleAddLesson}
+            className="w-full rounded-xl bg-pink-300 px-4 py-2.5 text-sm font-semibold text-gray-800 transition-colors hover:bg-pink-400"
+          >
+            Add Lesson
+          </button>
 
-          {/* Price */}
-          <p className="text-base md:text-lg font-bold text-gray-900 mb-4">
-            {course.price}
-          </p>
-
-          {/* Rating */}
-          <div className="flex items-center gap-2 mb-4">
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  size={13}
-                  className={i < Math.floor(course.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
-                />
-              ))}
-            </div>
-            <span className="text-xs md:text-sm text-gray-600">({course.reviews})</span>
-          </div>
-
-          {/* Action Buttons - Full Width on Mobile, Normal on Tablet+ */}
-          <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 md:flex-wrap">
-            <button
-              onClick={handleAddLesson}
-              className="flex items-center justify-center gap-2 bg-pink-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-pink-400 transition-colors font-medium text-sm w-full md:w-auto"
-            >
-              Add Lesson
-            </button>
+          <div className="flex items-center gap-2">
             <button
               onClick={() => onEdit(course.id)}
-              className="flex items-center justify-center bg-gray-100 text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition-colors shrink-0"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
               title="Edit course"
             >
               <Edit2 size={16} />
+              Edit
             </button>
             <button
               onClick={() => onDelete(course.id)}
-              className="flex items-center justify-center bg-gray-200 text-gray-700 p-2 rounded-lg hover:bg-gray-300 transition-colors shrink-0"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
               title="Delete course"
             >
               <Trash2 size={16} />
+              Delete
             </button>
           </div>
         </div>

@@ -3,6 +3,19 @@ import { clearToken, getToken } from "./tokenStorage";
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:3000";
 
+function getFriendlyErrorMessage(status, backendMessage) {
+  if (
+    status === 401 &&
+    ["Token has expired", "Invalid token", "User is not authorized!"].includes(
+      backendMessage
+    )
+  ) {
+    return "Your session expired. Please log in again.";
+  }
+
+  return backendMessage || "Something went wrong";
+}
+
 async function request(path, options = {}) {
   const token = getToken();
   const headers = new Headers(options.headers || {});
@@ -27,7 +40,7 @@ async function request(path, options = {}) {
       clearToken();
     }
 
-    const message = data?.message || "Something went wrong";
+    const message = getFriendlyErrorMessage(response.status, data?.message);
     const error = new Error(message);
     error.status = response.status;
     error.data = data;
@@ -47,6 +60,11 @@ export const apiClient = {
   put: (path, body) =>
     request(path, {
       method: "PUT",
+      body: body instanceof FormData ? body : JSON.stringify(body),
+    }),
+  patch: (path, body) =>
+    request(path, {
+      method: "PATCH",
       body: body instanceof FormData ? body : JSON.stringify(body),
     }),
   delete: (path) =>

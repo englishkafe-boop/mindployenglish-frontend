@@ -1,49 +1,100 @@
-import { BookOpen, FileText, Users, CreditCard, Edit, Trash2, Eye } from 'lucide-react'
+import { BookOpen, FileText, Users, CreditCard, Trash2, Eye } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { fetchCourses } from '../services/courseService'
+import { fetchAllPayments } from '../services/paymentService'
+import { fetchUsers, deleteUser } from '../services/userService'
+import { apiClient } from '../api/client'
 
 function Dashboard() {
-  const stats = [
-    { 
-      label: 'Course', 
-      value: '12', 
-      icon: BookOpen,
-      lastUpdated: 'Last created: 20 days ago'
-    },
-    { 
-      label: 'Blog', 
-      value: '16', 
-      icon: FileText,
-      lastUpdated: 'Last created: 2 days ago'
-    },
-    { 
-      label: 'User', 
-      value: '74', 
-      icon: Users,
-      lastUpdated: 'Last joined: 20 days ago'
-    },
-    { 
-      label: 'Payment', 
-      value: '33', 
-      icon: CreditCard,
-      lastUpdated: 'Last Reviewed: 20 days ago'
-    },
-  ]
+  const [stats, setStats] = useState([])
+  const [recentUsers, setRecentUsers] = useState([])
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true)
 
-  const recentUsers = [
-    { id: 1, name: 'Alex James', email: 'alexjames123@gmail.com', dateCreated: '21 Mar 2026', purchasedCourse: 'N/A' },
-    { id: 2, name: 'Adrian', email: 'adrian884@gmail.com', dateCreated: '21 Mar 2026', purchasedCourse: 'N/A' },
-    { id: 3, name: 'Sophia', email: 'sophia663@gmail.com', dateCreated: '22 Mar 2026', purchasedCourse: 'N/A' },
-    { id: 4, name: 'Olivia', email: 'olivia333@gmail.com', dateCreated: '23 Mar 2026', purchasedCourse: 'N/A' },
-    { id: 5, name: 'Daniel', email: 'daniel89@gmail.com', dateCreated: '28 Mar 2026', purchasedCourse: 'N/A' },
-  ]
+  useEffect(() => {
+    async function loadDashboard() {
+      try {
+        setLoading(true)
+        setError('')
+
+        const [courses, blogs, users, payments] = await Promise.all([
+          fetchCourses(),
+          apiClient.get('/blogs'),
+          fetchUsers(),
+          fetchAllPayments(),
+        ])
+
+        const latestCourse = courses[0]
+        const latestBlog = blogs[0]
+        const latestUser = users[0]
+        const latestPayment = payments[0]
+
+        setStats([
+          {
+            label: 'Course',
+            value: String(courses.length),
+            icon: BookOpen,
+            lastUpdated: latestCourse ? `Last created: ${latestCourse.title}` : 'No courses yet'
+          },
+          {
+            label: 'Blog',
+            value: String(blogs.length),
+            icon: FileText,
+            lastUpdated: latestBlog ? `Last created: ${latestBlog.title}` : 'No blogs yet'
+          },
+          {
+            label: 'User',
+            value: String(users.length),
+            icon: Users,
+            lastUpdated: latestUser ? `Last joined: ${latestUser.name}` : 'No users yet'
+          },
+          {
+            label: 'Payment',
+            value: String(payments.length),
+            icon: CreditCard,
+            lastUpdated: latestPayment ? `Last reviewed: ${latestPayment.courseName}` : 'No payments yet'
+          },
+        ])
+
+        setRecentUsers(users.slice(0, 5))
+      } catch (loadError) {
+        setError(loadError.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadDashboard()
+  }, [])
+
+  const handleDeleteUser = async (userId) => {
+    try {
+      await deleteUser(userId)
+      setRecentUsers((currentUsers) => currentUsers.filter((user) => user.id !== userId))
+      setStats((currentStats) =>
+        currentStats.map((stat) =>
+          stat.label === 'User'
+            ? { ...stat, value: String(Math.max(0, Number(stat.value) - 1)) }
+            : stat
+        )
+      )
+    } catch (deleteError) {
+      setError(deleteError.message)
+    }
+  }
 
   return (
     <div className="p-4 sm:p-6 md:p-8 bg-gray-50 min-h-screen">
-      {/* Header */}
       <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 md:mb-8">English kafe Administration Dashboard</h1>
 
-      {/* Stats Grid */}
+      {error ? (
+        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </div>
+      ) : null}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mb-6 md:mb-8">
-        {stats.map((stat, index) => {
+        {(loading ? [] : stats).map((stat, index) => {
           const Icon = stat.icon
           return (
             <div key={index} className="bg-pink-100 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
@@ -58,15 +109,19 @@ function Dashboard() {
             </div>
           )
         })}
+
+        {loading ? (
+          <div className="col-span-full rounded-xl bg-white p-8 text-center text-gray-500 shadow-sm">
+            Loading dashboard...
+          </div>
+        ) : null}
       </div>
 
-      {/* Recent Joined Section */}
       <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm overflow-hidden">
         <div className="px-4 sm:px-6 py-3 sm:py-4 bg-pink-100 border-b border-pink-200">
           <h2 className="text-lg sm:text-xl font-bold text-gray-900">Recent Joined:</h2>
         </div>
 
-        {/* Table - Responsive */}
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -83,27 +138,45 @@ function Dashboard() {
                 <tr key={user.id} className={`border-b border-gray-200 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-pink-50 transition-colors`}>
                   <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
                     <div className="flex items-center gap-2 sm:gap-3">
-                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-pink-400 to-rose-400 flex items-center justify-center text-white text-xs sm:text-sm font-semibold shrink-0">
-                        {user.name.charAt(0)}
-                      </div>
+                      <img
+                        src={user.avatar}
+                        alt={user.name}
+                        className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover shrink-0"
+                      />
                       <span className="text-xs sm:text-sm font-medium text-gray-900 truncate">{user.name}</span>
                     </div>
                   </td>
                   <td className="hidden sm:table-cell px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-600 truncate">{user.email}</td>
                   <td className="hidden md:table-cell px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-600">{user.dateCreated}</td>
-                  <td className="hidden lg:table-cell px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-600">{user.purchasedCourse}</td>
+                  <td className="hidden lg:table-cell px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-600">
+                    {user.purchasedCourses.length > 0
+                      ? user.purchasedCourses.map((course) => course.title).join(', ')
+                      : 'N/A'}
+                  </td>
                   <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
                     <div className="flex items-center gap-1 sm:gap-2">
                       <button className="p-1.5 sm:p-2 hover:bg-blue-50 rounded-lg transition-colors" title="View user">
                         <Eye size={16} className="sm:w-[18px] sm:h-[18px] text-gray-600" />
                       </button>
-                      <button className="p-1.5 sm:p-2 hover:bg-red-50 rounded-lg transition-colors" title="Delete user">
+                      <button
+                        onClick={() => handleDeleteUser(user.id)}
+                        className="p-1.5 sm:p-2 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Delete user"
+                      >
                         <Trash2 size={16} className="sm:w-[18px] sm:h-[18px] text-red-600" />
                       </button>
                     </div>
                   </td>
                 </tr>
               ))}
+
+              {!loading && recentUsers.length === 0 ? (
+                <tr>
+                  <td colSpan="5" className="px-6 py-8 text-center text-sm text-gray-500">
+                    No users found.
+                  </td>
+                </tr>
+              ) : null}
             </tbody>
           </table>
         </div>

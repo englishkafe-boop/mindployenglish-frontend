@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 function BlogCard({ blog, onDelete, onEdit }) {
   const navigate = useNavigate()
+  const image = blog.image || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&h=600&fit=crop'
 
   const handleEdit = () => {
     navigate(`/blog/edit/${blog.id}`)
@@ -17,7 +18,7 @@ function BlogCard({ blog, onDelete, onEdit }) {
       {/* Blog Image */}
       <div className="relative w-full h-32 sm:h-40 overflow-hidden bg-gray-200">
         <img
-          src={blog.image}
+          src={image}
           alt={blog.title}
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
         />
