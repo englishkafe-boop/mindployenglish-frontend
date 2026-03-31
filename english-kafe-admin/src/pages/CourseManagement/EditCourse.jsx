@@ -1,6 +1,7 @@
 import { ArrowLeft, Upload, Star, X } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { fetchCourseById, updateCourse } from '../../services/courseService'
 
 function EditCourse() {
   const navigate = useNavigate()
@@ -11,154 +12,108 @@ function EditCourse() {
     price: '',
     rating: 4,
     learnings: [''],
-    image: null,
+    image: '',
+    imageFile: null,
+    isPublished: false,
   })
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    // Load course data from localStorage or default courses
-    const allCourses = getAllCourses()
-    const course = allCourses.find(c => c.id === parseInt(id))
-    
-    if (course) {
-      setFormData({
-        title: course.title,
-        description: course.description,
-        price: course.price.replace(' บาท', ''),
-        rating: course.rating,
-        learnings: course.learnings || [''],
-        image: course.image,
-      })
+    async function loadCourse() {
+      try {
+        setLoading(true)
+        setError('')
+        const course = await fetchCourseById(id)
+
+        setFormData({
+          title: course.title,
+          description: course.description,
+          price: String(course.priceValue),
+          rating: course.rating,
+          learnings: course.learnings.length ? course.learnings : [''],
+          image: course.image,
+          imageFile: null,
+          isPublished: course.isPublished,
+        })
+      } catch (loadError) {
+        setError(loadError.message)
+      } finally {
+        setLoading(false)
+      }
     }
-    setLoading(false)
+
+    loadCourse()
   }, [id])
 
-  const getAllCourses = () => {
-    const defaultCourses = [
-      {
-        id: 1,
-        title: 'IELTS SPEAKING',
-        description: 'Build confidence with guided speaking practice and real exam-style questions',
-        price: '3000 บาท',
-        rating: 4.5,
-        reviews: 141,
-      },
-      {
-        id: 2,
-        title: 'IELTS WRITING',
-        description: 'Clear structure, grammar guidance, and scarring strategies for stronger essays',
-        price: '3000 บาท',
-        rating: 4.5,
-        reviews: 141,
-      },
-      {
-        id: 3,
-        title: 'GRAMMAR ESSENTIAL',
-        description: 'Understand grammar simply and apply it confidently in speaking and writing',
-        price: '2500 บาท',
-        rating: 4.5,
-        reviews: 141,
-      },
-      {
-        id: 4,
-        title: 'DAILY ENGLISH',
-        description: 'Improve your daily English communication skills with practical lessons',
-        price: '2000 บาท',
-        rating: 4.5,
-        reviews: 125,
-      },
-      {
-        id: 5,
-        title: 'MASTER COMMUNICATION',
-        description: 'Master communication techniques and become a confident speaker',
-        price: '2800 บาท',
-        rating: 4.5,
-        reviews: 156,
-      },
-    ]
-
-    const savedCourses = localStorage.getItem('courses')
-    const parsedCourses = savedCourses ? JSON.parse(savedCourses) : []
-    return [...defaultCourses, ...parsedCourses]
-  }
-
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+    const { name, value, type, checked } = e.target
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }))
   }
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setFormData(prev => ({
-          ...prev,
-          image: reader.result
-        }))
-      }
-      reader.readAsDataURL(file)
+    if (!file) {
+      return
     }
+
+    const previewUrl = URL.createObjectURL(file)
+    setFormData((prev) => ({
+      ...prev,
+      image: previewUrl,
+      imageFile: file
+    }))
   }
 
   const handleLearningChange = (index, value) => {
     const newLearnings = [...formData.learnings]
     newLearnings[index] = value
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       learnings: newLearnings
     }))
   }
 
   const addLearning = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       learnings: [...prev.learnings, '']
     }))
   }
 
   const removeLearning = (index) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       learnings: prev.learnings.filter((_, i) => i !== index)
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    
-    // Validate form
+
     if (!formData.title || !formData.price) {
-      alert('Please fill in all required fields')
+      setError('Please fill in all required fields.')
       return
     }
 
-    // Get all courses
-    let allCourses = getAllCourses()
-    const courseIndex = allCourses.findIndex(c => c.id === parseInt(id))
+    try {
+      setSaving(true)
+      setError('')
 
-    if (courseIndex !== -1) {
-      // Update the course
-      allCourses[courseIndex] = {
-        ...allCourses[courseIndex],
-        title: formData.title,
-        description: formData.description,
-        price: formData.price + ' บาท',
-        rating: parseFloat(formData.rating),
-        image: formData.image,
-        learnings: formData.learnings.filter(l => l.trim())
-      }
-
-      // Save to localStorage (only non-default courses)
-      const savedCourses = allCourses.filter(c => c.id > 5)
-      if (savedCourses.length > 0) {
-        localStorage.setItem('courses', JSON.stringify(savedCourses))
-      }
+      await updateCourse(id, {
+        ...formData,
+        price: Number(formData.price),
+      })
 
       navigate('/courses')
+    } catch (submitError) {
+      setError(submitError.message)
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -168,7 +123,6 @@ function EditCourse() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-white border-b border-gray-200 px-8 py-6">
         <div className="flex items-center justify-between">
           <button
@@ -181,17 +135,16 @@ function EditCourse() {
           <h1 className="text-3xl font-bold text-gray-900 flex-1 text-center">Edit Course</h1>
           <button
             onClick={handleSubmit}
-            className="flex items-center gap-2 bg-pink-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-pink-400 transition-colors font-medium"
+            disabled={saving}
+            className="flex items-center gap-2 bg-pink-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-pink-400 transition-colors font-medium disabled:opacity-60"
           >
-            Update
+            {saving ? 'Updating...' : 'Update'}
           </button>
         </div>
       </div>
 
-      {/* Form Content */}
       <div className="p-8">
         <form onSubmit={handleSubmit} className="grid grid-cols-3 gap-8">
-          {/* Left Column - Image Upload */}
           <div className="col-span-1">
             <label className="block text-sm font-semibold text-gray-900 mb-3">
               Upload course image:
@@ -224,9 +177,13 @@ function EditCourse() {
             </div>
           </div>
 
-          {/* Right Column - Form Fields */}
           <div className="col-span-2 space-y-6">
-            {/* Course Title */}
+            {error ? (
+              <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {error}
+              </div>
+            ) : null}
+
             <div>
               <label className="block text-sm font-semibold text-gray-900 mb-2">
                 Course Title
@@ -241,7 +198,6 @@ function EditCourse() {
               />
             </div>
 
-            {/* Course Description */}
             <div>
               <label className="block text-sm font-semibold text-gray-900 mb-2">
                 Course description
@@ -256,9 +212,7 @@ function EditCourse() {
               />
             </div>
 
-            {/* Price and Rating Row */}
             <div className="grid grid-cols-2 gap-4">
-              {/* Set Price */}
               <div>
                 <label className="block text-sm font-semibold text-gray-900 mb-2">
                   Set price
@@ -276,7 +230,6 @@ function EditCourse() {
                 </div>
               </div>
 
-              {/* Set Rating */}
               <div>
                 <label className="block text-sm font-semibold text-gray-900 mb-2">
                   Set rating
@@ -306,7 +259,17 @@ function EditCourse() {
               </div>
             </div>
 
-            {/* What you'll learn */}
+            <label className="flex items-center gap-3 text-sm text-gray-700">
+              <input
+                type="checkbox"
+                name="isPublished"
+                checked={formData.isPublished}
+                onChange={handleInputChange}
+                className="h-4 w-4 rounded border-gray-300 text-pink-400 focus:ring-pink-300"
+              />
+              Publish this course to the student frontend
+            </label>
+
             <div>
               <label className="block text-sm font-semibold text-gray-900 mb-2">
                 What you'll learn
@@ -321,14 +284,16 @@ function EditCourse() {
                       placeholder="what students will get from this course"
                       className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300"
                     />
-                    <button
-                      type="button"
-                      onClick={() => removeLearning(index)}
-                      className="flex items-center justify-center bg-gray-200 text-gray-700 p-2 rounded-lg hover:bg-gray-300 transition-colors"
-                      title="Remove"
-                    >
-                      <X size={18} />
-                    </button>
+                    {formData.learnings.length > 1 ? (
+                      <button
+                        type="button"
+                        onClick={() => removeLearning(index)}
+                        className="flex items-center justify-center bg-gray-200 text-gray-700 p-2 rounded-lg hover:bg-gray-300 transition-colors"
+                        title="Remove"
+                      >
+                        <X size={18} />
+                      </button>
+                    ) : null}
                   </div>
                 ))}
                 <button

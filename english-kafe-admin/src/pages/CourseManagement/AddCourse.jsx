@@ -1,6 +1,7 @@
 import { ArrowLeft, Upload, Star } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { createCourse } from '../../services/courseService'
 
 function AddCourse() {
   const navigate = useNavigate()
@@ -10,92 +11,87 @@ function AddCourse() {
     price: '',
     rating: 4,
     learnings: [''],
-    image: null,
+    image: '',
+    imageFile: null,
+    isPublished: false,
   })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+    const { name, value, type, checked } = e.target
+
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }))
   }
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setFormData(prev => ({
-          ...prev,
-          image: reader.result
-        }))
-      }
-      reader.readAsDataURL(file)
+    if (!file) {
+      return
     }
+
+    const previewUrl = URL.createObjectURL(file)
+
+    setFormData((prev) => ({
+      ...prev,
+      image: previewUrl,
+      imageFile: file
+    }))
   }
 
   const handleLearningChange = (index, value) => {
     const newLearnings = [...formData.learnings]
     newLearnings[index] = value
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       learnings: newLearnings
     }))
   }
 
   const addLearning = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       learnings: [...prev.learnings, '']
     }))
   }
 
   const removeLearning = (index) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       learnings: prev.learnings.filter((_, i) => i !== index)
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    
-    // Validate form
-    if (!formData.title || !formData.price || !formData.image) {
-      alert('Please fill in all required fields (title, price, and image)')
+
+    if (!formData.title || !formData.price || !formData.imageFile) {
+      setError('Please fill in all required fields: title, price, and image.')
       return
     }
 
-    // Get existing courses from localStorage
-    const existingCourses = JSON.parse(localStorage.getItem('courses')) || []
-    
-    // Create new course object
-    const newCourse = {
-      id: Date.now(),
-      title: formData.title,
-      description: formData.description,
-      price: formData.price + ' บาท',
-      rating: parseFloat(formData.rating),
-      reviews: 0,
-      category: 'NEW COURSE',
-      image: formData.image,
-      learnings: formData.learnings.filter(l => l.trim())
-    }
+    try {
+      setLoading(true)
+      setError('')
 
-    // Add new course to the list
-    const updatedCourses = [...existingCourses, newCourse]
-    
-    // Save to localStorage
-    localStorage.setItem('courses', JSON.stringify(updatedCourses))
-    
-    // Navigate back to courses
-    navigate('/courses')
+      await createCourse({
+        ...formData,
+        price: Number(formData.price),
+      })
+
+      navigate('/courses')
+    } catch (submitError) {
+      setError(submitError.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 sm:px-6 md:px-8 py-4 sm:py-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
           <button
@@ -108,17 +104,16 @@ function AddCourse() {
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 flex-1 text-center">Add Course</h1>
           <button
             onClick={handleSubmit}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-pink-300 text-gray-800 px-4 sm:px-6 py-2 rounded-lg hover:bg-pink-400 transition-colors font-medium text-sm sm:text-base"
+            disabled={loading}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-pink-300 text-gray-800 px-4 sm:px-6 py-2 rounded-lg hover:bg-pink-400 transition-colors font-medium text-sm sm:text-base disabled:opacity-60"
           >
-            Create
+            {loading ? 'Creating...' : 'Create'}
           </button>
         </div>
       </div>
 
-      {/* Form Content */}
       <div className="p-4 sm:p-6 md:p-8">
         <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-          {/* Left Column - Image Upload */}
           <div className="col-span-1">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900 mb-3">
               Upload course image:
@@ -145,9 +140,13 @@ function AddCourse() {
             </div>
           </div>
 
-          {/* Right Column - Form Fields */}
           <div className="col-span-1 lg:col-span-2 space-y-4 sm:space-y-6">
-            {/* Course Title */}
+            {error ? (
+              <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {error}
+              </div>
+            ) : null}
+
             <div>
               <label className="block text-xs sm:text-sm font-semibold text-gray-900 mb-2">
                 Course Title
@@ -162,7 +161,6 @@ function AddCourse() {
               />
             </div>
 
-            {/* Course Description */}
             <div>
               <label className="block text-xs sm:text-sm font-semibold text-gray-900 mb-2">
                 Course description
@@ -177,9 +175,7 @@ function AddCourse() {
               />
             </div>
 
-            {/* Price and Rating Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              {/* Set Price */}
               <div>
                 <label className="block text-xs sm:text-sm font-semibold text-gray-900 mb-2">
                   Set price
@@ -197,7 +193,6 @@ function AddCourse() {
                 </div>
               </div>
 
-              {/* Set Rating */}
               <div>
                 <label className="block text-xs sm:text-sm font-semibold text-gray-900 mb-2">
                   Set rating
@@ -227,7 +222,17 @@ function AddCourse() {
               </div>
             </div>
 
-            {/* What you'll learn */}
+            <label className="flex items-center gap-3 text-sm text-gray-700">
+              <input
+                type="checkbox"
+                name="isPublished"
+                checked={formData.isPublished}
+                onChange={handleInputChange}
+                className="h-4 w-4 rounded border-gray-300 text-pink-400 focus:ring-pink-300"
+              />
+              Publish this course to the student frontend
+            </label>
+
             <div>
               <label className="block text-xs sm:text-sm font-semibold text-gray-900 mb-2">
                 What you'll learn

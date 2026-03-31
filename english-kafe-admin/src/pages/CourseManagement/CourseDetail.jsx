@@ -2,6 +2,7 @@ import { ArrowLeft, Plus, Trash2, Edit2 } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import ConfirmationModal from '../../components/ConfirmationModal'
+import { fetchCourseById } from '../../services/courseService'
 
 function CourseDetail() {
   const navigate = useNavigate()
@@ -13,117 +14,21 @@ function CourseDetail() {
   const [lessonToDelete, setLessonToDelete] = useState(null)
   const [learnings, setLearnings] = useState([])
 
-  // Default courses
-  const defaultCourses = [
-    {
-      id: 1,
-      title: 'IELTS SPEAKING',
-      description: 'Build confidence with guided speaking practice and real exam-style questions',
-      price: '3000 บาท',
-      rating: 4.5,
-      reviews: 141,
-      image: new URL('../../assets/images/IELTS speaking.jpg', import.meta.url).href,
-      learnings: [
-        'Master the format of the IELTS Speaking exam',
-        'Deliver structured, confident responses in all 3parts',
-        'Use linking phrases for natural flow',
-        'Expand topic-specific vocabulary',
-        'Practice with realistic mock questions',
-        'Learn examiner expectations and scoring criteria'
-      ]
-    },
-    {
-      id: 2,
-      title: 'IELTS WRITING',
-      description: 'Clear structure, grammar guidance, and scarring strategies for stronger essays',
-      price: '3000 บาท',
-      rating: 4.5,
-      reviews: 141,
-      image: new URL('../../assets/images/ielts writing.jpg', import.meta.url).href,
-      learnings: [
-        'Master essay structure and organization',
-        'Develop strong grammatical accuracy',
-        'Learn scoring strategies',
-        'Practice with real exam questions',
-        'Get feedback on your writing',
-        'Improve time management'
-      ]
-    },
-    {
-      id: 3,
-      title: 'GRAMMAR ESSENTIAL',
-      description: 'Understand grammar simply and apply it confidently in speaking and writing',
-      price: '2500 บาท',
-      rating: 4.5,
-      reviews: 141,
-      image: new URL('../../assets/images/grammer.jpg', import.meta.url).href,
-      learnings: [
-        'Master fundamental grammar rules',
-        'Apply grammar in real conversations',
-        'Understand complex sentence structures',
-        'Improve writing accuracy',
-        'Build confidence in speaking',
-        'Practice with interactive exercises'
-      ]
-    },
-    {
-      id: 4,
-      title: 'DAILY ENGLISH',
-      description: 'Improve your daily English communication skills with practical lessons',
-      price: '2000 บาท',
-      rating: 4.5,
-      reviews: 125,
-      image: new URL('../../assets/images/daily english.jpg', import.meta.url).href,
-      learnings: [
-        'Learn everyday conversation phrases',
-        'Master common expressions',
-        'Improve listening skills',
-        'Practice speaking naturally',
-        'Build practical vocabulary',
-        'Gain confidence in social situations'
-      ]
-    },
-    {
-      id: 5,
-      title: 'MASTER COMMUNICATION',
-      description: 'Master communication techniques and become a confident speaker',
-      price: '2800 บาท',
-      rating: 4.5,
-      reviews: 156,
-      image: new URL('../../assets/images/master communation.jpg', import.meta.url).href,
-      learnings: [
-        'Master advanced communication techniques',
-        'Build presentation skills',
-        'Learn persuasive speaking',
-        'Understand non-verbal communication',
-        'Practice business English',
-        'Become a confident public speaker'
-      ]
-    },
-  ]
-
-  // Load course and lessons on mount
   useEffect(() => {
-    const courseId = parseInt(id)
-    
-    // Try to find in default courses
-    let foundCourse = defaultCourses.find(c => c.id === courseId)
-    
-    // If not found, try in custom courses from localStorage
-    if (!foundCourse) {
-      const customCourses = JSON.parse(localStorage.getItem('courses')) || []
-      foundCourse = customCourses.find(c => c.id === courseId)
-    }
-    
-    if (foundCourse) {
-      setCourse(foundCourse)
-      setLearnings(foundCourse.learnings || [])
-      
-      // Load lessons from localStorage
+    async function loadCourse() {
+      const foundCourse = await fetchCourseById(id).catch(() => null)
+
+      if (foundCourse) {
+        setCourse(foundCourse)
+        setLearnings(foundCourse.learnings || [])
+      }
+
       const allLessons = JSON.parse(localStorage.getItem('lessons')) || []
-      const courseLessons = allLessons.filter(lesson => lesson.courseId === courseId)
+      const courseLessons = allLessons.filter(lesson => String(lesson.courseId) === String(id))
       setLessons(courseLessons)
     }
+
+    loadCourse()
   }, [id])
 
   const handleAddLesson = () => {
@@ -208,6 +113,9 @@ function CourseDetail() {
                 <h2 className="text-xl font-bold text-gray-900 mb-2">{course.title}</h2>
                 <p className="text-sm text-gray-600 mb-4">{course.description}</p>
                 <p className="text-lg font-bold text-gray-900 mb-6">{course.price}</p>
+                <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                  {course.isPublished ? 'Published on frontend' : 'Hidden from frontend'}
+                </p>
 
                 {/* What you'll learn section */}
                 {learnings.length > 0 && (

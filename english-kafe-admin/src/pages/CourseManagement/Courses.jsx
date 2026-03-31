@@ -1,76 +1,33 @@
 import { Plus } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import CourseCard from '../../components/CourseCard'
 import ConfirmationModal from '../../components/ConfirmationModal'
-import IeltsSpaking from '../../assets/images/IELTS speaking.jpg'
-import IeltsWriting from '../../assets/images/ielts writing.jpg'
-import Grammar from '../../assets/images/grammer.jpg'
-import DailyEnglish from '../../assets/images/daily english.jpg'
-import MasterCommunication from '../../assets/images/master communation.jpg'
+import { deleteCourse, fetchCourses } from '../../services/courseService'
 
 function Courses() {
   const navigate = useNavigate()
-  
-  const defaultCourses = [
-    {
-      id: 1,
-      title: 'IELTS SPEAKING',
-      description: 'Build confidence with guided speaking practice and real exam-style questions',
-      price: '3000 บาท',
-      rating: 4.5,
-      reviews: 141,
-      image: IeltsSpaking,
-    },
-    {
-      id: 2,
-      title: 'IELTS WRITING',
-      description: 'Clear structure, grammar guidance, and scarring strategies for stronger essays',
-      price: '3000 บาท',
-      rating: 4.5,
-      reviews: 141,
-      image: IeltsWriting,
-    },
-    {
-      id: 3,
-      title: 'GRAMMAR ESSENTIAL',
-      description: 'Understand grammar simply and apply it confidently in speaking and writing',
-      price: '2500 บาท',
-      rating: 4.5,
-      reviews: 141,
-      image: Grammar,
-    },
-    {
-      id: 4,
-      title: 'DAILY ENGLISH',
-      description: 'Improve your daily English communication skills with practical lessons',
-      price: '2000 บาท',
-      rating: 4.5,
-      reviews: 125,
-      image: DailyEnglish,
-    },
-    {
-      id: 5,
-      title: 'MASTER COMMUNICATION',
-      description: 'Master communication techniques and become a confident speaker',
-      price: '2800 บาท',
-      rating: 4.5,
-      reviews: 156,
-      image: MasterCommunication,
-    },
-  ]
-
-  const [courses, setCourses] = useState(defaultCourses)
+  const [courses, setCourses] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [courseToDelete, setCourseToDelete] = useState(null)
 
-  // Load courses from localStorage on mount
   useEffect(() => {
-    const savedCourses = localStorage.getItem('courses')
-    if (savedCourses) {
-      const parsedCourses = JSON.parse(savedCourses)
-      setCourses([...defaultCourses, ...parsedCourses])
+    async function loadCourses() {
+      try {
+        setLoading(true)
+        setError('')
+        const response = await fetchCourses()
+        setCourses(response)
+      } catch (loadError) {
+        setError(loadError.message)
+      } finally {
+        setLoading(false)
+      }
     }
+
+    loadCourses()
   }, [])
 
   const handleDeleteClick = (id) => {
@@ -78,20 +35,22 @@ function Courses() {
     setShowConfirmation(true)
   }
 
-  const handleConfirmDelete = () => {
-    if (courseToDelete) {
-      const updatedCourses = courses.filter(course => course.id !== courseToDelete)
-      setCourses(updatedCourses)
-      // Update localStorage
-      const newCourses = updatedCourses.filter(c => c.id > 5)
-      if (newCourses.length > 0) {
-        localStorage.setItem('courses', JSON.stringify(newCourses))
-      } else {
-        localStorage.removeItem('courses')
-      }
+  const handleConfirmDelete = async () => {
+    if (!courseToDelete) {
+      return
     }
-    setShowConfirmation(false)
-    setCourseToDelete(null)
+
+    try {
+      await deleteCourse(courseToDelete)
+      setCourses((currentCourses) =>
+        currentCourses.filter((course) => course.id !== courseToDelete)
+      )
+    } catch (deleteError) {
+      setError(deleteError.message)
+    } finally {
+      setShowConfirmation(false)
+      setCourseToDelete(null)
+    }
   }
 
   const handleCancelDelete = () => {
@@ -105,7 +64,6 @@ function Courses() {
 
   return (
     <div className="p-4 sm:p-6 md:p-8 bg-gray-50 min-h-screen">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0 mb-6 md:mb-8">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">Manage Course</h1>
         <button
@@ -117,19 +75,33 @@ function Courses() {
         </button>
       </div>
 
-      {/* Course List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2 gap-4 sm:gap-6">
-        {courses.map((course) => (
-          <CourseCard
-            key={course.id}
-            course={course}
-            onEdit={handleEdit}
-            onDelete={handleDeleteClick}
-          />
-        ))}
-      </div>
+      {error ? (
+        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </div>
+      ) : null}
 
-      {/* Confirmation Modal */}
+      {loading ? (
+        <div className="rounded-lg bg-white p-8 text-center text-gray-500 shadow-sm">
+          Loading courses...
+        </div>
+      ) : courses.length === 0 ? (
+        <div className="rounded-lg bg-white p-8 text-center text-gray-500 shadow-sm">
+          No courses found. Create your first course to get started.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2 gap-4 sm:gap-6">
+          {courses.map((course) => (
+            <CourseCard
+              key={course.id}
+              course={course}
+              onEdit={handleEdit}
+              onDelete={handleDeleteClick}
+            />
+          ))}
+        </div>
+      )}
+
       <ConfirmationModal
         isOpen={showConfirmation}
         title="Delete Course"
