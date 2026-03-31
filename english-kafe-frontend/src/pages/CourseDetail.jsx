@@ -1,22 +1,45 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import CourseCard from '../components/CourseCard'
 const logoTransparent = '/Nav/EnglishkafeLogo-Transparent.png'
-import { getCourseById, coursesData } from '../services/courseService'
+import { fetchCourseById, fetchCourses } from '../services/courseService'
 
 function CourseDetail() {
   const { courseId } = useParams()
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
+  const [course, setCourse] = useState(null)
+  const [relatedCourses, setRelatedCourses] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  const course = getCourseById(courseId)
+  useEffect(() => {
+    async function loadCourseData() {
+      try {
+        setLoading(true)
+        setError('')
+
+        const [courseResponse, coursesResponse] = await Promise.all([
+          fetchCourseById(courseId),
+          fetchCourses(),
+        ])
+
+        setCourse(courseResponse)
+        setRelatedCourses(coursesResponse.filter((item) => item.id !== courseResponse.id))
+      } catch (loadError) {
+        setError(loadError.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadCourseData()
+  }, [courseId])
   
-  // Related courses setup
-  const relatedCourses = coursesData.filter(c => c.id !== course?.id)
   const coursesPerPage = 4
-  const totalPages = Math.ceil(relatedCourses.length / coursesPerPage)
+  const totalPages = Math.max(1, Math.ceil(relatedCourses.length / coursesPerPage))
   const startIndex = (currentPage - 1) * coursesPerPage
   const currentRelatedCourses = relatedCourses.slice(startIndex, startIndex + coursesPerPage)
 
@@ -24,12 +47,23 @@ function CourseDetail() {
     setCurrentPage(pageNumber)
   }
 
-  if (!course) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-white">
         <Navbar />
         <div className="flex items-center justify-center h-screen">
-          <p className="text-2xl text-gray-600">Course not found</p>
+          <p className="text-2xl text-gray-600">Loading course...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !course) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Navbar />
+        <div className="flex items-center justify-center h-screen px-4 text-center">
+          <p className="text-2xl text-gray-600">{error || 'Course not found'}</p>
         </div>
       </div>
     )
@@ -47,23 +81,23 @@ function CourseDetail() {
     )
   }
 
-  const courseFeatures = [
-    'Simple, step-by-step lessons',
-    'Real-life examples for practical use',
-    'Guided practice in every video',
-    'Improve speaking and writing accuracy',
-    'Build a strong foundation',
-    'No confusing rules or memorization'
-  ]
+  const courseFeatures = course.features.length > 0
+    ? course.features
+    : [
+        'Simple, step-by-step lessons',
+        'Real-life examples for practical use',
+        'Guided practice in every video',
+        'Improve speaking and writing accuracy',
+        'Build a strong foundation',
+        'No confusing rules or memorization'
+      ]
 
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
 
-      {/* Course Detail Section */}
       <div className="px-4 sm:px-6 md:px-10 py-8 sm:py-10 md:py-12 bg-blue-50">
         <div className="max-w-7xl mx-auto">
-          {/* Header with title */}
           <div className="text-center mb-8 sm:mb-10 md:mb-12">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
               Explore Our Online Video Courses
@@ -73,19 +107,22 @@ function CourseDetail() {
             </p>
           </div>
 
-          {/* Course Detail Card */}
           <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 md:p-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
-              {/* Left - Image */}
               <div className="flex items-center justify-center">
-                <img 
-                  src={course.image} 
-                  alt={course.title}
-                  className="w-full h-48 sm:h-64 md:h-96 object-cover rounded-2xl"
-                />
+                {course.image ? (
+                  <img 
+                    src={course.image} 
+                    alt={course.title}
+                    className="w-full h-48 sm:h-64 md:h-96 object-cover rounded-2xl"
+                  />
+                ) : (
+                  <div className="flex h-48 w-full items-center justify-center rounded-2xl bg-gray-100 text-gray-500">
+                    No image
+                  </div>
+                )}
               </div>
 
-              {/* Right - Course Details */}
               <div className="flex flex-col justify-center space-y-4 sm:space-y-5 md:space-y-6">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
                   {course.title}
@@ -107,7 +144,6 @@ function CourseDetail() {
                   </ul>
                 </div>
 
-                {/* Course Info Bar */}
                 <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-6 pt-4 sm:pt-6 border-t border-gray-200">
                   <div className="flex items-center gap-2">
                     <span className="text-gray-700 font-semibold uppercase text-xs sm:text-sm">
@@ -124,7 +160,6 @@ function CourseDetail() {
                   </div>
                 </div>
 
-                {/* Price and Button */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-4 sm:pt-6 gap-4 sm:gap-6">
                   <div className="text-3xl sm:text-4xl font-bold text-gray-900">
                     {course.price}
@@ -142,10 +177,8 @@ function CourseDetail() {
         </div>
       </div>
 
-      {/* Related Courses Section */}
       <div className="px-4 sm:px-6 md:px-10 py-12 sm:py-14 md:py-16 bg-pink-50">
         <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
           <div className="text-center mb-8 sm:mb-10 md:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Related Courses
@@ -153,47 +186,53 @@ function CourseDetail() {
             <div className="w-16 sm:w-20 md:w-24 h-1 bg-gray-900 mx-auto"></div>
           </div>
 
-          {/* Courses Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
-            {currentRelatedCourses.map((relatedCourse) => (
-              <CourseCard
-                key={relatedCourse.id}
-                id={relatedCourse.id}
-                image={relatedCourse.image}
-                title={relatedCourse.title}
-                description={relatedCourse.description}
-                price={relatedCourse.price}
-                rating={relatedCourse.rating}
-                reviews={relatedCourse.reviews}
-              />
-            ))}
-          </div>
+          {currentRelatedCourses.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
+                {currentRelatedCourses.map((relatedCourse) => (
+                  <CourseCard
+                    key={relatedCourse.id}
+                    id={relatedCourse.id}
+                    image={relatedCourse.image}
+                    title={relatedCourse.title}
+                    description={relatedCourse.description}
+                    price={relatedCourse.price}
+                    rating={relatedCourse.rating}
+                    reviews={relatedCourse.reviews}
+                  />
+                ))}
+              </div>
 
-          {/* Pagination */}
-          <div className="flex justify-center items-center gap-2 mt-10 sm:mt-12 flex-wrap">
-            {[...Array(totalPages)].map((_, index) => (
-              <button
-                key={index + 1}
-                onClick={() => handlePageChange(index + 1)}
-                className={`px-3 sm:px-4 py-2 rounded-lg font-semibold text-sm sm:text-base transition-colors ${
-                  currentPage === index + 1
-                    ? 'bg-gray-900 text-white'
-                    : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
-                }`}
-              >
-                {index + 1}
-              </button>
-            ))}
-          </div>
+              {relatedCourses.length > coursesPerPage ? (
+                <div className="flex justify-center items-center gap-2 mt-10 sm:mt-12 flex-wrap">
+                  {[...Array(totalPages)].map((_, index) => (
+                    <button
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      className={`px-3 sm:px-4 py-2 rounded-lg font-semibold text-sm sm:text-base transition-colors ${
+                        currentPage === index + 1
+                          ? 'bg-gray-900 text-white'
+                          : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+            </>
+          ) : (
+            <div className="rounded-2xl bg-white px-4 py-10 text-center text-gray-500 shadow-sm">
+              No related courses available right now.
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Why Choose English Kafé Section */}
       <div className="px-4 sm:px-6 md:px-10 py-12 sm:py-14 md:py-16 bg-blue-50">
         <div className="max-w-7xl mx-auto">
           <div className="bg-white rounded-3xl p-6 sm:p-8 md:p-12 shadow-lg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center">
-              {/* Left Side - Content */}
               <div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
                   Why Choose English Kafé Online Courses?
@@ -231,7 +270,6 @@ function CourseDetail() {
                 </ul>
               </div>
 
-              {/* Right Side - Logo/Image */}
               <div className="flex items-center justify-center order-first md:order-last mt-6 md:mt-0">
                 <img 
                   src={logoTransparent} 
@@ -244,7 +282,6 @@ function CourseDetail() {
         </div>
       </div>
 
-      {/* Footer */}
       <Footer />
     </div>
   )

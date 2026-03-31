@@ -1,18 +1,38 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import CourseCard from '../components/CourseCard'
 import TestimonialVideo from '../components/TestimonialVideo'
 import ContactSection from '../components/ContactSection'
 import Footer from '../components/Footer'
-import { getAllCourses, getCoursesByPage, getTotalPages } from '../services/courseService'
+import { fetchCourses } from '../services/courseService'
 
 function Courses() {
   const [currentPage, setCurrentPage] = useState(1)
-  
-  const allCourses = getAllCourses()
+  const [courses, setCourses] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    async function loadCourses() {
+      try {
+        setLoading(true)
+        setError('')
+        const response = await fetchCourses()
+        setCourses(response)
+      } catch (loadError) {
+        setError(loadError.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadCourses()
+  }, [])
+
   const coursesPerPage = 6
-  const totalPages = getTotalPages(coursesPerPage)
-  const currentCourses = getCoursesByPage(currentPage, coursesPerPage)
+  const totalPages = Math.max(1, Math.ceil(courses.length / coursesPerPage))
+  const startIndex = (currentPage - 1) * coursesPerPage
+  const currentCourses = courses.slice(startIndex, startIndex + coursesPerPage)
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber)
@@ -23,7 +43,6 @@ function Courses() {
     <div className="min-h-screen bg-white">
       <Navbar />
       
-      {/* Header */}
       <div className="px-4 sm:px-6 md:px-10 py-8 sm:py-12 md:py-16 text-center bg-gray-50">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6">
           Explore Our Online Video Courses
@@ -33,44 +52,59 @@ function Courses() {
         </p>
       </div>
 
-      {/* Courses Grid */}
       <div className="px-4 sm:px-6 md:px-10 py-8 sm:py-12 md:py-16">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
-            {currentCourses.map((course) => (
-              <CourseCard
-                key={course.id}
-                id={course.id}
-                image={course.image}
-                title={course.title}
-                description={course.description}
-                price={course.price}
-                rating={course.rating}
-                reviews={course.reviews}
-              />
-            ))}
-          </div>
+          {error ? (
+            <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          ) : loading ? (
+            <div className="rounded-lg bg-gray-50 px-4 py-10 text-center text-gray-500">
+              Loading courses...
+            </div>
+          ) : currentCourses.length === 0 ? (
+            <div className="rounded-lg bg-gray-50 px-4 py-10 text-center text-gray-500">
+              No published courses are available yet.
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
+                {currentCourses.map((course) => (
+                  <CourseCard
+                    key={course.id}
+                    id={course.id}
+                    image={course.image}
+                    title={course.title}
+                    description={course.description}
+                    price={course.price}
+                    rating={course.rating}
+                    reviews={course.reviews}
+                  />
+                ))}
+              </div>
 
-          {/* Pagination */}
-          <div className="flex justify-center items-center gap-2 mt-8 sm:mt-10 md:mt-12 flex-wrap">
-            {[...Array(totalPages)].map((_, index) => (
-              <button
-                key={index + 1}
-                onClick={() => handlePageChange(index + 1)}
-                className={`px-3 sm:px-4 py-2 rounded-lg font-semibold transition-colors text-sm sm:text-base ${
-                  currentPage === index + 1
-                    ? 'bg-gray-900 text-white'
-                    : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
-                }`}
-              >
-                {index + 1}
-              </button>
-            ))}
-          </div>
+              {courses.length > coursesPerPage ? (
+                <div className="flex justify-center items-center gap-2 mt-8 sm:mt-10 md:mt-12 flex-wrap">
+                  {[...Array(totalPages)].map((_, index) => (
+                    <button
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      className={`px-3 sm:px-4 py-2 rounded-lg font-semibold transition-colors text-sm sm:text-base ${
+                        currentPage === index + 1
+                          ? 'bg-gray-900 text-white'
+                          : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+            </>
+          )}
         </div>
       </div>
 
-      {/* Featured Section */}
       <div className="px-4 sm:px-6 md:px-10 py-10 sm:py-14 md:py-16 text-center bg-pink-100">
         <div className="flex justify-center">
           <div>
@@ -85,10 +119,8 @@ function Courses() {
         </p>
       </div>
 
-      {/* Free Course Preview Videos Section */}
       <div className="px-4 sm:px-6 md:px-10 py-10 sm:py-14 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
           <div className="text-center mb-8 sm:mb-10 md:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6">
               Free Course Preview Videos
@@ -99,9 +131,7 @@ function Courses() {
             </p>
           </div>
 
-          {/* Videos Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7 md:gap-8">
-            {/* Video 1 */}
             <div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">
                 <span className="font-bold">Speak English with Confidence</span>
@@ -113,7 +143,6 @@ function Courses() {
               />
             </div>
 
-            {/* Video 2 */}
             <div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">
                 <span className="font-bold">English Basics – Free Starter Course</span>
@@ -128,10 +157,7 @@ function Courses() {
         </div>
       </div>
 
-      {/* Contact Section */}
       <ContactSection />
-
-      {/* Footer */}
       <Footer />
     </div>
   )

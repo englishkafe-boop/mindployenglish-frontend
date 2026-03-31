@@ -1,72 +1,74 @@
-import CourseCard from "./CourseCard"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import ieltsSpeakingImg from "../assets/courses/IELTS speaking.jpg"
-import ieltsWritingImg from "../assets/courses/ielts writing.jpg"
-import dailyEnglishImg from "../assets/courses/daily english.jpg"
-import grammarImg from "../assets/courses/grammer.jpg"
+import CourseCard from "./CourseCard"
+import { fetchCourses } from "../services/courseService"
 
 function Courses() {
   const navigate = useNavigate()
+  const [courses, setCourses] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    async function loadFeaturedCourses() {
+      try {
+        setLoading(true)
+        setError('')
+        const response = await fetchCourses()
+        setCourses(response.slice(0, 4))
+      } catch (loadError) {
+        setError(loadError.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadFeaturedCourses()
+  }, [])
 
   return (
     <section className="px-4 sm:px-6 md:px-10 py-8 sm:py-12 md:py-16 bg-[#FEF7F9] overflow-hidden">
-     
       <div className="relative max-w-6xl mx-auto">
-         {/* Decorative blue shap on Left */}
-        <div className="absolute -left-10 -top-30 w-30 md:w-30 h-30 md:h-30 rounded-full pointer-events-none z-10  " style={{ backgroundColor: "#B5E0F8" }}></div>
-
-        <div className="absolute -left-55 -top-25 w-60 md:w-60 h-30 md:h-30 rounded-xl pointer-events-none z-10  " style={{ backgroundColor: "#B5E0F8" }}></div>
-
-        {/* Decorative blue shap on right */}
-        <div className="absolute -right-10 -bottom-30 w-30 md:w-30 h-30 md:h-30 rounded-full pointer-events-none z-10  " style={{ backgroundColor: "#B5E0F8" }}></div>
-
-        <div className="absolute -right-55 -bottom-25 w-60 md:w-60 h-30 md:h-30 rounded-xl pointer-events-none z-10  " style={{ backgroundColor: "#B5E0F8" }}></div>
+        <div className="absolute -left-10 -top-30 w-30 md:w-30 h-30 md:h-30 rounded-full pointer-events-none z-10" style={{ backgroundColor: "#B5E0F8" }}></div>
+        <div className="absolute -left-55 -top-25 w-60 md:w-60 h-30 md:h-30 rounded-xl pointer-events-none z-10" style={{ backgroundColor: "#B5E0F8" }}></div>
+        <div className="absolute -right-10 -bottom-30 w-30 md:w-30 h-30 md:h-30 rounded-full pointer-events-none z-10" style={{ backgroundColor: "#B5E0F8" }}></div>
+        <div className="absolute -right-55 -bottom-25 w-60 md:w-60 h-30 md:h-30 rounded-xl pointer-events-none z-10" style={{ backgroundColor: "#B5E0F8" }}></div>
         
         <div className="flex justify-center mb-6 sm:mb-8 md:mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 pb-2 sm:pb-3 border-b-9 border-black">
             Courses
           </h2>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
-          <CourseCard
-            id={2}
-            image={ieltsSpeakingImg}
-            title="IELTS Speaking"
-            description="Build confidence with guided speaking practice and real exam-style questions."
-            price="3000 บาท "
-            rating={4.5}
-            reviews="4.5"
-          />
-          <CourseCard
-            id={3}
-            image={ieltsWritingImg}
-            title="IELTS WRITING"
-            description="Clear structure, grammar guidance, and scoring strategies for stronger essays."
-            price="4500 บาท "
-            rating={4.5}
-            reviews="4.5"
-          />
-          <CourseCard
-            id={4}
-            image={dailyEnglishImg}
-            title="Everyday English"
-            description="Practice real-life conversations and vocabulary for daily communication."
-            price="3500 บาท "
-            rating={5}
-            reviews="5.0"
-          />
-          <CourseCard
-            id={1}
-            image={grammarImg}
-            title="Grammar Essentials"
-            description="Understand grammar simply and apply it confidently in speaking and writing."
-            price="2500 บาท "
-            rating={4.5}
-            reviews="4.5"
-          />
-        </div>
 
-        {/* View All Courses Button */}
+        {error ? (
+          <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error}
+          </div>
+        ) : loading ? (
+          <div className="rounded-lg bg-white px-4 py-10 text-center text-gray-500 shadow-sm">
+            Loading courses...
+          </div>
+        ) : courses.length === 0 ? (
+          <div className="rounded-lg bg-white px-4 py-10 text-center text-gray-500 shadow-sm">
+            No courses available yet.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
+            {courses.map((course) => (
+              <CourseCard
+                key={course.id}
+                id={course.id}
+                image={course.image}
+                title={course.title}
+                description={course.description}
+                price={course.price}
+                rating={course.rating}
+                reviews={course.reviews}
+              />
+            ))}
+          </div>
+        )}
+
         <div className="flex justify-center mt-8 sm:mt-10 md:mt-12">
           <button 
             onClick={() => navigate('/courses')}

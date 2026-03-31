@@ -1,16 +1,33 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { getCourseById } from '../services/courseService'
+import { fetchCourseById } from '../services/courseService'
 import { useAuth } from '../contexts/AuthContext'
 
 function Enroll() {
   const { courseId } = useParams()
   const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
+  const [course, setCourse] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  const course = getCourseById(courseId)
+  useEffect(() => {
+    async function loadCourse() {
+      try {
+        setLoading(true)
+        setError('')
+        setCourse(await fetchCourseById(courseId))
+      } catch (loadError) {
+        setError(loadError.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadCourse()
+  }, [courseId])
 
   const handleEnrollClick = () => {
     if (!isAuthenticated) {
@@ -22,12 +39,23 @@ function Enroll() {
     }
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Navbar />
+        <div className="flex items-center justify-center h-screen">
+          <p className="text-2xl text-gray-600">Loading course...</p>
+        </div>
+      </div>
+    )
+  }
+
   if (!course) {
     return (
       <div className="min-h-screen bg-white">
         <Navbar />
         <div className="flex items-center justify-center h-screen">
-          <p className="text-2xl text-gray-600">Course not found</p>
+          <p className="text-2xl text-gray-600">{error || 'Course not found'}</p>
         </div>
       </div>
     )

@@ -1,22 +1,50 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { getCourseById } from '../services/courseService'
+import { fetchCourseById } from '../services/courseService'
 
 function Payment() {
   const { courseId } = useParams()
   const navigate = useNavigate()
   const [currentStep, setCurrentStep] = useState(1) // 1: Payment, 2: Upload Receipt, 3: Verification
+  const [course, setCourse] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  const course = getCourseById(courseId)
+  useEffect(() => {
+    async function loadCourse() {
+      try {
+        setLoading(true)
+        setError('')
+        setCourse(await fetchCourseById(courseId))
+      } catch (loadError) {
+        setError(loadError.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadCourse()
+  }, [courseId])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Navbar />
+        <div className="flex items-center justify-center h-screen">
+          <p className="text-2xl text-gray-600">Loading course...</p>
+        </div>
+      </div>
+    )
+  }
 
   if (!course) {
     return (
       <div className="min-h-screen bg-white">
         <Navbar />
         <div className="flex items-center justify-center h-screen">
-          <p className="text-2xl text-gray-600">Course not found</p>
+          <p className="text-2xl text-gray-600">{error || 'Course not found'}</p>
         </div>
       </div>
     )

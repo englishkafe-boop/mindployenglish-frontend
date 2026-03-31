@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom"
+
 const lineIcon = "/logo/Line.svg"
 const facebookIcon = "/logo/facebook.svg"
 const instagramIcon = "/logo/instagram.svg"
@@ -5,6 +7,8 @@ const landing0 = "/hero/Landing0.png"
 const landing = "/hero/landing.jpg"
 
 function Hero() {
+  const navigate = useNavigate()
+
   return (
     <section className="relative px-4 sm:px-6 md:px-10 py-8 sm:py-12 md:py-20 bg-white overflow-hidden">
       
@@ -24,7 +28,10 @@ function Hero() {
             Where English learning feels relaxed, practical,<br /> and enjoyable.
           </p>
 
-          <button className="mt-6 md:mt-8 bg-black text-white px-5 sm:px-6 md:px-8 py-2 md:py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors cursor-pointer flex items-center gap-2 text-xs sm:text-sm md:text-base w-40 sm:w-48 md:w-56 h-15 justify-center">
+          <button
+            onClick={() => navigate('/courses')}
+            className="mt-6 md:mt-8 bg-black text-white px-5 sm:px-6 md:px-8 py-2 md:py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors cursor-pointer flex items-center gap-2 text-xs sm:text-sm md:text-base w-40 sm:w-48 md:w-56 h-15 justify-center"
+          >
             Explore Courses →
           </button>
 
