@@ -1,25 +1,24 @@
 const logo = "/Nav/EnglishkafeLogo-Transparent.png"
 import { useNavigate, useLocation } from "react-router-dom"
 import { useState } from "react"
+import { useAuth } from "../contexts/AuthContext"
 
 function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
   const [showProfileMenu, setShowProfileMenu] = useState(false)
+  const { isAuthenticated, user, logout } = useAuth()
 
   const isActive = (path) => location.pathname === path
-  
-  // Check if user is logged in
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
-  const userName = localStorage.getItem('userName') || 'User'
 
   const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn')
-    localStorage.removeItem('userEmail')
-    localStorage.removeItem('userName')
+    logout()
     setShowProfileMenu(false)
     navigate('/')
   }
+
+  const profileImage = user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'user'}`
+  const userName = user?.name || 'User'
 
   return (
     <nav className="sticky top-0 z-50  flex items-center justify-between px-30 py-2 bg-white shadow-sm">
@@ -62,7 +61,7 @@ function Navbar() {
       </ul>
 
       {/* Login / Profile */}
-      {!isLoggedIn ? (
+      {!isAuthenticated ? (
         <button 
           onClick={() => navigate('/login')}
           className="bg-black text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-800 transition-colors"
@@ -77,7 +76,7 @@ function Navbar() {
           >
             {/* Profile Image */}
             <img 
-              src={localStorage.getItem('profileImage') || 'https://via.placeholder.com/40?text=User'}
+              src={profileImage}
               alt="Profile"
               className="w-10 h-10 rounded-full object-cover border-2 border-gray-300 size-12  scale-120 "
             />
@@ -89,13 +88,13 @@ function Navbar() {
               {/* Profile Header with Image */}
               <div className="px-4 py-4 border-b border-gray-200 flex items-center gap-3">
                 <img 
-                  src={localStorage.getItem('profileImage') || 'https://via.placeholder.com/48?text=User'}
+                  src={profileImage}
                   alt="Profile"
                   className="w-12 h-12 rounded-full object-cover border-2 border-gray-300"
                 />
                 <div>
                   <p className="font-semibold text-gray-900">{userName}</p>
-                  <p className="text-xs text-gray-500">{localStorage.getItem('userEmail')}</p>
+                  <p className="text-xs text-gray-500">{user?.email}</p>
                 </div>
               </div>
               

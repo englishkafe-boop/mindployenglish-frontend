@@ -1,22 +1,32 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { forgotPassword as forgotPasswordRequest } from '../services/authService'
 const logo = '/Nav/EnglishkafeLogo-Transparent.png'
 
 function ForgotPassword() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
   const navigate = useNavigate()
 
-  const handleResetPassword = (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault()
     setLoading(true)
-    // Add your reset password logic here
-    setTimeout(() => {
+    setError('')
+    setSuccessMessage('')
+
+    try {
+      const response = await forgotPasswordRequest({ email })
+      setSuccessMessage(response.message || 'Reset link sent to your email.')
+      setTimeout(() => {
+        navigate('/login')
+      }, 1200)
+    } catch (requestError) {
+      setError(requestError.message)
+    } finally {
       setLoading(false)
-      // Show success message or redirect
-      alert('Reset link sent to your email!')
-      navigate('/login')
-    }, 1000)
+    }
   }
 
   return (
@@ -56,6 +66,18 @@ function ForgotPassword() {
           </p>
 
           <form onSubmit={handleResetPassword} className="space-y-4 sm:space-y-6">
+            {error ? (
+              <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {error}
+              </div>
+            ) : null}
+
+            {successMessage ? (
+              <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                {successMessage}
+              </div>
+            ) : null}
+
             {/* Email Input */}
             <div>
               <label className="block text-gray-700 font-semibold text-sm sm:text-base mb-1.5 sm:mb-2">
@@ -83,7 +105,7 @@ function ForgotPassword() {
 
           {/* Login Link */}
           <p className="text-center text-gray-600 text-xs sm:text-sm mt-4 sm:mt-6">
-            Remember your password? <a href="/login" className="text-gray-900 font-semibold hover:underline">Log in</a>
+            Remember your password? <Link to="/login" className="text-gray-900 font-semibold hover:underline">Log in</Link>
           </p>
         </div>
       </div>

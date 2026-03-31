@@ -1,23 +1,30 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useAuth } from "../contexts/AuthContext";
+import { updateProfile } from "../services/authService";
 
 function MyProfile() {
-  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [message, setMessage] = useState("");
+  const { user, setUser } = useAuth();
 
-  // Get user data from localStorage
-  const userEmail = localStorage.getItem("userEmail") || "user@example.com";
-  const userName = localStorage.getItem("userName") || "John Doe";
-  const profileImage =
-    localStorage.getItem("profileImage") ||
-    "https://via.placeholder.com/200?text=User";
+  const userEmail = user?.email || "user@example.com";
+  const userName = user?.name || "John Doe";
+  const profileImage = user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${userEmail}`;
 
   const [formData, setFormData] = useState({
     userName: userName,
     email: userEmail,
   });
+
+  useEffect(() => {
+    setFormData({
+      userName,
+      email: userEmail,
+    });
+  }, [userEmail, userName]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,10 +34,20 @@ function MyProfile() {
     }));
   };
 
-  const handleSave = () => {
-    // Save to localStorage (temporarily, will be replaced with backend later)
-    localStorage.setItem("userName", formData.userName);
-    setIsEditing(false);
+  const handleSave = async () => {
+    setIsSaving(true);
+    setMessage("");
+
+    try {
+      const updatedUser = await updateProfile({ name: formData.userName });
+      setUser(updatedUser);
+      setIsEditing(false);
+      setMessage("Profile updated successfully.");
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
@@ -74,6 +91,12 @@ function MyProfile() {
                 </h2>
 
                 <div className="space-y-6">
+                  {message ? (
+                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+                      {message}
+                    </div>
+                  ) : null}
+
                   {/* User Name */}
                   <div className="flex flex-col gap-2">
                     <label className="text-sm text-gray-500 font-medium">
@@ -129,9 +152,10 @@ function MyProfile() {
                       <>
                         <button
                           onClick={handleSave}
+                          disabled={isSaving}
                           className="px-6 py-2 bg-[#F8B2C0] text-gray-900 font-semibold rounded-lg hover:bg-[#F8C2C0] transition"
                         >
-                          Save
+                          {isSaving ? "Saving..." : "Save"}
                         </button>
                         <button
                           onClick={handleCancel}

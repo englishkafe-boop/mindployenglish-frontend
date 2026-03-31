@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { register as registerRequest } from '../services/authService'
 const logo = '/Nav/EnglishkafeLogo-Transparent.png'
 
 function Register() {
@@ -7,17 +8,34 @@ function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
   const navigate = useNavigate()
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault()
     setLoading(true)
-    // Add your registration logic here
-    setTimeout(() => {
+    setError('')
+    setSuccessMessage('')
+
+    try {
+      const response = await registerRequest({ name, email, password })
+      const message = response.message || 'Registration successful. Please check your email to verify your account.'
+
+      setSuccessMessage(message)
+
+      navigate('/login', {
+        state: {
+          registrationEmail: email,
+          registrationMessage: message,
+          emailSent: response.emailSent !== false,
+        },
+      })
+    } catch (registerError) {
+      setError(registerError.message)
+    } finally {
       setLoading(false)
-      // Redirect to login or home
-      navigate('/login')
-    }, 1000)
+    }
   }
 
   return (
@@ -57,6 +75,18 @@ function Register() {
           </p>
 
           <form onSubmit={handleRegister} className="space-y-6">
+            {error ? (
+              <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {error}
+              </div>
+            ) : null}
+
+            {successMessage ? (
+              <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                {successMessage}
+              </div>
+            ) : null}
+
             {/* Name Input */}
             <div>
               <label className="block text-gray-700 font-semibold mb-2">
@@ -114,7 +144,7 @@ function Register() {
 
           {/* Login Link */}
           <p className="text-center text-gray-600 text-sm mt-6">
-            Already have account? <a href="/login" className="text-gray-900 font-semibold hover:underline">login</a>
+            Already have account? <Link to="/login" className="text-gray-900 font-semibold hover:underline">login</Link>
           </p>
         </div>
       </div>

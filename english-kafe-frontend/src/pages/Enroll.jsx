@@ -3,18 +3,17 @@ import { Fragment } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { getCourseById } from '../services/courseService'
+import { useAuth } from '../contexts/AuthContext'
 
 function Enroll() {
   const { courseId } = useParams()
   const navigate = useNavigate()
+  const { isAuthenticated } = useAuth()
 
   const course = getCourseById(courseId)
 
-  // Check if user is logged in (from localStorage)
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
-
   const handleEnrollClick = () => {
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       // Redirect directly to login page if not logged in
       navigate('/login')
     } else {

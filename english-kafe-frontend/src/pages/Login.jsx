@@ -1,29 +1,80 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { resendVerification } from '../services/authService'
 const logo = '/Nav/EnglishkafeLogo-Transparent.png'
 
 function Login() {
-  const [email, setEmail] = useState('')
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [email, setEmail] = useState(
+    location.state?.registrationEmail || ''
+  )
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [resending, setResending] = useState(false)
+  const [error, setError] = useState('')
+  const [infoMessage, setInfoMessage] = useState(location.state?.registrationMessage || '')
+  const { login, logout, isAuthenticated } = useAuth()
 
-  const handleLogin = (e) => {
+  const redirectTo = location.state?.from?.pathname || '/'
+  const canResendVerification =
+    location.state?.emailSent === false ||
+    error === 'Please verify your email before logging in'
+
+  const handleLogin = async (e) => {
     e.preventDefault()
     setLoading(true)
-    // Add your login logic here
-    setTimeout(() => {
+    setError('')
+    setInfoMessage('')
+
+    try {
+      const user = await login({ email, password })
+
+      if (user.role !== 'user') {
+        logout()
+        setError('This login page is for student accounts. Please use the admin site for admin access.')
+        return
+      }
+
+      navigate(redirectTo, { replace: true })
+    } catch (loginError) {
+      setError(loginError.message)
+    } finally {
       setLoading(false)
-      // Store login status in localStorage (temporary, will be replaced with real auth)
-      localStorage.setItem('isLoggedIn', 'true')
-      localStorage.setItem('userEmail', email)
-      localStorage.setItem('userName', email.split('@')[0]) // Extract name from email
-      // Use a placeholder profile image that can be easily changed later with backend
-      localStorage.setItem('profileImage', `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`)
-      // Redirect to home or dashboard
-      navigate('/')
-    }, 1000)
+    }
   }
+
+  const handleResendVerification = async () => {
+    if (!email) {
+      setError('Please enter your email first.')
+      return
+    }
+
+    setResending(true)
+    setError('')
+
+    try {
+      const response = await resendVerification({ email })
+      setInfoMessage(response.message || 'Verification email sent. Please check your inbox.')
+    } catch (resendError) {
+      setError(resendError.message)
+    } finally {
+      setResending(false)
+    }
+  }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(redirectTo, { replace: true })
+    }
+  }, [isAuthenticated, navigate, redirectTo])
+
+  useEffect(() => {
+    if (location.state?.registrationMessage) {
+      setInfoMessage(location.state.registrationMessage)
+    }
+  }, [location.state])
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-3 sm:px-4 py-6 sm:py-8">
@@ -61,7 +112,25 @@ function Login() {
             Please enter your details to log in
           </p>
 
+          {canResendVerification ? (
+            <p className="text-sm text-gray-600 mb-4 sm:mb-6">
+              If your account is still unverified, enter your email below and request a new verification link.
+            </p>
+          ) : null}
+
           <form onSubmit={handleLogin} className="space-y-4 sm:space-y-6">
+            {infoMessage ? (
+              <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                {infoMessage}
+              </div>
+            ) : null}
+
+            {error ? (
+              <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {error}
+              </div>
+            ) : null}
+
             {/* Email Input */}
             <div>
               <label className="block text-gray-700 font-semibold text-sm sm:text-base mb-1.5 sm:mb-2">
@@ -94,9 +163,9 @@ function Login() {
 
             {/* Forgot Password Link */}
             <div className="text-right">
-              <a href="/forgot-password" className="text-gray-700 text-xs sm:text-sm hover:text-gray-900 transition-colors">
+              <Link to="/forgot-password" className="text-gray-700 text-xs sm:text-sm hover:text-gray-900 transition-colors">
                 Forgot Password?
-              </a>
+              </Link>
             </div>
 
             {/* Login Button */}
@@ -108,11 +177,22 @@ function Login() {
             >
               {loading ? 'Logging in...' : 'Login'}
             </button>
+
+            {canResendVerification ? (
+              <button
+                type="button"
+                onClick={handleResendVerification}
+                disabled={resending}
+                className="w-full border border-gray-300 bg-white hover:bg-gray-50 text-gray-900 font-normal py-2 sm:py-3 rounded-lg transition-opacity text-sm sm:text-base"
+              >
+                {resending ? 'Sending verification email...' : 'Resend verification email'}
+              </button>
+            ) : null}
           </form>
 
           {/* Register Link */}
           <p className="text-center text-gray-600 text-xs sm:text-sm mt-4 sm:mt-6">
-            Don't have account? <a href="/register" className="text-gray-900 font-semibold hover:underline">register here</a>
+            Don't have account? <Link to="/register" className="text-gray-900 font-semibold hover:underline">register here</Link>
           </p>
         </div>
       </div>
