@@ -27,7 +27,7 @@ function RecentArticle({ title, description, date, showReadMore = true, onReadMo
           <button
             type="button"
             onClick={onReadMore}
-            className="text-gray-600 text-xs hover:text-gray-900"
+            className="text-gray-600 text-xs underline hover:text-gray-900"
           >
             read more
           </button>

@@ -6,6 +6,8 @@ import ContactSection from '../components/ContactSection'
 import Footer from '../components/Footer'
 import { fetchCourses } from '../services/courseService'
 
+const COURSES_PER_PAGE = 6
+
 function Courses() {
   const [currentPage, setCurrentPage] = useState(1)
   const [courses, setCourses] = useState([])
@@ -29,10 +31,15 @@ function Courses() {
     loadCourses()
   }, [])
 
-  const coursesPerPage = 6
-  const totalPages = Math.max(1, Math.ceil(courses.length / coursesPerPage))
-  const startIndex = (currentPage - 1) * coursesPerPage
-  const currentCourses = courses.slice(startIndex, startIndex + coursesPerPage)
+  const totalPages = Math.max(1, Math.ceil(courses.length / COURSES_PER_PAGE))
+  const startIndex = (currentPage - 1) * COURSES_PER_PAGE
+  const currentCourses = courses.slice(startIndex, startIndex + COURSES_PER_PAGE)
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages)
+    }
+  }, [currentPage, totalPages])
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber)
@@ -83,21 +90,42 @@ function Courses() {
                 ))}
               </div>
 
-              {courses.length > coursesPerPage ? (
-                <div className="flex justify-center items-center gap-2 mt-8 sm:mt-10 md:mt-12 flex-wrap">
-                  {[...Array(totalPages)].map((_, index) => (
+              {courses.length > COURSES_PER_PAGE ? (
+                <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:mt-10 md:mt-12">
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="rounded-full border border-gray-300 px-5 py-2 text-sm font-semibold text-gray-700 transition hover:border-gray-400 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
+                  >
+                    Previous
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
                     <button
-                      key={index + 1}
-                      onClick={() => handlePageChange(index + 1)}
-                      className={`px-3 sm:px-4 py-2 rounded-lg font-semibold transition-colors text-sm sm:text-base ${
-                        currentPage === index + 1
-                          ? 'bg-gray-900 text-white'
-                          : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+                      key={pageNumber}
+                      type="button"
+                      onClick={() => handlePageChange(pageNumber)}
+                      className={`h-10 w-10 rounded-full text-sm font-semibold transition sm:text-base ${
+                        currentPage === pageNumber
+                          ? 'bg-[#F8B2C0] text-gray-900'
+                          : 'border border-gray-300 bg-white text-gray-700 hover:border-gray-400'
                       }`}
+                      aria-label={`Go to page ${pageNumber}`}
+                      aria-current={currentPage === pageNumber ? 'page' : undefined}
                     >
-                      {index + 1}
+                      {pageNumber}
                     </button>
                   ))}
+
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="rounded-full border border-gray-300 px-5 py-2 text-sm font-semibold text-gray-700 transition hover:border-gray-400 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
+                  >
+                    Next
+                  </button>
                 </div>
               ) : null}
             </>
