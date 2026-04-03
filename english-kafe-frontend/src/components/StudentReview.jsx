@@ -20,10 +20,12 @@ function StudentReview() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7 md:gap-8">
           <TestimonialVideo
             image={student1}
+            src="https://youtu.be/PXO2x2GDCFY?si=0n7RxcjldQTaI2cx"
             backgroundColor="bg-gray-200"
           />
           <TestimonialVideo
             image={student2}
+            src="https://youtu.be/PXO2x2GDCFY?si=0n7RxcjldQTaI2cx"
             backgroundColor="bg-pink-300"
           />
         </div>

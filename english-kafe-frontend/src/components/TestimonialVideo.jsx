@@ -1,6 +1,43 @@
-function TestimonialVideo({ image, backgroundColor }) {
-  return (
-    <div className={`${backgroundColor} rounded-3xl overflow-hidden relative h-80 flex items-center justify-center group cursor-pointer`}>
+import { useMemo, useState } from "react"
+
+function getEmbedUrl(src) {
+  if (!src) {
+    return ""
+  }
+
+  try {
+    const url = new URL(src)
+
+    if (url.hostname.includes("youtu.be")) {
+      const videoId = url.pathname.replace("/", "")
+      const params = new URLSearchParams(url.search)
+      params.set("autoplay", "1")
+      return `https://www.youtube.com/embed/${videoId}?${params.toString()}`
+    }
+
+    if (url.hostname.includes("youtube.com")) {
+      const videoId = url.searchParams.get("v")
+
+      if (videoId) {
+        const params = new URLSearchParams(url.search)
+        params.delete("v")
+        params.set("autoplay", "1")
+        return `https://www.youtube.com/embed/${videoId}?${params.toString()}`
+      }
+    }
+  } catch {
+    return ""
+  }
+
+  return ""
+}
+
+function TestimonialVideo({ image, src, backgroundColor }) {
+  const [isOpen, setIsOpen] = useState(false)
+  const embedUrl = useMemo(() => getEmbedUrl(src), [src])
+
+  const content = (
+    <>
       {/* Background Image */}
       <img 
         src={image} 
@@ -10,7 +47,7 @@ function TestimonialVideo({ image, backgroundColor }) {
 
       {/* Play Button Overlay */}
       <div className="absolute inset-0 bg-black/20 flex items-center justify-center group-hover:bg-black/40 transition-all duration-300">
-        <button className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors shadow-lg">
+        <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors shadow-lg">
           <svg 
             className="w-8 h-8 text-white ml-1" 
             fill="currentColor" 
@@ -18,7 +55,7 @@ function TestimonialVideo({ image, backgroundColor }) {
           >
             <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
           </svg>
-        </button>
+        </div>
       </div>
 
       {/* YouTube Badge */}
@@ -28,7 +65,49 @@ function TestimonialVideo({ image, backgroundColor }) {
         </svg>
         <span className="text-white font-semibold text-sm">WATCH IT ON</span>
       </div>
-    </div>
+    </>
+  )
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => {
+          if (embedUrl) {
+            setIsOpen(true)
+          }
+        }}
+        className={`${backgroundColor} relative h-80 w-full overflow-hidden rounded-3xl text-left group ${embedUrl ? "cursor-pointer" : "cursor-default"}`}
+        aria-label="Open testimonial video"
+      >
+        {content}
+      </button>
+
+      {isOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
+          <div className="relative w-full max-w-4xl overflow-hidden rounded-3xl bg-black shadow-2xl">
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-lg font-bold text-gray-900 transition hover:bg-white"
+              aria-label="Close video"
+            >
+              ×
+            </button>
+
+            <div className="aspect-video w-full">
+              <iframe
+                src={embedUrl}
+                title="Student testimonial video"
+                className="h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </>
   )
 }
 

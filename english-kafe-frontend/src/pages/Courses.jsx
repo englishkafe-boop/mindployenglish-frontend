@@ -5,6 +5,8 @@ import TestimonialVideo from '../components/TestimonialVideo'
 import ContactSection from '../components/ContactSection'
 import Footer from '../components/Footer'
 import { fetchCourses } from '../services/courseService'
+import image1 from '../assets/courses/IELTS speaking.jpg'
+import image2 from '../assets/courses/daily english.jpg'
 
 const COURSES_PER_PAGE = 6
 
@@ -166,7 +168,7 @@ function Courses() {
                 <span className="text-gray-600 font-normal text-sm sm:text-base"> (Free to learn)</span>
               </h3>
               <TestimonialVideo 
-                image="/src/assets/courses/IELTS speaking.jpg"
+                image={image1} src="https://youtu.be/PXO2x2GDCFY?si=0n7RxcjldQTaI2cx"
                 backgroundColor="bg-green-500"
               />
             </div>
@@ -177,7 +179,7 @@ function Courses() {
                 <span className="text-gray-600 font-normal text-sm sm:text-base"> (Free to learn)</span>
               </h3>
               <TestimonialVideo 
-                image="/src/assets/courses/daily english.jpg"
+                image={image2} src="https://youtu.be/9n7s8Xo2l3c?si=0n7RxcjldQTaI2cx"
                 backgroundColor="bg-yellow-400"
               />
             </div>
