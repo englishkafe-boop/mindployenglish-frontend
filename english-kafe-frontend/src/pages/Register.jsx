@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { register as registerRequest } from '../services/authService'
-const logo = '/Nav/EnglishkafeLogo-Transparent.png'
+const logo = '/Nav/Logo.PNG'
 
 function Register() {
   const [name, setName] = useState('')

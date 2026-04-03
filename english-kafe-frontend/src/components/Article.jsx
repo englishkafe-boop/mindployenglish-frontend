@@ -156,7 +156,7 @@ function Article() {
                     image={article.image}
                     title={article.title}
                     description={article.excerpt}
-                    authorLogo="/Nav/EnglishkafeLogo-Transparent.png"
+                    authorLogo="/Nav/Logo.PNG"
                     authorName={article.authorName}
                     date={article.date}
                   />

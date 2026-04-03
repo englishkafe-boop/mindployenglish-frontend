@@ -6,7 +6,7 @@ import ContactSection from "../components/ContactSection";
 import Footer from "../components/Footer";
 import { fetchBlogs } from "../services/blogService";
 
-const logo = "/Nav/EnglishkafeLogo-Transparent.png";
+const logo = "/Nav/Logo.PNG";
 const fallbackImage =
   "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&h=900&fit=crop";
 const INSIGHTS_PER_PAGE = 6;
@@ -122,14 +122,14 @@ function Blog() {
 
                 {isExpanded ? (
                   <div
-                    className="prose prose-gray mb-8 max-w-none"
+                    className="blog-content mb-8 max-w-none"
                     dangerouslySetInnerHTML={{ __html: featuredBlog.content }}
                   />
                 ) : null}
 
                 <div className="mb-8 flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <img src={logo} alt="English Kafe" className="h-10 w-auto" />
+                    <img src={logo} alt="mindployenglish" className=" border-2 border-[#F5C6D8] rounded-xl h-15 w-auto" />
                     <div>
                       <p className="font-semibold text-gray-900">{featuredBlog.authorName}</p>
                       <p className="text-sm text-gray-600">{featuredBlog.date}</p>
@@ -162,6 +162,7 @@ function Blog() {
                       key={blog.id}
                       title={blog.title}
                       description={blog.excerpt}
+                      authorName={blog.authorName}
                       date={blog.date}
                       onReadMore={() => selectBlog(blog.id)}
                     />
@@ -246,6 +247,68 @@ function Blog() {
 
       <ContactSection />
       <Footer />
+
+      <style>{`
+        .blog-content {
+          color: #374151;
+          font-size: 1rem;
+          line-height: 1.75;
+        }
+
+        .blog-content > * + * {
+          margin-top: 1rem;
+        }
+
+        .blog-content h1,
+        .blog-content h2,
+        .blog-content h3,
+        .blog-content h4 {
+          color: #111827;
+          font-weight: 700;
+          line-height: 1.25;
+        }
+
+        .blog-content h1 {
+          font-size: 2rem;
+        }
+
+        .blog-content h2 {
+          font-size: 1.75rem;
+        }
+
+        .blog-content h3 {
+          font-size: 1.5rem;
+        }
+
+        .blog-content blockquote {
+          margin: 1.5rem 0;
+          border-left: 4px solid #f472b6;
+          padding: 0.25rem 0 0.25rem 1rem;
+          color: #6b7280;
+          font-style: italic;
+          background: #fdf2f8;
+          border-radius: 0 0.75rem 0.75rem 0;
+        }
+
+        .blog-content a {
+          color: #2563eb;
+          text-decoration: underline;
+          text-underline-offset: 2px;
+        }
+
+        .blog-content ul,
+        .blog-content ol {
+          padding-left: 1.5rem;
+        }
+
+        .blog-content ul {
+          list-style: disc;
+        }
+
+        .blog-content ol {
+          list-style: decimal;
+        }
+      `}</style>
     </div>
   );
 }

@@ -119,21 +119,21 @@ function Enroll() {
                     {/* Course Info Below Image */}
                     <div>
                       {/* Badge and Price Row */}
-                      <div className="flex items-center justify-between mb-4">
+                      <div className=" mb-2">
                         <div className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
-                          {course.title.split(' ').slice(0, 2).join(' ')}
+                          {course.title}
                         </div>
-                        <span className="text-3xl font-bold text-gray-900">
-                          {course.price}
-                        </span>
                       </div>
 
                       {/* Lesson Count */}
-                      <div className="flex items-center gap-3 mb-4">
-                        <span className="text-2xl">📄</span>
-                        <span className="text-gray-700 font-semibold">
-                          {course.lessons} lessons
-                        </span>
+                      <div className="mb-4">
+                        <h1 className="text-2xl font-semibold">Course Title - {course.title}</h1>
+                        <h2 className="mb-2 mt-2 font-semibold text-gray-700">
+                        Price - {course.price}
+                        </h2>
+                        <h2 className="text-gray-700 font-semibold">
+                          Total lesson - {course.lessons} lessons
+                        </h2>
                       </div>
 
                       {/* Rating */}

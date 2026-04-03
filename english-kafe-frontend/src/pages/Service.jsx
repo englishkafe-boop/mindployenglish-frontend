@@ -3,7 +3,7 @@ import ContactSection from "../components/ContactSection"
 import Footer from "../components/Footer"
 import ServiceComponent from "../components/Service"
 const lineIcon = "/logo/Line.svg"
-const coachImage = "/service/medium-shot-smiley-teacher-with-whiteboard.jpg"
+const serviceImage = "/moti/Watermark.JPG"
 
 function Service() {
   return (
@@ -17,7 +17,7 @@ function Service() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center">
           {/* Left - Text Content */}
           <div className="space-y-4 sm:space-y-5 md:space-y-6">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
               Personal English Coaching — Learn With Real Guidance, Not Guesswork
             </h1>
             
@@ -37,7 +37,7 @@ function Service() {
           {/* Right - Image */}
           <div className="flex justify-center mt-6 md:mt-0">
             <img 
-              src={coachImage} 
+              src={serviceImage} 
               alt="Personal English Coaching" 
               loading="eager"
               decoding="async"

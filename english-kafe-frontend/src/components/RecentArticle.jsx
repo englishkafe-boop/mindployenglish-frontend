@@ -1,6 +1,6 @@
-const logo = '/Nav/EnglishkafeLogo-Transparent.png'
+const logo = '/Nav/Logo.PNG'
 
-function RecentArticle({ title, description, date, showReadMore = true, onReadMore }) {
+function RecentArticle({ title, description, authorName, date, showReadMore = true, onReadMore }) {
   return (
     <div className="border-2 border-gray-300 p-4 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
       <h3 className="font-bold text-gray-900 mb-2 text-sm">
@@ -16,10 +16,10 @@ function RecentArticle({ title, description, date, showReadMore = true, onReadMo
           <div className="flex items-center gap-2 mb-1">
             <img 
               src={logo}
-              alt="English Kafe" 
-              className="h-5 w-auto"
+              alt="mindployenglish" 
+              className="h-6 w-auto border-1 border-[#F5C6D8] rounded-md "
             />
-            <span className="text-xs font-semibold text-gray-900">English Kafe</span>
+            <span className="text-xs font-semibold text-gray-900">{authorName || 'mindployenglish'}</span>
           </div>
           <p className="text-gray-600 text-xs">{date}</p>
         </div>

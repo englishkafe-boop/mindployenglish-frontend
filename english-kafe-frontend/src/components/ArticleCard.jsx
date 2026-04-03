@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const defaultAuthorLogo = "/Nav/EnglishkafeLogo-Transparent.png";
+const defaultAuthorLogo = "/Nav/Logo.PNG";
 const fallbackImage =
   "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&h=600&fit=crop";
 
@@ -48,7 +48,7 @@ function ArticleCard({ id, image, title, description, authorLogo, authorName, da
             <img
               src={resolvedAuthorLogo}
               alt={authorName}
-              className="h-12 w-12 rounded-full border-2 border-[#F5C6D8] object-cover"
+              className="h-12 w-12 object-full scale-100 rounded-xl border-2 border-[#F5C6D8] "
             />
             <div className="min-w-0">
               <p className="truncate text-xs font-semibold text-gray-900">{authorName}</p>

@@ -1,4 +1,4 @@
-const logoMotivation = "/moti/EnglishkafeLogo-Transparent.png"
+const logoMotivation = "/moti/Watermark.JPG"
 const openIcon = "/moti/open.svg"
 const closeIcon = "/moti/close.svg"
 
@@ -14,7 +14,7 @@ function MotivationBanner() {
             <img 
               src={logoMotivation} 
               alt="English Kafé Logo" 
-              className="size-12 object-fill scale-800"
+              className="h-8 size-10  object-center rounded-lg scale-600"
             />
           </div>
 

@@ -1,60 +1,62 @@
-import { useParams, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
-import { fetchCourseById } from '../services/courseService'
-import { createPayment } from '../services/paymentService'
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { fetchCourseById } from "../services/courseService";
+import { createPayment } from "../services/paymentService";
+
+const paymentSteps = ["Payment", "Upload Receipt", "Verification"];
 
 function Payment() {
-  const { courseId } = useParams()
-  const navigate = useNavigate()
-  const [currentStep, setCurrentStep] = useState(1)
-  const [course, setCourse] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [submitting, setSubmitting] = useState(false)
-  const [error, setError] = useState('')
-  const [receiptFile, setReceiptFile] = useState(null)
-  const [receiptName, setReceiptName] = useState('')
+  const { courseId } = useParams();
+  const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [course, setCourse] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [receiptFile, setReceiptFile] = useState(null);
+  const [receiptName, setReceiptName] = useState("");
 
   useEffect(() => {
     async function loadCourse() {
       try {
-        setLoading(true)
-        setError('')
-        setCourse(await fetchCourseById(courseId))
+        setLoading(true);
+        setError("");
+        setCourse(await fetchCourseById(courseId));
       } catch (loadError) {
-        setError(loadError.message)
+        setError(loadError.message);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
 
-    loadCourse()
-  }, [courseId])
+    loadCourse();
+  }, [courseId]);
 
   const handleReceiptChange = (e) => {
-    const file = e.target.files?.[0]
-    setReceiptFile(file || null)
-    setReceiptName(file?.name || '')
-  }
+    const file = e.target.files?.[0];
+    setReceiptFile(file || null);
+    setReceiptName(file?.name || "");
+  };
 
   const handleUploadReceipt = async () => {
     if (!receiptFile) {
-      setError('Please upload your payment receipt first.')
-      return
+      setError("Please upload your payment receipt first.");
+      return;
     }
 
     try {
-      setSubmitting(true)
-      setError('')
-      await createPayment(courseId, receiptFile)
-      setCurrentStep(3)
+      setSubmitting(true);
+      setError("");
+      await createPayment(courseId, receiptFile);
+      setCurrentStep(3);
     } catch (submitError) {
-      setError(submitError.message)
+      setError(submitError.message);
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -64,7 +66,7 @@ function Payment() {
           <p className="text-2xl text-gray-600">Loading course...</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (!course) {
@@ -72,21 +74,28 @@ function Payment() {
       <div className="min-h-screen bg-white">
         <Navbar />
         <div className="flex items-center justify-center h-screen">
-          <p className="text-2xl text-gray-600">{error || 'Course not found'}</p>
+          <p className="text-2xl text-gray-600">
+            {error || "Course not found"}
+          </p>
         </div>
       </div>
-    )
+    );
   }
 
   const renderStars = (rating) => (
     <div className="flex gap-1">
       {[...Array(5)].map((_, i) => (
-        <span key={i} className={i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'}>
+        <span
+          key={i}
+          className={
+            i < Math.floor(rating) ? "text-yellow-400" : "text-gray-300"
+          }
+        >
           ★
         </span>
       ))}
     </div>
-  )
+  );
 
   return (
     <div className="min-h-screen bg-blue-50">
@@ -136,26 +145,29 @@ function Payment() {
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between mb-3 sm:mb-4 gap-2">
-                    <div className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-2 sm:px-3 py-1 rounded-full shrink-0">
-                      {course.title.split(' ').slice(0, 2).join(' ')}
+                  {/* Badge and Price Row */}
+                  <div className=" mb-2">
+                    <div className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
+                      {course.title}
                     </div>
-                    <span className="text-2xl sm:text-3xl font-bold text-gray-900">
-                      {course.price}
-                    </span>
                   </div>
 
-                  <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                    <span className="text-lg sm:text-2xl">📄</span>
-                    <span className="text-gray-700 font-semibold text-sm sm:text-base">
-                      {course.lessons} lessons
-                    </span>
+                  {/* Lesson Count */}
+                  <div className="mb-4">
+                    <h1 className="text-2xl font-semibold">Course Title - {course.title}</h1>
+                    <h2 className="mb-2 mt-2 font-semibold text-gray-700">
+                      Price - {course.price}
+                    </h2>
+                    <h2 className="text-gray-700 font-semibold">
+                      Total lesson - {course.lessons} lessons
+                    </h2>
                   </div>
 
-                  <div className="flex items-center gap-2 sm:gap-3">
+                  {/* Rating */}
+                  <div className="flex items-center gap-3">
                     {renderStars(course.rating)}
-                    <span className="text-gray-600 font-semibold text-sm sm:text-base">
-                      ({course.rating.toFixed(1)})
+                    <span className="text-gray-600 font-semibold">
+                      ({course.rating.toFixed(1)}/5)
                     </span>
                   </div>
                 </div>
@@ -167,21 +179,61 @@ function Payment() {
                 Payment Section
               </h3>
 
-              <div className="mb-8 sm:mb-10 md:mb-12">
-                <div className="flex items-center justify-between mb-3 sm:mb-4 gap-1 sm:gap-2">
-                  {['Payment', 'Upload Receipt', 'Verification'].map((label, index) => (
-                    <div key={label} className="flex items-center flex-1 min-w-0">
-                      <div className="flex flex-col items-center flex-1 min-w-0">
-                        <div className={`w-7 sm:w-8 h-7 sm:h-8 rounded-full flex items-center justify-center font-bold text-white mb-1 sm:mb-2 shrink-0 ${
-                          currentStep >= index + 1 ? 'bg-pink-400' : 'bg-gray-300'
-                        }`}>
-                          {currentStep > index + 1 ? '✓' : index + 1}
+              <div className="mb-2 flex justify-center rounded-2xl border border-[#F3D6DF] bg-[#FFF8FA] px-4 py-3 shadow-sm sm:mb-4 sm:px-6 sm:py-7 md:mb-6">
+                <div className="inline-flex items-start justify-center gap-2 sm:gap-3">
+                  {paymentSteps.map((label, index) => {
+                    const stepNumber = index + 1;
+                    const isCompleted = currentStep > stepNumber;
+                    const isActive = currentStep === stepNumber;
+
+                    return (
+                      <div
+                        key={label}
+                        className="flex items-center justify-center"
+                      >
+                        <div className="flex w-20 flex-col items-center text-center sm:w-28">
+                          <div
+                            className={`mb-3 flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-bold transition-all sm:h-12 sm:w-12 sm:text-base ${
+                              isActive
+                                ? "border-[#F8B2C0] bg-[#F8B2C0] text-gray-900 shadow-md shadow-pink-100"
+                                : isCompleted
+                                  ? "border-[#CDEAFA] bg-[#CDEAFA] text-gray-900"
+                                  : "border-gray-300 bg-white text-gray-500"
+                            }`}
+                          >
+                            {isCompleted ? "✓" : stepNumber}
+                          </div>
+
+                          <p
+                            className={`text-xs font-semibold sm:text-sm ${
+                              isActive || isCompleted
+                                ? "text-gray-900"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {label}
+                          </p>
+                          <p className="mt-1 text-[11px] text-gray-500 sm:text-xs">
+                            Step {stepNumber}
+                          </p>
                         </div>
-                        <span className="text-xs font-semibold text-gray-700 text-center line-clamp-2">{label}</span>
+
+                        {index < paymentSteps.length - 1 ? (
+                          <div className="mt-[-2.25rem] w-8 sm:mt-[-2.5rem] sm:w-14">
+                            <div className="h-1 w-full rounded-full bg-gray-200">
+                              <div
+                                className={`h-full rounded-full transition-all ${
+                                  currentStep > stepNumber
+                                    ? "w-full bg-[#F8B2C0]"
+                                    : "w-0"
+                                }`}
+                              />
+                            </div>
+                          </div>
+                        ) : null}
                       </div>
-                      {index < 2 ? <div className="flex-1 mx-1 sm:mx-2 h-0.5 sm:h-1 bg-gray-300 mb-6 shrink-0"></div> : null}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
@@ -198,8 +250,12 @@ function Payment() {
 
                   <div className="bg-gray-100 p-6 sm:p-8 rounded-xl flex items-center justify-center">
                     <div className="border-4 border-gray-300 p-3 sm:p-4 bg-white rounded-lg">
-                      <svg className="w-24 sm:w-32 h-24 sm:h-32 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M3 3h8v8H3V3zm10 10h8v8h-8v-8zM7 7h4v4H7V7zm8-4h4v4h-4V3zm4 12h4v4h-4v-4zM3 13h4v4H3v-4z"/>
+                      <svg
+                        className="w-24 sm:w-32 h-24 sm:h-32 text-gray-400"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M3 3h8v8H3V3zm10 10h8v8h-8v-8zM7 7h4v4H7V7zm8-4h4v4h-4V3zm4 12h4v4h-4v-4zM3 13h4v4H3v-4z" />
                       </svg>
                     </div>
                   </div>
@@ -228,7 +284,8 @@ function Payment() {
                       Step 2. Upload your payment receipt.
                     </p>
                     <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
-                      Please upload a clear image or screenshot of your payment confirmation.
+                      Please upload a clear image or screenshot of your payment
+                      confirmation.
                     </p>
                   </div>
 
@@ -241,7 +298,7 @@ function Payment() {
                     />
                     <div className="text-3xl sm:text-4xl mb-2 sm:mb-3">📄</div>
                     <p className="text-gray-700 font-semibold text-sm sm:text-base mb-1">
-                      {receiptName || 'Click to upload receipt'}
+                      {receiptName || "Click to upload receipt"}
                     </p>
                     <p className="text-xs sm:text-sm text-gray-600">
                       PNG or JPG
@@ -260,7 +317,7 @@ function Payment() {
                       disabled={submitting}
                       className="flex-1 bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base disabled:opacity-60"
                     >
-                      {submitting ? 'Submitting...' : 'Submit Payment'}
+                      {submitting ? "Submitting..." : "Submit Payment"}
                     </button>
                   </div>
                 </div>
@@ -273,12 +330,13 @@ function Payment() {
                       ⏳ Payment Under Review
                     </h4>
                     <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                      Your payment has been submitted successfully. You will be notified once your enrollment is approved.
+                      Your payment has been submitted successfully. You will be
+                      notified once your enrollment is approved.
                     </p>
                   </div>
 
                   <button
-                    onClick={() => navigate('/my-course-order')}
+                    onClick={() => navigate("/my-course-order")}
                     className="w-full bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
                   >
                     View My Course Orders
@@ -292,7 +350,7 @@ function Payment() {
 
       <Footer />
     </div>
-  )
+  );
 }
 
-export default Payment
+export default Payment;

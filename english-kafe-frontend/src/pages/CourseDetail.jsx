@@ -6,6 +6,8 @@ import CourseCard from '../components/CourseCard'
 const logoTransparent = '/Nav/EnglishkafeLogo-Transparent.png'
 import { fetchCourseById, fetchCourses } from '../services/courseService'
 
+const RELATED_COURSES_PER_PAGE = 4
+
 function CourseDetail() {
   const { courseId } = useParams()
   const navigate = useNavigate()
@@ -38,13 +40,23 @@ function CourseDetail() {
     loadCourseData()
   }, [courseId])
   
-  const coursesPerPage = 4
-  const totalPages = Math.max(1, Math.ceil(relatedCourses.length / coursesPerPage))
-  const startIndex = (currentPage - 1) * coursesPerPage
-  const currentRelatedCourses = relatedCourses.slice(startIndex, startIndex + coursesPerPage)
+  const totalPages = Math.max(1, Math.ceil(relatedCourses.length / RELATED_COURSES_PER_PAGE))
+  const startIndex = (currentPage - 1) * RELATED_COURSES_PER_PAGE
+  const currentRelatedCourses = relatedCourses.slice(startIndex, startIndex + RELATED_COURSES_PER_PAGE)
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [courseId])
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages)
+    }
+  }, [currentPage, totalPages])
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   if (loading) {
@@ -83,20 +95,13 @@ function CourseDetail() {
 
   const courseFeatures = course.features.length > 0
     ? course.features
-    : [
-        'Simple, step-by-step lessons',
-        'Real-life examples for practical use',
-        'Guided practice in every video',
-        'Improve speaking and writing accuracy',
-        'Build a strong foundation',
-        'No confusing rules or memorization'
-      ]
+    : ['No specific features listed for this course.'];
 
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
 
-      <div className="px-4 sm:px-6 md:px-10 py-8 sm:py-10 md:py-12 bg-blue-50">
+      <div className="px-4 sm:px-6 md:px-10 py-4 sm:py-6 md:py-8 bg-blue-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-10 md:mb-12">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
@@ -109,12 +114,12 @@ function CourseDetail() {
 
           <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 md:p-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
-              <div className="flex items-center justify-center">
+              <div className="flex items-start justify-center">
                 {course.image ? (
                   <img 
                     src={course.image} 
                     alt={course.title}
-                    className="w-full h-48 sm:h-64 md:h-96 object-cover rounded-2xl"
+                    className="w-full h-48 sm:h-64 md:h-96 object-cover rounded-xl"
                   />
                 ) : (
                   <div className="flex h-48 w-full items-center justify-center rounded-2xl bg-gray-100 text-gray-500">
@@ -146,11 +151,6 @@ function CourseDetail() {
 
                 <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-6 pt-4 sm:pt-6 border-t border-gray-200">
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-700 font-semibold uppercase text-xs sm:text-sm">
-                      {course.title.split(' ')[0]}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
                     <span className="text-lg">📄</span>
                     <span className="text-gray-700 font-semibold text-sm sm:text-base">{course.lessons} lessons</span>
                   </div>
@@ -160,9 +160,9 @@ function CourseDetail() {
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-4 sm:pt-6 gap-4 sm:gap-6">
-                  <div className="text-3xl sm:text-4xl font-bold text-gray-900">
-                    {course.price}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between  sm:pt-2 gap-2 sm:gap-4">
+                  <div className="text-2xl sm:text-3xl font-bold text-gray-900">
+                  Price - {course.price}
                   </div>
                   <button 
                     onClick={() => navigate(`/enroll/${course.id}`)}
@@ -203,21 +203,42 @@ function CourseDetail() {
                 ))}
               </div>
 
-              {relatedCourses.length > coursesPerPage ? (
-                <div className="flex justify-center items-center gap-2 mt-10 sm:mt-12 flex-wrap">
-                  {[...Array(totalPages)].map((_, index) => (
+              {relatedCourses.length > RELATED_COURSES_PER_PAGE ? (
+                <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:mt-10 md:mt-12">
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="rounded-full border border-gray-300 px-5 py-2 text-sm font-semibold text-gray-700 transition hover:border-gray-400 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
+                  >
+                    Previous
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
                     <button
-                      key={index + 1}
-                      onClick={() => handlePageChange(index + 1)}
-                      className={`px-3 sm:px-4 py-2 rounded-lg font-semibold text-sm sm:text-base transition-colors ${
-                        currentPage === index + 1
-                          ? 'bg-gray-900 text-white'
-                          : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+                      key={pageNumber}
+                      type="button"
+                      onClick={() => handlePageChange(pageNumber)}
+                      className={`h-10 w-10 rounded-full text-sm font-semibold transition sm:text-base ${
+                        currentPage === pageNumber
+                          ? 'bg-[#F8B2C0] text-gray-900'
+                          : 'border border-gray-300 bg-white text-gray-700 hover:border-gray-400'
                       }`}
+                      aria-label={`Go to page ${pageNumber}`}
+                      aria-current={currentPage === pageNumber ? 'page' : undefined}
                     >
-                      {index + 1}
+                      {pageNumber}
                     </button>
                   ))}
+
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="rounded-full border border-gray-300 px-5 py-2 text-sm font-semibold text-gray-700 transition hover:border-gray-400 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
+                  >
+                    Next
+                  </button>
                 </div>
               ) : null}
             </>

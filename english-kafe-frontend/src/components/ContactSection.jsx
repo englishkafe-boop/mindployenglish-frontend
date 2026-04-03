@@ -33,7 +33,7 @@ function ContactSection() {
                 </svg>
               </div>
               <div>
-                <p className="text-base sm:text-lg font-semibold text-gray-900">english.kafe@gmail.com</p>
+                <p className="text-base sm:text-lg font-semibold text-gray-900">mindployenglish@gmail.com</p>
               </div>
             </div>
 

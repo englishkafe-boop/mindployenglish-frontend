@@ -191,12 +191,12 @@ function MyProfile() {
                     </div>
 
                     <p className="text-sm text-gray-500">
-                      Want to update your email? Contact support via{" "}
+                      Want to update your email? Contact support <br />via{" "}
                       <a
                         href="#"
                         className="text-blue-600 font-semibold hover:underline"
                       >
-                        LINE (English Kafe)
+                        LINE (mindployenglish)
                       </a>
                     </p>
                   </div>

@@ -4,6 +4,8 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { fetchMyPayments } from '../services/paymentService'
 
+const orderSteps = ['Payment', 'Receipt uploaded', 'Verification']
+
 function OrderStatus() {
   const { orderId } = useParams()
   const navigate = useNavigate()
@@ -68,28 +70,65 @@ function OrderStatus() {
     </div>
   )
 
+  const renderStatusStepper = (steps) => (
+    <div className="mb-8 flex justify-center rounded-2xl border border-[#F3D6DF] bg-[#FFF8FA] px-4 py-3 shadow-sm sm:px-6 sm:py-7">
+      <div className="inline-flex items-start justify-center gap-2 sm:gap-3">
+        {steps.map((step, index) => (
+          <div key={step.label} className="flex items-center justify-center">
+            <div className="flex w-20 flex-col items-center text-center sm:w-28">
+              <div
+                className={`mb-3 flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-bold transition-all sm:h-12 sm:w-12 sm:text-base ${step.circleClass}`}
+              >
+                {step.icon}
+              </div>
+
+              <p className={`text-xs font-semibold sm:text-sm ${step.labelClass || 'text-gray-900'}`}>
+                {step.label}
+              </p>
+              <p className="mt-1 text-[11px] text-gray-500 sm:text-xs">
+                Step {index + 1}
+              </p>
+            </div>
+
+            {index < steps.length - 1 ? (
+              <div className="mt-[-2.25rem] w-8 sm:mt-[-2.5rem] sm:w-14">
+                <div className="h-1 w-full rounded-full bg-gray-200">
+                  <div className={`h-full w-full rounded-full ${step.lineClass}`} />
+                </div>
+              </div>
+            ) : null}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+
   const renderApprovedStatus = () => (
     <div>
       <div className="flex items-center gap-3 mb-6">
         <div className="text-green-500 text-3xl">✓</div>
         <h2 className="text-2xl font-bold text-gray-900">Enrollment Confirmed</h2>
       </div>
-      
-      <div className="flex items-center gap-4 mb-8">
-        {['✓', '✓', '✓'].map((icon, index) => (
-          <div key={index} className="flex items-center flex-1">
-            <div className="flex flex-col items-center flex-1">
-              <div className={`w-10 h-10 rounded-full ${index === 2 ? 'bg-green-500' : 'bg-pink-300'} flex items-center justify-center text-white font-bold mb-2 text-sm`}>
-                {icon}
-              </div>
-              <p className="text-xs font-medium text-gray-600 text-center">
-                {index === 0 ? 'Payment' : index === 1 ? 'Receipt uploaded' : 'Verification'}
-              </p>
-            </div>
-            {index < 2 ? <div className={`flex-1 h-1 ${index === 1 ? 'bg-green-500' : 'bg-pink-300'} mt-5`}></div> : null}
-          </div>
-        ))}
-      </div>
+
+      {renderStatusStepper([
+        {
+          label: orderSteps[0],
+          icon: '✓',
+          circleClass: 'border-[#F8B2C0] bg-[#F8B2C0] text-gray-900',
+          lineClass: 'bg-[#F8B2C0]',
+        },
+        {
+          label: orderSteps[1],
+          icon: '✓',
+          circleClass: 'border-[#F8B2C0] bg-[#F8B2C0] text-gray-900',
+          lineClass: 'bg-green-500',
+        },
+        {
+          label: orderSteps[2],
+          icon: '✓',
+          circleClass: 'border-green-500 bg-green-500 text-white',
+        },
+      ])}
 
       <p className="text-gray-700 mb-2">
         Your payment has been successfully verified.
@@ -113,33 +152,32 @@ function OrderStatus() {
         <div className="text-red-500 text-3xl">✕</div>
         <h2 className="text-2xl font-bold text-gray-900">Payment Not Verified</h2>
       </div>
-      
-      <div className="flex items-center gap-4 mb-8">
-        <div className="flex items-center flex-1">
-          <div className="flex flex-col items-center flex-1">
-            <div className="w-10 h-10 rounded-full bg-pink-300 flex items-center justify-center text-white font-bold mb-2 text-sm">✓</div>
-            <p className="text-xs font-medium text-gray-600 text-center">Payment</p>
-          </div>
-          <div className="flex-1 h-1 bg-pink-300 mt-5"></div>
-        </div>
-        <div className="flex items-center flex-1">
-          <div className="flex flex-col items-center flex-1">
-            <div className="w-10 h-10 rounded-full bg-pink-300 flex items-center justify-center text-white font-bold mb-2 text-sm">✓</div>
-            <p className="text-xs font-medium text-gray-600 text-center">Receipt uploaded</p>
-          </div>
-          <div className="flex-1 h-1 bg-red-500 mt-5"></div>
-        </div>
-        <div className="flex flex-col items-center flex-1">
-          <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center text-white font-bold mb-2 text-sm">✕</div>
-          <p className="text-xs font-medium text-gray-600 text-center">Verification</p>
-        </div>
-      </div>
+
+      {renderStatusStepper([
+        {
+          label: orderSteps[0],
+          icon: '✓',
+          circleClass: 'border-[#F8B2C0] bg-[#F8B2C0] text-gray-900',
+          lineClass: 'bg-[#F8B2C0]',
+        },
+        {
+          label: orderSteps[1],
+          icon: '✓',
+          circleClass: 'border-[#F8B2C0] bg-[#F8B2C0] text-gray-900',
+          lineClass: 'bg-red-500',
+        },
+        {
+          label: orderSteps[2],
+          icon: '✕',
+          circleClass: 'border-red-500 bg-red-500 text-white',
+        },
+      ])}
 
       <p className="text-gray-700 mb-2">
         We couldn't verify your payment.
       </p>
-      <p className="text-gray-600 text-sm mb-4">
-        {payment.rejectReason || 'Please re-upload your receipt or contact support for assistance.'}
+      <p className="text-gray-600 text-sm mb-4">Reject Reason : 
+        <span className="font-semibold px-2">{payment.rejectReason || 'Please re-upload your receipt or contact support for assistance.'}</span>
       </p>
 
       <button
@@ -157,27 +195,26 @@ function OrderStatus() {
         <div className="text-yellow-500 text-3xl animate-pulse">⏳</div>
         <h2 className="text-2xl font-bold text-gray-900">Payment Under Review</h2>
       </div>
-      
-      <div className="flex items-center gap-4 mb-8">
-        <div className="flex items-center flex-1">
-          <div className="flex flex-col items-center flex-1">
-            <div className="w-10 h-10 rounded-full bg-pink-300 flex items-center justify-center text-white font-bold mb-2 text-sm">✓</div>
-            <p className="text-xs font-medium text-gray-600 text-center">Payment</p>
-          </div>
-          <div className="flex-1 h-1 bg-pink-300 mt-5"></div>
-        </div>
-        <div className="flex items-center flex-1">
-          <div className="flex flex-col items-center flex-1">
-            <div className="w-10 h-10 rounded-full bg-pink-300 flex items-center justify-center text-white font-bold mb-2 text-sm">✓</div>
-            <p className="text-xs font-medium text-gray-600 text-center">Receipt uploaded</p>
-          </div>
-          <div className="flex-1 h-1 bg-yellow-400 mt-5"></div>
-        </div>
-        <div className="flex flex-col items-center flex-1">
-          <div className="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center text-white font-bold mb-2 text-sm animate-pulse">⏳</div>
-          <p className="text-xs font-medium text-gray-600 text-center">Verification</p>
-        </div>
-      </div>
+
+      {renderStatusStepper([
+        {
+          label: orderSteps[0],
+          icon: '✓',
+          circleClass: 'border-[#F8B2C0] bg-[#F8B2C0] text-gray-900',
+          lineClass: 'bg-[#F8B2C0]',
+        },
+        {
+          label: orderSteps[1],
+          icon: '✓',
+          circleClass: 'border-[#F8B2C0] bg-[#F8B2C0] text-gray-900',
+          lineClass: 'bg-yellow-400',
+        },
+        {
+          label: orderSteps[2],
+          icon: '⏳',
+          circleClass: 'border-yellow-400 bg-yellow-400 text-white animate-pulse',
+        },
+      ])}
 
       <p className="text-gray-700 mb-2">
         Your payment has been successfully submitted!
@@ -227,7 +264,7 @@ function OrderStatus() {
                     <img
                       src={course.image}
                       alt={course.title}
-                      className="w-full h-64 object-cover rounded-2xl"
+                      className="w-full h-84 object-cover rounded-2xl"
                     />
                   ) : (
                     <div className="flex h-64 items-center justify-center rounded-2xl bg-gray-100 text-gray-500">
@@ -237,20 +274,20 @@ function OrderStatus() {
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="mb-2">
                     <div className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
-                      {course.title.split(' ').slice(0, 2).join(' ')}
+                      {course.title}
                     </div>
-                    <span className="text-3xl font-bold text-gray-900">
-                      {course.price}
-                    </span>
+                    
                   </div>
 
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="text-2xl">📄</span>
-                    <span className="text-gray-700 font-semibold">
-                      Course order
-                    </span>
+                  <div className="mb-2">
+                    <h1 className="text-lg font-semibold">Ordering Course -
+                      {course.title}
+                    </h1>
+                    <h2 className="text-lg font-semibold text-gray-900">
+                      Price - {course.price}
+                    </h2>
                   </div>
 
                   <div className="flex items-center gap-3">

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { resetPassword as resetPasswordRequest } from "../services/authService";
 
-const logo = "/Nav/EnglishkafeLogo-Transparent.png";
+const logo = "/Nav/Logo.PNG";
 
 function ResetPassword() {
   const { token } = useParams();

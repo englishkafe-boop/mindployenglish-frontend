@@ -74,7 +74,7 @@ function MyCourseOrder() {
                 const course = payment.course
                 return (
                   <div key={payment.id} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex gap-6 p-6">
-                    <div className="relative w-56 bg-gray-300 overflow-hidden shrink-0 rounded-xl">
+                    <div className="relative w-56 bg-gray-300 h-54 overflow-hidden shrink-0 rounded-xl">
                       {course?.image ? (
                         <img 
                           src={course.image} 

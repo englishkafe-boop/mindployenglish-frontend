@@ -1,4 +1,4 @@
-const logo = "/Nav/EnglishkafeLogo-Transparent.png"
+const logo = "/Nav/Logo.PNG"
 import { useNavigate, useLocation } from "react-router-dom"
 import { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
@@ -24,8 +24,8 @@ function Navbar() {
     <nav className="sticky top-0 z-50  flex items-center justify-between px-30 py-2 bg-white shadow-sm">
       
       {/* Logo */}
-      <div className="flex items-center ">
-        <img src={logo} alt="English Kafe Logo" className="size-12 object-fill scale-200 " />
+      <div className="flex items-center overflow-hidden ">
+        <img src={logo} alt="English Kafe Logo" className="size-15 object-fit scale-150 " />
       </div>
 
       {/* Menu */}
@@ -86,7 +86,7 @@ function Navbar() {
           {showProfileMenu && (
             <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-xl z-50">
               {/* Profile Header with Image */}
-              <div className="px-4 py-4 border-b border-gray-200 flex items-center gap-3">
+              <div className="px-2 py-4 overflow-hidden border-b border-gray-200 flex items-center gap-3">
                 <img 
                   src={profileImage}
                   alt="Profile"

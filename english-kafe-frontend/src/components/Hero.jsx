@@ -21,11 +21,11 @@ function Hero() {
         <div className="relative z-40 ">
           <h1 className="leading-15 w-196 text-2xl sm:text-2xl md:text-3xl lg:text-5xl font-bold  text-gray-900">
             Speak English with Confidence<br />
-            Master Grammar at English Kafé
+            <span className=" text-lg sm:text-xl md:text-2xl lg:text-4xl">Master Grammar at <span className="text-[#F8B2C0]">Mind Ploy English !</span></span>
           </h1>
 
-          <p className="text-[#8B6F61] mt-2 sm:mt-4 md:mt-6  sm:text-base lg:text-2xl leading-7">
-            Where English learning feels relaxed, practical,<br /> and enjoyable.
+          <p className="text-[#8B6F61] mt-2 sm:mt-4 md:mt-6  sm:text-base lg:text-xl leading-7">
+            Where English learning feels relaxed, practical, and enjoyable.
           </p>
 
           <button
