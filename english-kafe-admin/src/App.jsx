@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom'
+import { useState } from 'react'
 import AdminLogin from './pages/AdminLogin'
 import Dashboard from './pages/Dashboard'
 import Sidebar from './components/Sidebar'
@@ -21,11 +22,13 @@ import AdminProfile from './pages/AdminProfile'
 import RequireAdmin from './routes/RequireAdmin'
 
 function ProtectedLayout() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+
   return (
     <div className="flex h-screen bg-gray-100">
-      <Sidebar />
+      <Sidebar isOpen={isSidebarOpen} />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <TopNav />
+        <TopNav isSidebarOpen={isSidebarOpen} onToggleSidebar={() => setIsSidebarOpen((current) => !current)} />
         <div className="flex-1 overflow-auto">
           <Outlet />
         </div>

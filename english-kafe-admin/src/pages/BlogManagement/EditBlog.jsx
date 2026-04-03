@@ -285,9 +285,9 @@ function EditBlog() {
                   setIsEditorEmpty(true);
                 }
               }}
-              className="h-64 w-full resize-none overflow-y-auto whitespace-pre-wrap px-0 py-4 text-sm text-gray-700 outline-none focus:ring-0 sm:h-80 sm:text-base"
+              className=" w-full resize-none overflow-y-auto whitespace-pre-wrap px-0 py-4 text-sm text-gray-700 outline-none focus:ring-0 sm:h-80 sm:text-base"
               style={{
-                minHeight: "320px",
+                minHeight: "420px",
                 color: isEditorEmpty ? "#d1d5db" : "#374151",
               }}
             />

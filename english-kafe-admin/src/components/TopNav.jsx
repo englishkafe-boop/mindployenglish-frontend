@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom'
-import { User, LogOut } from 'lucide-react'
+import { User, LogOut, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 
-function TopNav() {
+function TopNav({ isSidebarOpen = true, onToggleSidebar }) {
   const navigate = useNavigate()
   const [showProfile, setShowProfile] = useState(false)
   const { user, logout } = useAuth()
@@ -16,7 +16,16 @@ function TopNav() {
   }
 
   return (
-    <div className="bg-white px-8 py-4 flex items-center justify-end border-b border-gray-200">
+    <div className="bg-white px-8 py-4 flex items-center justify-between border-b border-gray-200">
+      <button
+        type="button"
+        onClick={onToggleSidebar}
+        className="flex h-11 w-11 items-center justify-center rounded-xl border border-gray-200 text-gray-700 transition-colors hover:bg-pink-50 hover:text-gray-900"
+        title={isSidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+      >
+        {isSidebarOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+      </button>
+
       {/* Profile Dropdown */}
       <div className="relative">
         <button
@@ -34,9 +43,9 @@ function TopNav() {
 
         {showProfile && (
           <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-            <div className="p-3 border-b border-gray-200">
+            <div className="p-3 border-b border-gray-200 overflow-hidden">
               <p className="text-sm text-gray-600">Logged in as</p>
-              <p className="font-semibold text-gray-900">{adminEmail}</p>
+              <p className="font-semibold text-sm text-gray-900">{adminEmail}</p>
             </div>
 
             <button
