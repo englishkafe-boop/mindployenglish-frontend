@@ -42,6 +42,18 @@ function MyCourseOrder() {
     return 'Pending'
   }
 
+  const getStatusClasses = (status) => {
+    if (status === 'approved') {
+      return 'bg-green-100 text-green-700'
+    }
+
+    if (status === 'rejected') {
+      return 'bg-red-100 text-red-700'
+    }
+
+    return 'bg-yellow-100 text-yellow-700'
+  }
+
   return (
     <div className="min-h-screen bg-blue-50">
       <Navbar />
@@ -89,7 +101,7 @@ function MyCourseOrder() {
                     </div>
 
                     <div className="flex-1 flex flex-col justify-between">
-                      <div className="inline-block bg-blue-100 text-gray-900 text-xs font-semibold px-4 py-2 rounded-full mb-3 w-full text-center">
+                      <div className={`inline-block text-xs font-semibold px-4 py-2 rounded-full mb-3 w-full text-center ${getStatusClasses(payment.status)}`}>
                         {getStatusLabel(payment.status)}
                       </div>
 

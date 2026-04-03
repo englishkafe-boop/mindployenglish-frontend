@@ -14,7 +14,7 @@ function MyCourseCard({ id, image, title, description, lessons, buttonText = "Le
           <img 
             src={image} 
             alt={title} 
-            className="h-full w-full object-cover"
+            className="h-64 w-full object-full scale-100"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-sm font-semibold text-gray-500">
@@ -33,12 +33,12 @@ function MyCourseCard({ id, image, title, description, lessons, buttonText = "Le
             {title}
           </p>
 
-          <p className="mb-4 text-sm leading-relaxed text-gray-600 whitespace-pre-wrap break-words">
+          <p className="mb-2 text-gray-600 text-sm leading-relaxed mb-3">
             {description}
           </p>
         </div>
 
-        <div className="mb-5 flex items-center gap-2">
+        <div className="mb-2 flex items-center gap-2">
           <span className="text-lg">📄</span>
           <span className="text-sm font-semibold text-gray-700 sm:text-base">
             {lessons} lessons
