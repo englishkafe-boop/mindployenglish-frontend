@@ -184,7 +184,7 @@ function Enroll() {
                         <span className="font-semibold">Step 2.</span> Upload your payment receipt.
                       </li>
                       <li>
-                        <span className="font-semibold">Step 3.</span> Wait for admin verification (you'll be notified once approved).
+                        <span className="font-semibold">Step 3.</span> Please wait for admin verification. You can check your order status anytime in <span className="font-bold pt-6">Profile →  My Courses Orders</span>.
                       </li>
                     </ol>
                   </div>

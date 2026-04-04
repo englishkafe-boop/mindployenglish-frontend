@@ -7,14 +7,14 @@ function MotivationBanner() {
     <section className="relative px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-12" style={{backgroundColor: "#F5D4DC"}}>
       <div className=" max-w-6xl mx-auto relative">
         
-        <div className=" grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6 items-center">
+        <div className=" grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-5 md:gap-6 items-center">
           
           {/* Left - Logo */}
           <div className=" flex justify-center md:justify-center">
             <img 
               src={logoMotivation} 
               alt="English Kafé Logo" 
-              className="h-8 size-10  object-center rounded-lg scale-600"
+              className="h-8 size-10  object-center  scale-600"
             />
           </div>
 
@@ -31,12 +31,12 @@ function MotivationBanner() {
             
             <div>
               {/* Top line */}
-              <div className="w-20 sm:w-28 md:w-32 h-0.5 sm:h-1 bg-black mb-3 sm:mb-4"></div>
+              <div className="w-20 sm:w-28 md:w-40 h-0.5 sm:h-1 bg-black mb-3 sm:mb-4"></div>
               
               {/* Message container */}
-              <div>
-                <h2 className="text-lg sm:text-1xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4 leading-tight max-w-2xl">
-                  Every small effort you make in learning English<br className="hidden sm:block" />
+              <div className="  p-2 sm:p-4 ">
+                <h2 className="text-lg sm:text-1xl md:text-2xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4 leading-tight max-w-2xl">
+                  Every small effort you make in learning English
                   today builds the confidence and fluency you
                   will proudly use tomorrow.
                 </h2>

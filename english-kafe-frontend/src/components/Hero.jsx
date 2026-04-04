@@ -15,16 +15,16 @@ function Hero() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center max-w-6xl mx-auto relative">
 
         {/* Decorative Pink Shape on Left */}
-        <div className="absolute -left-100 -bottom-40 w-full md:w-165 h-full md:h-160 rounded-full pointer-events-none z-0 hidden md:block" style={{backgroundColor: "#FCDCE2"}}></div>
+        <div className="absolute -left-90 -bottom-60 w-full md:w-165 h-full md:h-160 rounded-full pointer-events-none z-0 hidden md:block" style={{backgroundColor: "#FCDCE2"}}></div>
 
         {/* Left Content */}
         <div className="relative z-40 ">
           <h1 className="leading-15 w-196 text-2xl sm:text-2xl md:text-3xl lg:text-5xl font-bold  text-gray-900">
-            Speak English with Confidence<br />
-            <span className=" text-lg sm:text-xl md:text-2xl lg:text-4xl">Master Grammar at <span className="text-[#F8B2C0]">Mind Ploy English !</span></span>
+            Speak English with <br />Confidence,&nbsp; 
+            <span className=" text-lg sm:text-xl md:text-2xl lg:text-5xl">Master Grammar at <span className="text-[#F8A2C0]">Mind Ploy English !</span></span>
           </h1>
 
-          <p className="text-[#8B6F61] mt-2 sm:mt-4 md:mt-6  sm:text-base lg:text-xl leading-7">
+          <p className="text-[#8B6F61]  sm:mt-2 md:mt-4  sm:text-base lg:text-lg leading-7">
             Where English learning feels relaxed, practical, and enjoyable.
           </p>
 
