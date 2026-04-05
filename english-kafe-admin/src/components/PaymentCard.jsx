@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 function PaymentCard({ payment, onApprove, onDeny, status = 'review' }) {
   const [showSlipModal, setShowSlipModal] = useState(false)
-  const avatar = payment.userAvatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop'
+ 
 
   return (
     <>
@@ -56,12 +56,12 @@ function PaymentCard({ payment, onApprove, onDeny, status = 'review' }) {
             </div>
           </button>
 
-          {/* Right Side - User & Course Info */}
+          {/*  User & Course Info */}
           <div className="flex flex-col">
             <div className="mb-4 flex items-start justify-between gap-3 border-b border-gray-200 pb-4 md:mb-5 md:gap-4">
               <div className="flex min-w-0 items-start gap-3 md:gap-4">
                 <img
-                  src={avatar}
+                  src={payment.userAvatar}
                   alt={payment.userName}
                   className="h-12 w-12 shrink-0 rounded-full object-cover md:h-14 md:w-14 lg:h-16 lg:w-16"
                 />

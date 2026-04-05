@@ -9,7 +9,9 @@ function normalizePayment(payment) {
     id: payment._id,
     userName: payment.userId?.name || "Unknown user",
     userEmail: payment.userId?.email || "",
-    userAvatar: "https://ui-avatars.com/api/?background=f8b2c0&color=111827&name=" + encodeURIComponent(payment.userId?.name || "User"),
+    userAvatar:
+      payment.userId?.avatar ||
+      `https://ui-avatars.com/api/?background=f8b2c0&color=111827&name=${encodeURIComponent(payment.userId?.name || "User")}`,
     userDate: payment.createdAt ? new Date(payment.createdAt).toLocaleDateString() : "",
     courseName: payment.courseId?.title || "Unknown course",
     coursePrice: `${Number(payment.courseId?.price || 0).toLocaleString()} บาท`,
