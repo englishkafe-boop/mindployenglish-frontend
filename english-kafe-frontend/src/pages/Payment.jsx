@@ -130,7 +130,7 @@ function Payment() {
             </div>
           ) : null} */}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7 md:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-7 md:gap-8">
             {/* Left — Course Details */}
             <div className="bg-white rounded-3xl p-5 sm:p-7 md:p-8 shadow-lg">
               {/* Course Image */}

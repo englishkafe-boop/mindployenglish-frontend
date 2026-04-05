@@ -14,7 +14,7 @@ function MyCourseCard({ id, image, title, description, lessons, buttonText = "Le
           <img 
             src={image} 
             alt={title} 
-            className="h-64 w-full object-full scale-100"
+            className="h-64  w-full object-full scale-100"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-sm font-semibold text-gray-500">
