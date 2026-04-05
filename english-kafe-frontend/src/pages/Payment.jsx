@@ -123,12 +123,12 @@ function Payment() {
             </h1>
           </div>
 
-          {/* Error */}
-          {error ? (
+          {/* Error - moved to be shown only under submit button */}
+          {/* {error ? (
             <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
               {error}
             </div>
-          ) : null}
+          ) : null} */}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7 md:gap-8">
             {/* Left — Course Details */}
@@ -265,7 +265,10 @@ function Payment() {
                       Go Back
                     </button>
                     <button
-                      onClick={() => setCurrentStep(2)}
+                      onClick={() => {
+                        setCurrentStep(2);
+                        setError(""); // Clear error when moving to step 2
+                      }}
                       className="flex-1 bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2.5 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
                     >
                       Upload Receipt
@@ -305,7 +308,10 @@ function Payment() {
 
                   <div className="flex flex-col sm:flex-row gap-3">
                     <button
-                      onClick={() => setCurrentStep(1)}
+                      onClick={() => {
+                        setCurrentStep(1);
+                        setError(""); // Clear error when going back to step 1
+                      }}
                       className="flex-1 border-2 border-gray-300 text-gray-900 font-bold py-2.5 sm:py-3 px-4 rounded-full hover:bg-gray-50 transition-colors text-sm sm:text-base"
                     >
                       Back
@@ -318,6 +324,13 @@ function Payment() {
                       {submitting ? "Submitting..." : "Submit Payment"}
                     </button>
                   </div>
+
+                  {/* Error message under submit button */}
+                  {error ? (
+                    <div className="mt-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                      {error}
+                    </div>
+                  ) : null}
                 </div>
               ) : null}
 
