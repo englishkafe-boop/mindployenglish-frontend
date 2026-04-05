@@ -77,7 +77,7 @@ function MyCourseOrder() {
               You have not submitted any course payments yet.
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-1 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {payments.map((payment) => {
                 const course = payment.course
                 return (

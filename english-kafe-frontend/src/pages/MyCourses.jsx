@@ -52,7 +52,7 @@ function MyCourses() {
               You do not have any approved courses yet.
             </div>
           ) : (
-            <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-6">
               {enrollments.map((enrollment) => (
                 <MyCourseCard
                   key={enrollment.id}
