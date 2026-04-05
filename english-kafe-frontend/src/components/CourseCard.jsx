@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
-function CourseCard({ id, image, title, description, price, rating, reviews }) {
+function CourseCard({ id, image, title, description, price, rating }) {
   const navigate = useNavigate()
 
   const handleViewDetails = () => {
@@ -54,7 +54,7 @@ function CourseCard({ id, image, title, description, price, rating, reviews }) {
               </span>
             ))}
           </div>
-          <span className="text-gray-600 text-xs">({reviews})</span>
+          <span className="text-gray-600 text-xs">({rating}/5)</span>
         </div>
 
         {/* Buttons */}
