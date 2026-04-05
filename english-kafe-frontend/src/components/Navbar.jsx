@@ -1,19 +1,38 @@
 const logo = "/Nav/Logo.PNG"
 import { useNavigate, useLocation } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
 
 function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
   const [showProfileMenu, setShowProfileMenu] = useState(false)
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
   const { isAuthenticated, user, logout } = useAuth()
 
   const isActive = (path) => location.pathname === path
 
+  useEffect(() => {
+    setShowMobileMenu(false)
+    setShowProfileMenu(false)
+  }, [location.pathname])
+
+  const navItems = [
+    { label: "Home", path: "/" },
+    { label: "Courses", path: "/courses" },
+    { label: "Blogs", path: "/blog" },
+    { label: "Services", path: "/service" },
+  ]
+
+  const goTo = (path) => {
+    navigate(path)
+    setShowMobileMenu(false)
+  }
+
   const handleLogout = () => {
     logout()
     setShowProfileMenu(false)
+    setShowMobileMenu(false)
     navigate('/')
   }
 
@@ -21,126 +40,220 @@ function Navbar() {
   const userName = user?.name || 'User'
 
   return (
-    <nav className="sticky top-0 z-50  flex items-center justify-between px-30 py-2 bg-white shadow-sm">
-      
-      {/* Logo */}
-      <div className="flex items-center overflow-hidden ">
-        <img src={logo} alt="English Kafe Logo" className="size-15 object-fit scale-150 " />
-      </div>
-
-      {/* Menu */}
-      <ul className="hidden md:flex gap-8 font-medium">
-        <li 
-          onClick={() => navigate('/')}
-          className="text-black px-6 py-2 rounded-full cursor-pointer  hover:shadow-md transition-all" 
-          style={{backgroundColor: isActive('/') ? "#CDEAFA" : "transparent"}}
+    <nav className="sticky top-0 z-50 bg-white shadow-sm">
+      <div className="flex items-center justify-between px-4 py-2 sm:px-6 md:px-10 lg:px-16 xl:px-24 2xl:px-30">
+        {/* Logo */}
+        <button
+          type="button"
+          onClick={() => goTo('/')}
+          className="flex items-center overflow-hidden"
         >
-          Home
-        </li>
-        <li 
-          onClick={() => navigate('/courses')}
-          className="text-black px-6 py-2 rounded-full cursor-pointer  hover:shadow-md transition-all"
-          style={{backgroundColor: isActive('/courses') ? "#CDEAFA" : "transparent"}}
-        >
-          Courses
-        </li>
-        <li 
-          onClick={() => navigate('/blog')}
-          className="text-black px-6 py-2 rounded-full cursor-pointer  hover:shadow-md transition-all"
-          style={{backgroundColor: isActive('/blog') ? "#CDEAFA" : "transparent"}}
-        >
-          Blogs
-        </li>
-        <li 
-          onClick={() => navigate('/service')}
-          className="text-black px-6 py-2 rounded-full cursor-pointer  hover:shadow-md transition-all"
-          style={{backgroundColor: isActive('/service') ? "#CDEAFA" : "transparent"}}
-        >
-          Services
-        </li>
-      </ul>
-
-      {/* Login / Profile */}
-      {!isAuthenticated ? (
-        <button 
-          onClick={() => navigate('/login')}
-          className="bg-black text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-800 transition-colors"
-        >
-          login
+          <img src={logo} alt="English Kafe Logo" className="size-14 scale-150 object-fit sm:size-15" />
         </button>
-      ) : (
-        <div className="relative">
-          <button 
-            onClick={() => setShowProfileMenu(!showProfileMenu)}
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-          >
-            {/* Profile Image */}
-            <img 
-              src={profileImage}
-              alt="Profile"
-              className="w-10 h-10 rounded-full object-cover border-2 border-gray-300 size-12  scale-120 "
-            />
-          </button>
 
-          {/* Profile Dropdown Menu */}
-          {showProfileMenu && (
-            <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-xl z-50">
-              {/* Profile Header with Image */}
-              <div className="px-2 py-4 overflow-hidden border-b border-gray-200 flex items-center gap-3">
-                <img 
+        {/* Desktop Menu */}
+        <ul className="hidden md:flex gap-4 lg:gap-8 font-medium">
+          {navItems.map((item) => (
+            <li
+              key={item.path}
+              onClick={() => goTo(item.path)}
+              className="cursor-pointer rounded-full px-4 py-2 text-black transition-all hover:shadow-md lg:px-6"
+              style={{ backgroundColor: isActive(item.path) ? "#CDEAFA" : "transparent" }}
+            >
+              {item.label}
+            </li>
+          ))}
+        </ul>
+
+        {/* Desktop Login / Profile */}
+        <div className="hidden md:block">
+          {!isAuthenticated ? (
+            <button
+              onClick={() => goTo('/login')}
+              className="rounded-lg bg-black px-6 py-2 font-medium text-white transition-colors hover:bg-gray-800"
+            >
+              login
+            </button>
+          ) : (
+            <div className="relative">
+              <button
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                className="flex items-center gap-2 transition-opacity hover:opacity-80"
+              >
+                <img
                   src={profileImage}
                   alt="Profile"
-                  className="w-12 h-12 rounded-full object-cover border-2 border-gray-300"
+                  className="size-12 scale-120 rounded-full border-2 border-gray-300 object-cover"
                 />
-                <div>
-                  <p className="font-semibold text-gray-900">{userName}</p>
-                  <p className="text-xs text-gray-500">{user?.email}</p>
+              </button>
+
+              {showProfileMenu && (
+                <div className="absolute right-0 z-50 mt-2 w-56 rounded-lg border border-gray-200 bg-white shadow-xl">
+                  <div className="flex items-center gap-3 overflow-hidden border-b border-gray-200 px-2 py-4">
+                    <img
+                      src={profileImage}
+                      alt="Profile"
+                      className="h-12 w-12 rounded-full border-2 border-gray-300 object-cover"
+                    />
+                    <div>
+                      <p className="font-semibold text-gray-900">{userName}</p>
+                      <p className="text-xs text-gray-500">{user?.email}</p>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      goTo('/my-profile')
+                      setShowProfileMenu(false)
+                    }}
+                    className="w-full px-4 py-3 text-left font-medium text-gray-700 transition-colors hover:bg-blue-50"
+                  >
+                    My Profile
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      goTo('/my-courses')
+                      setShowProfileMenu(false)
+                    }}
+                    className="w-full px-4 py-3 text-left text-gray-700 transition-colors hover:bg-blue-50"
+                  >
+                    My Courses
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      goTo('/my-course-order')
+                      setShowProfileMenu(false)
+                    }}
+                    className="w-full px-4 py-3 text-left text-gray-700 transition-colors hover:bg-blue-50"
+                  >
+                    My Course Order
+                  </button>
+
+                  <div className="border-t border-gray-200">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full px-4 py-3 text-left font-medium text-gray-700 transition-colors hover:bg-red-50"
+                    >
+                      Log Out
+                    </button>
+                  </div>
                 </div>
-              </div>
-              
-              <button
-                onClick={() => {
-                  navigate('/my-profile')
-                  setShowProfileMenu(false)
-                }}
-                className="w-full text-left px-4 py-3 text-gray-700 hover:bg-blue-50 transition-colors font-medium"
-              >
-                My Profile
-              </button>
+              )}
+            </div>
+          )}
+        </div>
 
-              <button
-                onClick={() => {
-                  navigate('/my-courses')
-                  setShowProfileMenu(false)
-                }}
-                className="w-full text-left px-4 py-3 text-gray-700 hover:bg-blue-50 transition-colors"
-              >
-                My Courses
-              </button>
+        {/* Mobile Toggle */}
+        <button
+          type="button"
+          onClick={() => setShowMobileMenu((current) => !current)}
+          className="flex h-11 w-11 items-center justify-center rounded-xl border border-gray-200 text-gray-800 transition-colors hover:bg-gray-50 md:hidden"
+          aria-label={showMobileMenu ? "Close navigation menu" : "Open navigation menu"}
+        >
+          {showMobileMenu ? (
+            <svg
+              className="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          ) : (
+            <svg
+              className="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 12h16" />
+              <path d="M4 6h16" />
+              <path d="M4 18h16" />
+            </svg>
+          )}
+        </button>
+      </div>
 
+      {showMobileMenu ? (
+        <div className="border-t border-gray-200 bg-white px-4 pb-4 pt-3 shadow-sm md:hidden">
+          <div className="space-y-2">
+            {navItems.map((item) => (
               <button
-                onClick={() => {
-                  navigate('/my-course-order')
-                  setShowProfileMenu(false)
-                }}
-                className="w-full text-left px-4 py-3 text-gray-700 hover:bg-blue-50 transition-colors"
+                key={item.path}
+                onClick={() => goTo(item.path)}
+                className="w-full rounded-2xl px-4 py-3 text-left font-medium text-gray-900 transition-colors"
+                style={{ backgroundColor: isActive(item.path) ? "#CDEAFA" : "#F9FAFB" }}
               >
-                My Course Order
+                {item.label}
               </button>
+            ))}
+          </div>
 
-              <div className="border-t border-gray-200">
+          <div className="mt-4 border-t border-gray-200 pt-4">
+            {!isAuthenticated ? (
+              <button
+                onClick={() => goTo('/login')}
+                className="w-full rounded-2xl bg-black px-4 py-3 font-medium text-white transition-colors hover:bg-gray-800"
+              >
+                login
+              </button>
+            ) : (
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 rounded-2xl bg-gray-50 px-4 py-3">
+                  <img
+                    src={profileImage}
+                    alt="Profile"
+                    className="h-12 w-12 rounded-full border-2 border-gray-300 object-cover"
+                  />
+                  <div className="min-w-0">
+                    <p className="truncate font-semibold text-gray-900">{userName}</p>
+                    <p className="truncate text-xs text-gray-500">{user?.email}</p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => goTo('/my-profile')}
+                  className="w-full rounded-2xl bg-gray-50 px-4 py-3 text-left font-medium text-gray-700 transition-colors hover:bg-blue-50"
+                >
+                  My Profile
+                </button>
+
+                <button
+                  onClick={() => goTo('/my-courses')}
+                  className="w-full rounded-2xl bg-gray-50 px-4 py-3 text-left font-medium text-gray-700 transition-colors hover:bg-blue-50"
+                >
+                  My Courses
+                </button>
+
+                <button
+                  onClick={() => goTo('/my-course-order')}
+                  className="w-full rounded-2xl bg-gray-50 px-4 py-3 text-left font-medium text-gray-700 transition-colors hover:bg-blue-50"
+                >
+                  My Course Order
+                </button>
+
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left px-4 py-3 text-gray-700 hover:bg-red-50 transition-colors font-medium"
+                  className="w-full rounded-2xl bg-red-50 px-4 py-3 text-left font-medium text-red-700 transition-colors hover:bg-red-100"
                 >
                   Log Out
                 </button>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      )}
-
+      ) : null}
     </nav>
   )
 }

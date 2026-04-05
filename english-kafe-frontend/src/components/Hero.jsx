@@ -1,119 +1,129 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
-const lineIcon = "/logo/Line.svg"
-const facebookIcon = "/logo/facebook.svg"
-const instagramIcon = "/logo/instagram.svg"
-const landing0 = "/hero/Landing0.png"
-const landing = "/hero/landing.jpg"
+const lineIcon = "/logo/Line.svg";
+const facebookIcon = "/logo/facebook.svg";
+const instagramIcon = "/logo/instagram.svg";
+const landing0 = "/hero/landing-0.jpg";
+const landing = "/hero/landing.jpg";
 
 function Hero() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
-    <section className="relative px-4 sm:px-6 md:px-10 py-8 sm:py-12 md:py-20 bg-white overflow-hidden">
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center max-w-6xl mx-auto relative">
+    <section className="relative px-4 sm:px-6 md:px-10 lg:px-20 py-12 md:py-20 bg-white overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+        {/* Background Shape */}
+        <div
+          className="absolute hidden md:block -left-40 lg:-left-72 -bottom-40 w-96 lg:w-[660px] h-96 lg:h-[640px] rounded-full opacity-70"
+          style={{ backgroundColor: "#FCDCE2" }}
+        />
 
-        {/* Decorative Pink Shape on Left */}
-        <div className="absolute -left-90 -bottom-60 w-full md:w-165 h-full md:h-160 rounded-full pointer-events-none z-0 hidden md:block" style={{backgroundColor: "#FCDCE2"}}></div>
-
-        {/* Left Content */}
-        <div className="relative z-40 ">
-          <h1 className="leading-15 w-196 text-2xl sm:text-2xl md:text-3xl lg:text-5xl font-bold  text-gray-900">
-            Speak English with <br />Confidence,&nbsp; 
-            <span className=" text-lg sm:text-xl md:text-2xl lg:text-5xl">Master Grammar at <span className="text-[#F8A2C0]">Mind Ploy English !</span></span>
+        {/* LEFT */}
+        <div className="relative z-10 max-w-xl">
+          <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-[1.2]">
+            Speak English with <br />
+            Confidence, Master Grammar at{" "}
+            <span className="text-[#F8A2C0]">Mind Ploy English</span>
           </h1>
 
-          <p className="text-[#8B6F61]  sm:mt-2 md:mt-4  sm:text-base lg:text-lg leading-7">
+          <p className="text-[#8B6F61] mt-5 text-base md:text-lg leading-relaxed">
             Where English learning feels relaxed, practical, and enjoyable.
           </p>
 
+          {/* CTA */}
           <button
-            onClick={() => navigate('/courses')}
-            className="mt-6 md:mt-8 bg-black text-white px-5 sm:px-6 md:px-8 py-2 md:py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors cursor-pointer flex items-center gap-2 text-xs sm:text-sm md:text-base w-40 sm:w-48 md:w-56 h-15 justify-center"
+            onClick={() => navigate("/courses")}
+            className="mt-8 bg-black text-white px-8 py-3 rounded-xl font-medium 
+            hover:bg-gray-800 transition-all duration-300 shadow-md hover:shadow-lg flex items-center gap-2"
           >
             Explore Courses →
           </button>
 
-          <div className="w-full sm:w-28 md:w-100 h-0.1 sm:h-0.5 bg-black mt-12 sm:mb-0"></div>
-          
-          <div className=" mt-6 sm:mt-8 md:mt-10 space-y-4">
-            <div>
-              <h3 className="font-semibold text-gray-800 mb-2 sm:mb-3 text-sm md:text-base">What we offer:</h3>
-              <ul className="space-y-1.5 sm:space-y-2 text-gray-700 text-xs sm:text-sm">
-                <li>• One-on-One English Coaching</li>
-                <li>• IELTS Preparation Guidance</li>
-                <li>• Conversational English Training</li>
-              </ul>
-            </div>
+          {/* Divider */}
+          <div className="w-24 h-[2px] bg-black mt-10"></div>
+
+          {/* OFFER */}
+          <div className="mt-6">
+            <h3 className="font-semibold text-gray-800 mb-2 text-base">
+              What we offer:
+            </h3>
+            <ul className="space-y-2 text-gray-700 text-sm">
+              <li>• One-on-One English Coaching</li>
+              <li>• IELTS Preparation Guidance</li>
+              <li>• Conversational English Training</li>
+            </ul>
           </div>
 
-          <div className="mt-6 sm:mt-8">
-            <p className="font-semibold text-gray-800 mb-2 sm:mb-3 text-sm md:text-base">Contact us via:</p>
-            <div className="flex gap-3 sm:gap-4">
-              <a href="#" className="hover:opacity-70 transition-opacity">
-                <img src={lineIcon} alt="LINE" className="w-5 sm:w-6 md:w-8 h-5 sm:h-6 md:h-8" />
-              </a>
-              <a href="#" className="hover:opacity-70 transition-opacity">
-                <img src={facebookIcon} alt="Facebook" className="w-5 sm:w-6 md:w-8 h-5 sm:h-6 md:h-8" />
-              </a>
-              <a href="#" className="hover:opacity-70 transition-opacity">
-                <img src={instagramIcon} alt="Instagram" className="w-5 sm:w-6 md:w-8 h-5 sm:h-6 md:h-8" />
-              </a>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Right Images Section */}
-        <div className=" relative h-60 sm:h-80 md:h-full flex items-center justify-center mt-8 md:mt-0">
-          
-          {/* Center Image - Girl with Book */}
-          <div className=" relative top-40  z-20 md:-ml-110 w-full md:w-auto">
-            <img
-              src={landing0}
-              alt="student learning"
-              className="rounded-2xl scale-100 md:rounded-4xl w-full h-full object-cover"
-            />
-          </div>
-
-          {/* Top Right Image - Girl with Headphones (Blue Background) */}
-          <div className="border-4 border-indigo-500 absolute  left-50 top-0 right-10  z-10  ">
+          {/* SOCIAL */}
+          <div className="mt-6">
+            <p className="font-semibold text-gray-800 mb-2 text-base">
+              Contact us via:
+            </p>
+            <div className="flex gap-4">
               <img
-                src={landing}
-                alt="girl with headphones"
-                className="rounded-xl scale-130 w-130 h-80 object-cover"
+                src={lineIcon}
+                className="w-7 h-7 hover:scale-110 transition"
               />
-          </div>
-
-          {/*  Right Course Card - Grammar */}
-          <div className="md:block absolute lg:-top-10 lg:left-20 top-10 left-4 z-30 rounded-xl shadow-lg p-2 md:p-3 w-56 md:w-64 lg:w-75" style={{backgroundColor: "#FCDCE2"}}>
-            <div className="flex items-start gap-2">
-              <span className="text-lg md:text-xl">✏️</span>
-              <div>
-                <h4 className="font-bold text-gray-900 text-xs md:text-sm leading-tight">Grammar Foundations for Writing</h4>
-                <p className="text-xs text-gray-500 mt-1">12 LESSONS • 60 MINUTES</p>
-              </div>
+              <img
+                src={facebookIcon}
+                className="w-7 h-7 hover:scale-110 transition"
+              />
+              <img
+                src={instagramIcon}
+                className="w-7 h-7 hover:scale-110 transition"
+              />
             </div>
           </div>
-
-          {/* Bottom Right Course Card - Communication */}
-          <div className="hidden md:block absolute bottom-54 lg:bottom-47 right-4 lg:right-10 z-20 rounded-xl shadow-lg p-2 md:p-3 w-56 md:w-64 lg:w-70" style={{backgroundColor: "#DDF1FC"}}>
-            <div className="flex items-start gap-2">
-              <span className="text-lg md:text-xl">✏️</span>
-              <div>
-                <h4 className="font-bold text-gray-900 text-xs md:text-sm leading-tight">Master English Communication</h4>
-                <p className="text-xs text-gray-500 mt-1">15 LESSONS • 50 MINUTES</p>
-              </div>
-            </div>
-          </div>
-
         </div>
 
-      </div>
+        {/* RIGHT */}
+        <div className="relative">
+          {/* MOBILE */}
+          <div className="md:hidden flex flex-col gap-4">
+            <div className="rounded-xl shadow-md p-4 bg-[#FCDCE2]">
+              <h4 className="font-bold text-sm">Grammar Foundations</h4>
+              <p className="text-xs text-gray-500">12 LESSONS • 60 MINUTES</p>
+            </div>
 
+            <div className="flex gap-3 h-56">
+              <img src={landing0} className="rounded-xl w-1/2 object-cover" />
+              <img src={landing} className="rounded-xl w-1/2 object-cover" />
+            </div>
+
+            <div className="rounded-xl shadow-md p-4 bg-[#DDF1FC]">
+              <h4 className="font-bold text-sm">English Communication</h4>
+              <p className="text-xs text-gray-500">15 LESSONS • 50 MINUTES</p>
+            </div>
+          </div>
+
+          {/* DESKTOP */}
+          <div className="hidden md:block relative h-[450px] lg:h-[520px]">
+            {/* Back Image */}
+            <div className="absolute top-0 right-0 w-[60%] h-[70%] rounded-2xl overflow-hidden shadow-md">
+              <img src={landing} className="w-full h-full object-cover" />
+            </div>
+
+            {/* Front Image */}
+            <div className="absolute bottom-0 left-0 w-[55%] h-[70%] rounded-3xl overflow-hidden shadow-xl">
+              <img src={landing0} className="w-full h-full object-cover" />
+            </div>
+
+            {/* Card 1 */}
+            <div className="absolute top-6 left-0 bg-[#FCDCE2] backdrop-blur-md shadow-lg p-4 rounded-xl w-56">
+              <h4 className="font-bold text-sm">Grammar Foundations</h4>
+              <p className="text-xs text-gray-500">12 LESSONS • 60 MINUTES</p>
+            </div>
+
+            {/* Card 2 */}
+            <div className="absolute bottom-6 right-0 bg-[#DDF1FC] backdrop-blur-md shadow-lg p-4 rounded-xl w-56">
+              <h4 className="font-bold text-sm">English Communication</h4>
+              <p className="text-xs text-gray-500">15 LESSONS • 50 MINUTES</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
-  )
+  );
 }
 
-export default Hero
+export default Hero;
