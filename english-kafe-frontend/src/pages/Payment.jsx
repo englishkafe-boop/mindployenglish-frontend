@@ -101,6 +101,7 @@ function Payment() {
     <div className="min-h-screen bg-blue-50">
       <Navbar />
 
+      {/* Back Button */}
       <div className="px-4 sm:px-6 md:px-10 pt-6 sm:pt-8">
         <div className="max-w-7xl mx-auto">
           <button
@@ -115,12 +116,14 @@ function Payment() {
 
       <div className="px-4 sm:px-6 md:px-10 py-8 sm:py-10 md:py-12">
         <div className="max-w-7xl mx-auto">
+          {/* Header */}
           <div className="text-center mb-8 sm:mb-10 md:mb-12">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">
               Complete Your Enrollment
             </h1>
           </div>
 
+          {/* Error */}
           {error ? (
             <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
               {error}
@@ -128,59 +131,61 @@ function Payment() {
           ) : null}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7 md:gap-8">
+            {/* Left — Course Details */}
             <div className="bg-white rounded-3xl p-5 sm:p-7 md:p-8 shadow-lg">
-              <div className="flex flex-col">
-                <div className="mb-4 sm:mb-5 md:mb-6">
-                  {course.image ? (
-                    <img
-                      src={course.image}
-                      alt={course.title}
-                      className="w-full h-40 sm:h-48 md:h-104 object-cover rounded-2xl"
-                    />
-                  ) : (
-                    <div className="flex h-40 sm:h-48 md:h-104 items-center justify-center rounded-2xl bg-gray-100 text-gray-500">
-                      No image
-                    </div>
-                  )}
-                </div>
-
-                <div>
-                  {/* Badge and Price Row */}
-                  <div className=" mb-2">
-                    <div className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
-                      {course.title}
-                    </div>
+              {/* Course Image */}
+              <div className="mb-4 sm:mb-6">
+                {course.image ? (
+                  <img
+                    src={course.image}
+                    alt={course.title}
+                    className="w-full h-44 sm:h-56 md:h-72 lg:h-80 object-cover rounded-2xl"
+                  />
+                ) : (
+                  <div className="flex w-full h-44 sm:h-56 md:h-72 lg:h-80 items-center justify-center rounded-2xl bg-gray-100 text-gray-500">
+                    No image
                   </div>
+                )}
+              </div>
 
-                  {/* Lesson Count */}
-                  <div className="mb-4">
-                    <h1 className="text-2xl font-semibold">Course Title - {course.title}</h1>
-                    <h2 className="mb-2 mt-2 font-semibold text-gray-700">
-                      Price - {course.price}
-                    </h2>
-                    <h2 className="text-gray-700 font-semibold">
-                      Total lesson - {course.lessons} lessons
-                    </h2>
-                  </div>
+              {/* Badge */}
+              <div className="mb-2">
+                <span className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
+                  {course.title}
+                </span>
+              </div>
 
-                  {/* Rating */}
-                  <div className="flex items-center gap-3">
-                    {renderStars(course.rating)}
-                    <span className="text-gray-600 font-semibold">
-                      ({course.rating.toFixed(1)}/5)
-                    </span>
-                  </div>
-                </div>
+              {/* Info */}
+              <div className="mb-4">
+                <h1 className="text-lg sm:text-xl md:text-2xl font-semibold">
+                  Course Title — {course.title}
+                </h1>
+                <h2 className="mt-2 font-semibold text-gray-700 text-sm sm:text-base">
+                  Price — {course.price}
+                </h2>
+                <h2 className="text-gray-700 font-semibold text-sm sm:text-base">
+                  Total lessons — {course.lessons} lessons
+                </h2>
+              </div>
+
+              {/* Rating */}
+              <div className="flex items-center gap-3">
+                {renderStars(course.rating)}
+                <span className="text-gray-600 font-semibold text-sm sm:text-base">
+                  ({course.rating.toFixed(1)}/5)
+                </span>
               </div>
             </div>
 
-            <div className="bg-white rounded-3xl p-6 sm:p-7 md:p-8 shadow-lg">
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 sm:mb-8">
+            {/* Right — Payment Section */}
+            <div className="bg-white rounded-3xl p-5 sm:p-7 md:p-8 shadow-lg">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-5 sm:mb-6 md:mb-8">
                 Payment Section
               </h3>
 
-              <div className="mb-2 flex justify-center rounded-2xl border border-[#F3D6DF] bg-[#FFF8FA] px-4 py-3 shadow-sm sm:mb-4 sm:px-6 sm:py-7 md:mb-6">
-                <div className="inline-flex items-start justify-center gap-2 sm:gap-3">
+              {/* Step Indicator */}
+              <div className="mb-4 sm:mb-6 flex justify-center rounded-2xl border border-[#F3D6DF] bg-[#FFF8FA] px-3 py-3 sm:px-6 sm:py-6 shadow-sm">
+                <div className="inline-flex items-start justify-center gap-1 sm:gap-3">
                   {paymentSteps.map((label, index) => {
                     const stepNumber = index + 1;
                     const isCompleted = currentStep > stepNumber;
@@ -191,9 +196,9 @@ function Payment() {
                         key={label}
                         className="flex items-center justify-center"
                       >
-                        <div className="flex w-20 flex-col items-center text-center sm:w-28">
+                        <div className="flex w-16 sm:w-24 flex-col items-center text-center">
                           <div
-                            className={`mb-3 flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-bold transition-all sm:h-12 sm:w-12 sm:text-base ${
+                            className={`mb-2 sm:mb-3 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 text-xs sm:text-sm font-bold transition-all ${
                               isActive
                                 ? "border-[#F8B2C0] bg-[#F8B2C0] text-gray-900 shadow-md shadow-pink-100"
                                 : isCompleted
@@ -203,30 +208,21 @@ function Payment() {
                           >
                             {isCompleted ? "✓" : stepNumber}
                           </div>
-
                           <p
-                            className={`text-xs font-semibold sm:text-sm ${
-                              isActive || isCompleted
-                                ? "text-gray-900"
-                                : "text-gray-500"
-                            }`}
+                            className={`text-[10px] sm:text-xs font-semibold leading-tight ${isActive || isCompleted ? "text-gray-900" : "text-gray-500"}`}
                           >
                             {label}
                           </p>
-                          <p className="mt-1 text-[11px] text-gray-500 sm:text-xs">
+                          <p className="mt-0.5 text-[9px] sm:text-[11px] text-gray-400">
                             Step {stepNumber}
                           </p>
                         </div>
 
                         {index < paymentSteps.length - 1 ? (
-                          <div className="mt-[-2.25rem] w-8 sm:mt-[-2.5rem] sm:w-14">
+                          <div className="mb-5 w-5 sm:w-10 mx-0.5 sm:mx-1">
                             <div className="h-1 w-full rounded-full bg-gray-200">
                               <div
-                                className={`h-full rounded-full transition-all ${
-                                  currentStep > stepNumber
-                                    ? "w-full bg-[#F8B2C0]"
-                                    : "w-0"
-                                }`}
+                                className={`h-full rounded-full transition-all ${currentStep > stepNumber ? "w-full bg-[#F8B2C0]" : "w-0"}`}
                               />
                             </div>
                           </div>
@@ -237,13 +233,14 @@ function Payment() {
                 </div>
               </div>
 
+              {/* Step 1 — QR Code */}
               {currentStep === 1 ? (
                 <div className="space-y-4 sm:space-y-5 md:space-y-6">
                   <div>
-                    <p className="text-gray-700 font-semibold text-sm sm:text-base mb-3 sm:mb-4">
+                    <p className="text-gray-700 font-semibold text-sm sm:text-base mb-2">
                       Step 1. Scan the QR code to complete your payment.
                     </p>
-                    <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
+                    <p className="text-xs sm:text-sm text-gray-600">
                       Next step: Upload your payment receipt.
                     </p>
                   </div>
@@ -263,13 +260,13 @@ function Payment() {
                   <div className="flex flex-col sm:flex-row gap-3">
                     <button
                       onClick={() => navigate(`/courses/${courseId}`)}
-                      className="flex-1 border-2 border-gray-300 text-gray-900 font-bold py-2 sm:py-3 px-4 rounded-full hover:bg-gray-50 transition-colors text-sm sm:text-base"
+                      className="flex-1 border-2 border-gray-300 text-gray-900 font-bold py-2.5 sm:py-3 px-4 rounded-full hover:bg-gray-50 transition-colors text-sm sm:text-base"
                     >
                       Go Back
                     </button>
                     <button
                       onClick={() => setCurrentStep(2)}
-                      className="flex-1 bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
+                      className="flex-1 bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2.5 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
                     >
                       Upload Receipt
                     </button>
@@ -277,13 +274,14 @@ function Payment() {
                 </div>
               ) : null}
 
+              {/* Step 2 — Upload Receipt */}
               {currentStep === 2 ? (
                 <div className="space-y-4 sm:space-y-5 md:space-y-6">
                   <div>
-                    <p className="text-gray-700 font-semibold text-sm sm:text-base mb-3 sm:mb-4">
+                    <p className="text-gray-700 font-semibold text-sm sm:text-base mb-2">
                       Step 2. Upload your payment receipt.
                     </p>
-                    <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
+                    <p className="text-xs sm:text-sm text-gray-600">
                       Please upload a clear image or screenshot of your payment
                       confirmation.
                     </p>
@@ -296,11 +294,11 @@ function Payment() {
                       onChange={handleReceiptChange}
                       className="hidden"
                     />
-                    <div className="text-3xl sm:text-4xl mb-2 sm:mb-3">📄</div>
+                    <div className="text-3xl sm:text-4xl mb-2">📄</div>
                     <p className="text-gray-700 font-semibold text-sm sm:text-base mb-1">
                       {receiptName || "Click to upload receipt"}
                     </p>
-                    <p className="text-xs sm:text-sm text-gray-600">
+                    <p className="text-xs sm:text-sm text-gray-500">
                       PNG or JPG
                     </p>
                   </label>
@@ -308,14 +306,14 @@ function Payment() {
                   <div className="flex flex-col sm:flex-row gap-3">
                     <button
                       onClick={() => setCurrentStep(1)}
-                      className="flex-1 border-2 border-gray-300 text-gray-900 font-bold py-2 sm:py-3 px-4 rounded-full hover:bg-gray-50 transition-colors text-sm sm:text-base"
+                      className="flex-1 border-2 border-gray-300 text-gray-900 font-bold py-2.5 sm:py-3 px-4 rounded-full hover:bg-gray-50 transition-colors text-sm sm:text-base"
                     >
                       Back
                     </button>
                     <button
                       onClick={handleUploadReceipt}
                       disabled={submitting}
-                      className="flex-1 bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base disabled:opacity-60"
+                      className="flex-1 bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2.5 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base disabled:opacity-60"
                     >
                       {submitting ? "Submitting..." : "Submit Payment"}
                     </button>
@@ -323,10 +321,11 @@ function Payment() {
                 </div>
               ) : null}
 
+              {/* Step 3 — Confirmation */}
               {currentStep === 3 ? (
                 <div className="space-y-4 sm:space-y-5 md:space-y-6">
                   <div>
-                    <h4 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
+                    <h4 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 flex items-center gap-2">
                       ⏳ Payment Under Review
                     </h4>
                     <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
@@ -337,7 +336,7 @@ function Payment() {
 
                   <button
                     onClick={() => navigate("/my-course-order")}
-                    className="w-full bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
+                    className="w-full bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2.5 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
                   >
                     View My Course Orders
                   </button>

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import CourseCard from '../components/CourseCard'
-const logoTransparent = '/Nav/EnglishkafeLogo-Transparent.png'
+const Watermark = '/moti/Watermark.JPG'
 import { fetchCourseById, fetchCourses } from '../services/courseService'
 
 const RELATED_COURSES_PER_PAGE = 4
@@ -256,11 +256,11 @@ function CourseDetail() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center">
               <div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-                  Why Choose English Kafé Online Courses?
+                  Why Choose Mind Ploy English Online Courses?
                 </h2>
                 
                 <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-2">
-                  <span className="font-semibold text-gray-700">English Kafé</span> is designed for learners who want real progress, real confidence, and real communication skills.
+                  <span className="font-semibold text-gray-700">Mind Ploy English</span> is designed for learners who want real progress, real confidence, and real communication skills.
                 </p>
                 
                 <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-6 sm:mb-8">
@@ -293,8 +293,8 @@ function CourseDetail() {
 
               <div className="flex items-center justify-center order-first md:order-last mt-6 md:mt-0">
                 <img 
-                  src={logoTransparent} 
-                  alt="English Kafé Logo"
+                  src={Watermark} 
+                  alt="Mind Ploy English Logo"
                   className="w-full max-w-xs sm:max-w-sm md:max-w-md h-auto"
                 />
               </div>

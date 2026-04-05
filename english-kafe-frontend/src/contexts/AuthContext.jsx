@@ -5,12 +5,15 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import { getCurrentUser, login as loginRequest } from "../services/authService";
 import {
   clearToken,
   getToken,
   setToken as persistToken,
 } from "../api/tokenStorage";
+import { SESSION_EXPIRED_EVENT } from "../api/client";
+import SessionExpiredModal from "../components/SessionExpiredModal";
 
 const AuthContext = createContext(null);
 
@@ -18,6 +21,8 @@ export function AuthProvider({ children }) {
   const [token, setTokenState] = useState(() => getToken());
   const [user, setUser] = useState(null);
   const [isBootstrapping, setIsBootstrapping] = useState(Boolean(getToken()));
+  const [sessionExpiredMessage, setSessionExpiredMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!token) {
@@ -53,6 +58,25 @@ export function AuthProvider({ children }) {
       isMounted = false;
     };
   }, [token]);
+
+  useEffect(() => {
+    function handleSessionExpired(event) {
+      const message =
+        event?.detail?.message || "Your session expired. Please log in again.";
+
+      clearToken();
+      setTokenState(null);
+      setUser(null);
+      setIsBootstrapping(false);
+      setSessionExpiredMessage(message);
+    }
+
+    window.addEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
+
+    return () => {
+      window.removeEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
+    };
+  }, []);
 
   async function login(credentials) {
     const response = await loginRequest(credentials);
@@ -92,7 +116,21 @@ export function AuthProvider({ children }) {
     [token, user, isBootstrapping]
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  const handleLoginRedirect = () => {
+    setSessionExpiredMessage("");
+    navigate("/login", { replace: true });
+  };
+
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+      <SessionExpiredModal
+        isOpen={Boolean(sessionExpiredMessage)}
+        message={sessionExpiredMessage}
+        onLoginClick={handleLoginRedirect}
+      />
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {

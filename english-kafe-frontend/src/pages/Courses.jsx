@@ -138,13 +138,13 @@ function Courses() {
       <div className="px-4 sm:px-6 md:px-10 py-10 sm:py-14 md:py-16 text-center bg-pink-100">
         <div className="flex justify-center">
           <div>
-            <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6 leading-tight">
+            <h2 className="text-base sm:text-lg md:text-xl lg:text-3xl font-bold text-gray-900 mb-2 sm:mb-3 leading-snug">
               Master English faster with expert-guided video courses designed for<br className="hidden sm:block" />practical speaking, grammar, and everyday communication.
             </h2>
             <div className="h-1 w-20 sm:w-28 md:w-32 bg-black mx-auto"></div>
           </div>
         </div>
-        <p className="text-[#4B5563] text-xs sm:text-sm md:text-base lg:text-lg mt-4 sm:mt-5 md:mt-6 max-w-3xl mx-auto">
+        <p className="text-[#8B6F61] text-xs sm:text-sm md:text-base lg:text-lg mt-4 sm:mt-5 md:mt-6 max-w-3xl mx-auto">
           Learn smarter, progress quicker, and speak with confidence.
         </p>
       </div>

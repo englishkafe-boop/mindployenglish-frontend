@@ -22,7 +22,6 @@ function MyCourseOrder() {
         setLoading(false)
       }
     }
-
     loadPayments()
   }, [])
 
@@ -43,14 +42,8 @@ function MyCourseOrder() {
   }
 
   const getStatusClasses = (status) => {
-    if (status === 'approved') {
-      return 'bg-green-100 text-green-700'
-    }
-
-    if (status === 'rejected') {
-      return 'bg-red-100 text-red-700'
-    }
-
+    if (status === 'approved') return 'bg-green-100 text-green-700'
+    if (status === 'rejected') return 'bg-red-100 text-red-700'
     return 'bg-yellow-100 text-yellow-700'
   }
 
@@ -58,14 +51,17 @@ function MyCourseOrder() {
     <div className="min-h-screen bg-blue-50">
       <Navbar />
 
-      <div className="px-4 md:px-10 py-12 text-center bg-white ">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+      {/* Page Header */}
+      <div className="px-4 sm:px-6 md:px-10 py-8 sm:py-10 md:py-12 text-center bg-white">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">
           My Course Order
         </h1>
       </div>
 
-      <div className="px-4 md:px-10 py-16">
+      {/* Content */}
+      <div className="px-4 sm:px-6 md:px-10 py-8 sm:py-10 md:py-16">
         <div className="max-w-7xl mx-auto">
+
           {error ? (
             <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
               {error}
@@ -81,17 +77,21 @@ function MyCourseOrder() {
               You have not submitted any course payments yet.
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               {payments.map((payment) => {
                 const course = payment.course
                 return (
-                  <div key={payment.id} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex gap-6 p-6">
-                    <div className="relative w-56 bg-gray-300 h-54 overflow-hidden shrink-0 rounded-xl">
+                  <div
+                    key={payment.id}
+                    className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex flex-col sm:flex-row gap-4 sm:gap-6 p-4 sm:p-6"
+                  >
+                    {/* Course Image */}
+                    <div className="w-full sm:w-40 md:w-48 h-44 sm:h-auto sm:min-h-36 bg-gray-200 overflow-hidden rounded-xl shrink-0">
                       {course?.image ? (
-                        <img 
-                          src={course.image} 
+                        <img
+                          src={course.image}
                           alt={course.title}
-                          className="w-full h-full object-cover"
+                          className="w-full h-56 object-cover"
                         />
                       ) : (
                         <div className="flex h-full items-center justify-center text-sm font-semibold text-gray-500">
@@ -100,26 +100,28 @@ function MyCourseOrder() {
                       )}
                     </div>
 
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div className={`inline-block text-xs font-semibold px-4 py-2 rounded-full mb-3 w-full text-center ${getStatusClasses(payment.status)}`}>
+                    {/* Course Info */}
+                    <div className="flex-1 flex flex-col justify-between min-w-0">
+                      {/* Status badge */}
+                      <div className={`inline-block text-xs font-semibold px-3 py-1.5 rounded-full mb-2 text-center ${getStatusClasses(payment.status)}`}>
                         {getStatusLabel(payment.status)}
                       </div>
 
-                      <p className="text-gray-900 font-semibold text-lg mb-2">
+                      <p className="text-gray-900 font-semibold text-base sm:text-lg mb-1 truncate">
                         {course?.title}
                       </p>
 
-                      <p className="text-gray-600 text-sm leading-relaxed mb-3">
+                      <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-2 line-clamp-2">
                         {course?.description}
                       </p>
 
-                      <div className="text-lg font-bold text-gray-900 mb-2">
+                      <div className="text-base sm:text-lg font-bold text-gray-900 mb-2">
                         {course?.price}
                       </div>
 
-                      <div className="flex items-center gap-2 mb-4">
+                      <div className="flex items-center gap-2 mb-3">
                         {renderStars(4.5)}
-                        <span className="text-gray-600 text-xs">
+                        <span className="text-gray-500 text-xs">
                           {new Date(payment.createdAt).toLocaleDateString()}
                         </span>
                       </div>
@@ -136,6 +138,7 @@ function MyCourseOrder() {
               })}
             </div>
           )}
+
         </div>
       </div>
 

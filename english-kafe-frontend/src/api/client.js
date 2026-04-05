@@ -3,6 +3,8 @@ import { clearToken, getToken } from "./tokenStorage";
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:3000";
 
+export const SESSION_EXPIRED_EVENT = "user-session-expired";
+
 function getFriendlyErrorMessage(status, backendMessage) {
   if (
     status === 401 &&
@@ -38,6 +40,13 @@ async function request(path, options = {}) {
   if (!response.ok) {
     if (response.status === 401) {
       clearToken();
+      window.dispatchEvent(
+        new CustomEvent(SESSION_EXPIRED_EVENT, {
+          detail: {
+            message: getFriendlyErrorMessage(response.status, data?.message),
+          },
+        })
+      );
     }
 
     const message = getFriendlyErrorMessage(response.status, data?.message);
