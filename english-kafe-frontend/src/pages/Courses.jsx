@@ -7,6 +7,7 @@ import Footer from '../components/Footer'
 import { fetchCourses } from '../services/courseService'
 import image1 from '../assets/courses/IELTS speaking.jpg'
 import image2 from '../assets/courses/daily english.jpg'
+import LoadingSpinner from '../components/LoadingSpinner'
 
 const COURSES_PER_PAGE = 6
 
@@ -68,10 +69,7 @@ function Courses() {
               {error}
             </div>
           ) : loading ? (
-              <div className="rounded-lg bg-gray-50 px-4 py-10 text-center text-gray-500">
-        
-              Loading courses...
-            </div>
+              <LoadingSpinner message="Loading courses..." />
           ) : currentCourses.length === 0 ? (
             <div className="rounded-lg bg-gray-50 px-4 py-10 text-center text-gray-500">
               No published courses are available yet.
