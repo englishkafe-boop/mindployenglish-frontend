@@ -21,7 +21,7 @@ function Hero() {
         {/* LEFT */}
         <div className="relative z-10 max-w-xl">
           <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-[1.2]">
-            Speak English with <br />
+            Speak English with 
             Confidence, Master Grammar at{" "}
             <span className="text-[#F8A2C0]">Mind Ploy English</span>
           </h1>

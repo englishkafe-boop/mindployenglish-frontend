@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import LoadingSpinner from '../components/LoadingSpinner'
 import { fetchMyPayments } from '../services/paymentService'
 
 function MyCourseOrder() {
@@ -48,7 +49,7 @@ function MyCourseOrder() {
   }
 
   return (
-    <div className="min-h-screen bg-blue-50">
+    <div className="min-h-screen bg-blue-50 flex flex-col">
       <Navbar />
 
       {/* Page Header */}
@@ -59,7 +60,7 @@ function MyCourseOrder() {
       </div>
 
       {/* Content */}
-      <div className="px-4 sm:px-6 md:px-10 py-8 sm:py-10 md:py-16">
+      <div className="flex-1 px-4 sm:px-6 md:px-10 py-8 sm:py-10 md:py-16">
         <div className="max-w-7xl mx-auto">
 
           {error ? (
@@ -69,9 +70,7 @@ function MyCourseOrder() {
           ) : null}
 
           {loading ? (
-            <div className="rounded-lg bg-white p-8 text-center text-gray-500 shadow-sm">
-              Loading payments...
-            </div>
+            <LoadingSpinner message="Loading payments..." />
           ) : payments.length === 0 ? (
             <div className="rounded-lg bg-white p-8 text-center text-gray-500 shadow-sm">
               You have not submitted any course payments yet.

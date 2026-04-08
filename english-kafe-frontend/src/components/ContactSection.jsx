@@ -67,7 +67,7 @@ function ContactSection() {
           {/* Right Side - Map */}
           <div className="w-full rounded-2xl overflow-hidden border-4 border-blue-300 shadow-lg h-56 sm:h-72 md:h-80 lg:h-96">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3026.7299999999997!2d100.78!3d19.91!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30d0f8f8f8f8f8f9%3A0x0!2sEnglish%20Kafe!5e0!3m2!1sen!2sth!4v1234567890"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3751.641848995492!2d99.81752957532288!3d19.897339625675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30d707b92d0b5149%3A0x9a726a9e061e2afe!2zRW5nbGlzaCBLYWbDqSDguK3guLTguIfguKXguLTguIrguITguLLguYDguJ_guYgg4LmA4LiK4Li14Lii4LiH4Lij4Liy4Lii!5e0!3m2!1sen!2sth!4v1775645451185!5m2!1sen!2sth"
               width="100%"
               height="100%"
               style={{ border: 0 }}

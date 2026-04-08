@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ArticleCard from "./ArticleCard";
+import LoadingSpinner from "./LoadingSpinner";
 import { fetchBlogs } from "../services/blogService";
 
 function Article() {
@@ -136,8 +137,8 @@ function Article() {
             style={{ userSelect: "none", WebkitOverflowScrolling: "touch" }}
           >
             {isLoading ? (
-              <div className="rounded-3xl bg-white px-6 py-8 text-center text-gray-600 shadow-sm">
-                Loading articles...
+              <div className="min-w-full flex justify-center py-8">
+                <LoadingSpinner message="Loading articles..." />
               </div>
             ) : error ? (
               <div className="rounded-3xl border border-red-200 bg-red-50 px-6 py-8 text-center text-red-700 shadow-sm">

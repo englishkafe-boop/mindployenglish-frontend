@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CourseCard from "../components/CourseCard";
+import LoadingSpinner from "../components/LoadingSpinner";
 const Watermark = "/moti/Watermark.JPG";
 import { fetchCourseById, fetchCourses } from "../services/courseService";
 
@@ -72,7 +73,7 @@ function CourseDetail() {
       <div className="min-h-screen bg-white">
         <Navbar />
         <div className="flex items-center justify-center h-screen">
-          <p className="text-2xl text-gray-600">Loading course...</p>
+          <LoadingSpinner message="Loading course..." />
         </div>
       </div>
     );

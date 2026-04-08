@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import LoadingSpinner from '../components/LoadingSpinner'
 import { fetchCourseById } from '../services/courseService'
 import { fetchLessonsByCourse } from '../services/lessonService'
 
@@ -41,7 +42,7 @@ function CourseLessons() {
       <div className="min-h-screen bg-white">
         <Navbar />
         <div className="flex items-center justify-center h-screen">
-          <p className="text-2xl text-gray-600">Loading lessons...</p>
+          <LoadingSpinner message="Loading lessons..." />
         </div>
       </div>
     )

@@ -4,6 +4,7 @@ import RecentArticle from "../components/RecentArticle";
 import ArticleCard from "../components/ArticleCard";
 import ContactSection from "../components/ContactSection";
 import Footer from "../components/Footer";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { fetchBlogs } from "../services/blogService";
 
 const logo = "/Nav/Logo.PNG";
@@ -92,9 +93,7 @@ function Blog() {
           ) : null}
 
           {isLoading ? (
-            <div className="rounded-2xl bg-white p-10 text-center text-gray-600 shadow-sm">
-              Loading blog posts...
-            </div>
+            <LoadingSpinner message="Loading blog posts..." />
           ) : !featuredBlog ? (
             <div className="rounded-2xl bg-white p-10 text-center text-gray-600 shadow-sm">
               No blog posts available yet.
@@ -186,7 +185,9 @@ function Blog() {
             <div className="mx-auto h-1.5 sm:h-2 w-36 sm:w-52 bg-black rounded-full" />
           </div>
 
-          {insightBlogs.length ? (
+          {isLoading ? (
+            <LoadingSpinner message="Loading more articles..." />
+          ) : insightBlogs.length ? (
             <div className="mb-8">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center gap-4 sm:gap-6">
                 {paginatedInsightBlogs.map((blog) => (

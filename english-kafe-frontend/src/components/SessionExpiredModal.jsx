@@ -6,8 +6,8 @@ function SessionExpiredModal({ isOpen, message, onLoginClick }) {
       <div className="w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl">
         <div className="relative bg-gradient-to-r from-rose-50 via-pink-50 to-blue-50 px-6 pb-5 pt-6">
           <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F8B2C0] text-gray-900 shadow-sm">
-            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4v2m0-10a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1zm0 20c-4.962 0-9-4.038-9-9s4.038-9 9-9 9 4.038 9 9-4.038 9-9 9zm.5-13H11v6h1.5V8zm0 8H11v1.5h1.5V16z" />
             </svg>
           </div>
           <h2 className="text-2xl font-bold text-gray-900">
@@ -20,8 +20,8 @@ function SessionExpiredModal({ isOpen, message, onLoginClick }) {
 
         <div className="px-6 py-5">
           <div className="mb-5 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3">
-            <svg className="w-4 h-4 mt-0.5 shrink-0 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            <svg className="w-5 h-5 mt-0.5 shrink-0 text-amber-600" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
             </svg>
             <p className="text-sm text-amber-800">
               For your security, your session was closed. Please sign in again to continue.

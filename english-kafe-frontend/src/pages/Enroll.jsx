@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { Fragment, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import LoadingSpinner from '../components/LoadingSpinner'
 import { fetchCourseById } from '../services/courseService'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -41,7 +42,7 @@ function Enroll() {
       <div className="min-h-screen bg-white">
         <Navbar />
         <div className="flex items-center justify-center h-screen">
-          <p className="text-lg sm:text-2xl text-gray-600">Loading course...</p>
+          <LoadingSpinner message="Loading course..." />
         </div>
       </div>
     )

@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import LoadingSpinner from '../components/LoadingSpinner'
 import { fetchMyPayments } from '../services/paymentService'
 
 const orderSteps = ['Payment', 'Receipt uploaded', 'Verification']
@@ -36,7 +37,7 @@ function OrderStatus() {
       <div className="min-h-screen bg-blue-50">
         <Navbar />
         <div className="flex items-center justify-center h-screen">
-          <p className="text-lg sm:text-2xl text-gray-600">Loading order...</p>
+          <LoadingSpinner message="Loading order..." />
         </div>
       </div>
     )

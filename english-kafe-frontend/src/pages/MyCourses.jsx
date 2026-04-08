@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import MyCourseCard from '../components/MyCourseCard'
+import LoadingSpinner from '../components/LoadingSpinner'
 import { fetchMyEnrollments } from '../services/enrollmentService'
 
 function MyCourses() {
@@ -26,7 +27,7 @@ function MyCourses() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white flex flex-col">
       <Navbar />
 
       <div className="px-4 md:px-10 py-12 text-center bg-blue-50">
@@ -35,7 +36,7 @@ function MyCourses() {
         </h1>
       </div>
 
-      <div className="px-4 md:px-10 py-16">
+      <div className="flex-1 px-4 md:px-10 py-16">
         <div className="max-w-7xl mx-auto">
           {error ? (
             <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -44,9 +45,7 @@ function MyCourses() {
           ) : null}
 
           {loading ? (
-            <div className="rounded-lg bg-gray-50 px-4 py-10 text-center text-gray-500">
-              Loading enrolled courses...
-            </div>
+            <LoadingSpinner message="Loading enrolled courses..." />
           ) : enrollments.length === 0 ? (
             <div className="rounded-lg bg-gray-50 px-4 py-10 text-center text-gray-500">
               You do not have any approved courses yet.

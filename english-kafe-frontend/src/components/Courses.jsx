@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import CourseCard from "./CourseCard"
+import LoadingSpinner from "./LoadingSpinner"
 import { fetchCourses } from "../services/courseService"
 
 function Courses() {
@@ -45,9 +46,7 @@ function Courses() {
             {error}
           </div>
         ) : loading ? (
-          <div className="rounded-lg bg-white px-4 py-10 text-center text-gray-500 shadow-sm">
-            Loading courses...
-          </div>
+          <LoadingSpinner message="Loading courses..." />
         ) : courses.length === 0 ? (
           <div className="rounded-lg bg-white px-4 py-10 text-center text-gray-500 shadow-sm">
             No courses available yet.

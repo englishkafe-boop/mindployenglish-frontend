@@ -68,7 +68,8 @@ function Courses() {
               {error}
             </div>
           ) : loading ? (
-            <div className="rounded-lg bg-gray-50 px-4 py-10 text-center text-gray-500">
+              <div className="rounded-lg bg-gray-50 px-4 py-10 text-center text-gray-500">
+        
               Loading courses...
             </div>
           ) : currentCourses.length === 0 ? (
