@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { fetchCourseById } from "../services/courseService";
 import { createPayment } from "../services/paymentService";
+import { validateFileSize } from "../utils/fileValidation";
 
 const paymentSteps = ["Payment", "Upload Receipt", "Verification"];
 
@@ -37,8 +38,19 @@ function Payment() {
 
   const handleReceiptChange = (e) => {
     const file = e.target.files?.[0];
+    const sizeError = validateFileSize(file, "Receipt image");
+
+    if (sizeError) {
+      setReceiptFile(null);
+      setReceiptName("");
+      setError(sizeError);
+      e.target.value = "";
+      return;
+    }
+
     setReceiptFile(file || null);
     setReceiptName(file?.name || "");
+    setError("");
   };
 
   const handleUploadReceipt = async () => {
@@ -303,7 +315,7 @@ function Payment() {
                       {receiptName || "Click to upload receipt"}
                     </p>
                     <p className="text-xs sm:text-sm text-gray-500">
-                      PNG or JPG
+                      PNG or JPG, max 5 MB
                     </p>
                   </label>
 
