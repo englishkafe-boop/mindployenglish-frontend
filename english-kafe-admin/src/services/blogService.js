@@ -38,6 +38,7 @@ export function normalizeBlog(blog) {
     excerpt: buildExcerpt(blog.content),
     image: blog.image || "",
     author: blog.createdBy?.name || "English Kafe",
+    authorAvatar: blog.createdBy?.avatar || "",
     date: formatDate(blog.createdAt),
     createdBy: blog.createdBy || null,
   };

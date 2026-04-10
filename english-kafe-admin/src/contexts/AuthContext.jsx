@@ -6,7 +6,11 @@ import {
   useState,
 } from "react";
 import { AlertTriangle, ShieldAlert } from "lucide-react";
-import { getCurrentUser, login as loginRequest } from "../services/authService";
+import {
+  getCurrentUser,
+  login as loginRequest,
+  updateCurrentUserProfile,
+} from "../services/authService";
 import {
   clearToken,
   getToken,
@@ -84,6 +88,12 @@ export function AuthProvider({ children }) {
     return me.user;
   }
 
+  async function updateProfile(profile) {
+    const updatedUser = await updateCurrentUserProfile(profile);
+    setUser(updatedUser);
+    return updatedUser;
+  }
+
   function storeToken(nextToken) {
     setTokenState(nextToken);
 
@@ -108,6 +118,7 @@ export function AuthProvider({ children }) {
       isAuthenticated: Boolean(token && user),
       isBootstrapping,
       login,
+      updateProfile,
       logout,
     }),
     [token, user, isBootstrapping]

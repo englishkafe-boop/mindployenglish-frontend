@@ -2,6 +2,7 @@ import { ArrowLeft, Upload, Star, X } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { fetchCourseById, updateCourse } from '../../services/courseService'
+import { validateFileSize } from '../../utils/fileValidation'
 
 function EditCourse() {
   const navigate = useNavigate()
@@ -61,12 +62,20 @@ function EditCourse() {
       return
     }
 
+    const sizeError = validateFileSize(file, 'Course image')
+    if (sizeError) {
+      setError(sizeError)
+      e.target.value = ''
+      return
+    }
+
     const previewUrl = URL.createObjectURL(file)
     setFormData((prev) => ({
       ...prev,
       image: previewUrl,
       imageFile: file
     }))
+    setError('')
   }
 
   const handleLearningChange = (index, value) => {
@@ -118,38 +127,38 @@ function EditCourse() {
   }
 
   if (loading) {
-    return <div className="p-8">Loading...</div>
+    return <div className="p-4 sm:p-6 md:p-8">Loading...</div>
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-white border-b border-gray-200 px-8 py-6">
-        <div className="flex items-center justify-between">
+      <div className="bg-white border-b border-gray-200 px-4 py-4 sm:px-6 sm:py-6 md:px-8">
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-4">
           <button
             onClick={() => navigate('/courses')}
-            className="flex items-center gap-2 text-gray-700 hover:text-gray-900"
+            className="flex items-center gap-2 text-sm text-gray-700 hover:text-gray-900 sm:text-base"
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={18} className="sm:h-5 sm:w-5" />
             <span>Back</span>
           </button>
-          <h1 className="text-3xl font-bold text-gray-900 flex-1 text-center">Edit Course</h1>
+          <h1 className="w-full flex-1 text-left text-2xl font-bold text-gray-900 sm:text-center sm:text-3xl md:text-4xl">Edit Course</h1>
           <button
             onClick={handleSubmit}
             disabled={saving}
-            className="flex items-center gap-2 bg-pink-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-pink-400 transition-colors font-medium disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-pink-300 px-4 py-2 text-sm font-medium text-gray-800 transition-colors hover:bg-pink-400 disabled:opacity-60 sm:w-auto sm:px-6 sm:text-base"
           >
             {saving ? 'Updating...' : 'Update'}
           </button>
         </div>
       </div>
 
-      <div className="p-8">
-        <form onSubmit={handleSubmit} className="grid grid-cols-3 gap-8">
+      <div className="p-4 sm:p-6 md:p-8">
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-3">
           <div className="col-span-1">
-            <label className="block text-sm font-semibold text-gray-900 mb-3">
+            <label className="mb-3 block text-xs font-semibold text-gray-900 sm:text-sm">
               Upload course image:
             </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 flex flex-col items-center justify-center min-h-80 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer relative group">
+            <div className="relative flex min-h-64 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-6 transition-colors hover:bg-gray-100 group sm:min-h-80 sm:p-8">
               <input
                 type="file"
                 accept="image/*"
@@ -163,21 +172,22 @@ function EditCourse() {
                     alt="Course preview"
                     className="w-full h-full object-cover rounded-lg"
                   />
-                  <div className="absolute flex items-center gap-2 text-white bg-black bg-opacity-50 px-3 py-1 rounded-lg mt-2">
+                  <div className="absolute mt-2 flex items-center gap-2 rounded-lg bg-black bg-opacity-50 px-3 py-1 text-white">
                     <Upload size={16} />
                     <span className="text-xs font-medium">Update</span>
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center gap-3 text-gray-500">
-                  <Upload size={32} />
-                  <span className="text-sm font-medium">Upload</span>
+                <div className="flex flex-col items-center gap-2 text-gray-500 sm:gap-3">
+                  <Upload size={28} className="sm:h-8 sm:w-8" />
+                  <span className="text-xs font-medium sm:text-sm">Upload</span>
                 </div>
               )}
             </div>
+            <p className="mt-2 text-xs text-gray-500">Image must be 5 MB or smaller.</p>
           </div>
 
-          <div className="col-span-2 space-y-6">
+          <div className="col-span-1 space-y-4 sm:space-y-6 lg:col-span-2">
             {error ? (
               <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                 {error}
@@ -185,7 +195,7 @@ function EditCourse() {
             ) : null}
 
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-gray-900 mb-2">
                 Course Title
               </label>
               <input
@@ -194,12 +204,12 @@ function EditCourse() {
                 value={formData.title}
                 onChange={handleInputChange}
                 placeholder="Add short course title"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300 sm:px-4"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-gray-900 mb-2">
                 Course description
               </label>
               <textarea
@@ -208,13 +218,13 @@ function EditCourse() {
                 onChange={handleInputChange}
                 placeholder="Describe your course"
                 rows="4"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300 sm:px-4"
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                <label className="block text-xs sm:text-sm font-semibold text-gray-900 mb-2">
                   Set price
                 </label>
                 <div className="flex items-center gap-2">
@@ -224,14 +234,14 @@ function EditCourse() {
                     value={formData.price}
                     onChange={handleInputChange}
                     placeholder="4500"
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300"
+                    className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300 sm:px-4"
                   />
                   <span className="text-gray-700 font-medium">฿</span>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                <label className="block text-xs sm:text-sm font-semibold text-gray-900 mb-2">
                   Set rating
                 </label>
                 <div className="flex items-center gap-2">
@@ -243,15 +253,15 @@ function EditCourse() {
                     min="0"
                     max="5"
                     step="0.5"
-                    className="w-12 px-2 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300"
+                    className="w-16 sm:w-20 rounded-lg border border-gray-300 px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
                   />
                   <span className="text-gray-700 font-medium">/5</span>
-                  <div className="flex gap-1 ml-2">
+                  <div className="ml-1 flex gap-1 sm:ml-2">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        size={18}
-                        className={i < Math.floor(formData.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
+                        size={14}
+                        className={`sm:w-[18px] sm:h-[18px] ${i < Math.floor(formData.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
                       />
                     ))}
                   </div>
@@ -259,36 +269,36 @@ function EditCourse() {
               </div>
             </div>
 
-            <label className="flex items-center gap-3 text-sm text-gray-700">
+            <label className="flex items-start gap-3 text-sm text-gray-700 sm:items-center">
               <input
                 type="checkbox"
                 name="isPublished"
                 checked={formData.isPublished}
                 onChange={handleInputChange}
-                className="h-4 w-4 rounded border-gray-300 text-pink-400 focus:ring-pink-300"
+                className="mt-0.5 h-4 w-4 rounded border-gray-300 text-pink-400 focus:ring-pink-300 sm:mt-0"
               />
               Publish this course to the student frontend
             </label>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-gray-900 mb-2">
                 What you'll learn
               </label>
               <div className="space-y-2">
                 {formData.learnings.map((learning, index) => (
-                  <div key={index} className="flex gap-2">
+                  <div key={index} className="flex items-start gap-2">
                     <input
                       type="text"
                       value={learning}
                       onChange={(e) => handleLearningChange(index, e.target.value)}
                       placeholder="what students will get from this course"
-                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300"
+                      className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300 sm:px-4"
                     />
                     {formData.learnings.length > 1 ? (
                       <button
                         type="button"
                         onClick={() => removeLearning(index)}
-                        className="flex items-center justify-center bg-gray-200 text-gray-700 p-2 rounded-lg hover:bg-gray-300 transition-colors"
+                        className="flex shrink-0 items-center justify-center rounded-lg bg-gray-200 p-2 text-gray-700 transition-colors hover:bg-gray-300"
                         title="Remove"
                       >
                         <X size={18} />
@@ -299,7 +309,7 @@ function EditCourse() {
                 <button
                   type="button"
                   onClick={addLearning}
-                  className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-2"
+                  className="mt-2 text-xs font-medium text-blue-500 hover:text-blue-600 sm:text-sm"
                 >
                   + Add another
                 </button>

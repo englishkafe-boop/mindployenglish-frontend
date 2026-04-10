@@ -2,6 +2,7 @@ import { ArrowLeft, Bold, Italic, Link2, Quote, Type } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchBlogById, updateBlog } from "../../services/blogService";
+import { validateFileSize } from "../../utils/fileValidation";
 
 function EditBlog() {
   const navigate = useNavigate();
@@ -100,12 +101,20 @@ function EditBlog() {
       return;
     }
 
+    const sizeError = validateFileSize(file, "Blog image");
+    if (sizeError) {
+      setError(sizeError);
+      e.target.value = "";
+      return;
+    }
+
     const previewUrl = URL.createObjectURL(file);
     setFormData((prev) => ({
       ...prev,
       image: previewUrl,
       imageFile: file,
     }));
+    setError("");
   };
 
   const handleTextSelection = () => {
@@ -237,12 +246,12 @@ function EditBlog() {
               Blog image :
             </label>
             <div className="relative flex min-h-64 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-6 transition-colors hover:bg-gray-100 group sm:min-h-80 sm:p-8 md:min-h-96 md:p-12">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="absolute inset-0 cursor-pointer opacity-0"
-              />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="absolute inset-0 cursor-pointer opacity-0"
+                />
               {formData.image ? (
                 <img src={formData.image} alt="Blog preview" className="h-full w-full rounded-lg object-cover" />
               ) : (
@@ -254,6 +263,7 @@ function EditBlog() {
                 </div>
               )}
             </div>
+            <p className="mt-2 text-xs text-gray-500">Image must be 5 MB or smaller.</p>
           </div>
 
           <div className="space-y-4">

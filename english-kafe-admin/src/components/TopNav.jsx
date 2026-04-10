@@ -9,6 +9,7 @@ function TopNav({ isSidebarOpen = true, onToggleSidebar }) {
   const { user, logout } = useAuth()
   const adminEmail = user?.email || 'admin@example.com'
   const adminName = user?.name || 'Admin'
+  const adminAvatar = user?.avatar || ''
 
   const handleLogout = () => {
     logout()
@@ -32,11 +33,19 @@ function TopNav({ isSidebarOpen = true, onToggleSidebar }) {
           onClick={() => setShowProfile(!showProfile)}
           className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors"
         >
-          <div className="w-10 h-10 bg-gradient-to-br from-pink-400 to-rose-400 rounded-full flex items-center justify-center">
-            <span className="text-white text-sm font-semibold">{adminName.charAt(0).toUpperCase()}</span>
-          </div>
+          {adminAvatar ? (
+            <img
+              src={adminAvatar}
+              alt={adminName}
+              className="h-10 w-10 rounded-full object-cover"
+            />
+          ) : (
+            <div className="w-10 h-10 bg-gradient-to-br from-pink-400 to-rose-400 rounded-full flex items-center justify-center">
+              <span className="text-white text-sm font-semibold">{adminName.charAt(0).toUpperCase()}</span>
+            </div>
+          )}
           <div className="text-left">
-            <p className="text-sm font-semibold text-gray-900">Admin</p>
+            <p className="text-sm font-semibold text-gray-900">{adminName}</p>
             <p className="text-xs text-gray-500">{adminEmail}</p>
           </div>
         </button>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 function BlogCard({ blog, onDelete, onEdit }) {
   const navigate = useNavigate()
   const image = blog.image || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&h=600&fit=crop'
+  const authorAvatar = blog.authorAvatar || 'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=80&h=80&fit=crop'
 
   const handleEdit = () => {
     navigate(`/blog/edit/${blog.id}`)
@@ -41,9 +42,9 @@ function BlogCard({ blog, onDelete, onEdit }) {
           {/* Author Logo and Date */}
           <div className="flex items-center gap-2 min-w-0">
             <img
-              src="/images/eklogo.png"
-              alt="English Kafe"
-              className="w-4 h-4 sm:w-5 sm:h-5 shrink-0"
+              src={authorAvatar}
+              alt={blog.author}
+              className="w-4 h-4 sm:w-8 sm:h-8 shrink-0 rounded-full object-cover"
             />
             <div className="flex flex-col gap-0 min-w-0">
               <span className="text-xs font-semibold text-gray-900 truncate">{blog.author}</span>

@@ -2,6 +2,7 @@ import { ArrowLeft, Upload, Star } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { createCourse } from '../../services/courseService'
+import { validateFileSize } from '../../utils/fileValidation'
 
 function AddCourse() {
   const navigate = useNavigate()
@@ -33,6 +34,13 @@ function AddCourse() {
       return
     }
 
+    const sizeError = validateFileSize(file, 'Course image')
+    if (sizeError) {
+      setError(sizeError)
+      e.target.value = ''
+      return
+    }
+
     const previewUrl = URL.createObjectURL(file)
 
     setFormData((prev) => ({
@@ -40,6 +48,7 @@ function AddCourse() {
       image: previewUrl,
       imageFile: file
     }))
+    setError('')
   }
 
   const handleLearningChange = (index, value) => {
@@ -93,7 +102,7 @@ function AddCourse() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white border-b border-gray-200 px-4 sm:px-6 md:px-8 py-4 sm:py-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-4">
           <button
             onClick={() => navigate('/courses')}
             className="flex items-center gap-2 text-gray-700 hover:text-gray-900 text-sm sm:text-base"
@@ -101,7 +110,7 @@ function AddCourse() {
             <ArrowLeft size={18} className="sm:w-5 sm:h-5" />
             <span>Back</span>
           </button>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 flex-1 text-center">Add Course</h1>
+          <h1 className="w-full flex-1 text-left text-2xl font-bold text-gray-900 sm:text-center sm:text-3xl md:text-4xl">Add Course</h1>
           <button
             onClick={handleSubmit}
             disabled={loading}
@@ -138,6 +147,7 @@ function AddCourse() {
                 </div>
               )}
             </div>
+            <p className="mt-2 text-xs text-gray-500">Image must be 5 MB or smaller.</p>
           </div>
 
           <div className="col-span-1 lg:col-span-2 space-y-4 sm:space-y-6">
@@ -206,10 +216,10 @@ function AddCourse() {
                     min="0"
                     max="5"
                     step="0.5"
-                    className="w-12 px-2 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm"
+                    className="w-16 sm:w-20 px-2 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm"
                   />
                   <span className="text-gray-700 font-medium">/5</span>
-                  <div className="flex gap-1 ml-1 sm:ml-2">
+                  <div className="ml-1 flex gap-1 sm:ml-2">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
@@ -222,13 +232,13 @@ function AddCourse() {
               </div>
             </div>
 
-            <label className="flex items-center gap-3 text-sm text-gray-700">
+            <label className="flex items-start gap-3 text-sm text-gray-700 sm:items-center">
               <input
                 type="checkbox"
                 name="isPublished"
                 checked={formData.isPublished}
                 onChange={handleInputChange}
-                className="h-4 w-4 rounded border-gray-300 text-pink-400 focus:ring-pink-300"
+                className="mt-0.5 h-4 w-4 rounded border-gray-300 text-pink-400 focus:ring-pink-300 sm:mt-0"
               />
               Publish this course to the student frontend
             </label>
@@ -239,7 +249,7 @@ function AddCourse() {
               </label>
               <div className="space-y-2">
                 {formData.learnings.map((learning, index) => (
-                  <div key={index} className="flex gap-2">
+                  <div key={index} className="flex items-start gap-2">
                     <input
                       type="text"
                       value={learning}
@@ -251,7 +261,7 @@ function AddCourse() {
                       <button
                         type="button"
                         onClick={() => removeLearning(index)}
-                        className="px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm sm:text-base shrink-0"
+                        className="shrink-0 rounded-lg bg-gray-200 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-300 sm:text-base"
                       >
                         ✕
                       </button>
