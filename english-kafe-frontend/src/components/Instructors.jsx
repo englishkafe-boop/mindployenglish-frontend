@@ -13,7 +13,7 @@ function Instructors() {
             who guide you step by step.
           </h2>
           <p
-            className="text-xs sm:text-sm md:text-base lg:text-lg max-w-4xl mx-auto px-2"
+            className="text-xs sm:text-sm md:text-base lg:text-lg max-w-5xl mx-auto px-2"
             style={{ color: "#8B6F61" }}
           >
             Friendly teaching, real conversations, and confidence-building
