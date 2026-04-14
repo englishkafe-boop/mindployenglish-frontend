@@ -1,5 +1,5 @@
-const instructor1Url = "/instructors/instructor1.jpg";
-const instructor2Url = "/instructors/instructor2.jpg";
+const instructor1Url = "/instructors/instructor2.jpg";
+const instructor2Url = "/instructors/instructor1.jpg";
 
 function Instructors() {
   return (
@@ -43,10 +43,10 @@ function Instructors() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end items-center p-4 sm:p-5 md:p-6">
                 <h4 className="text-white font-semibold text-sm sm:text-base md:text-lg text-center">
-                  Ms.Patiln Jintanawong
+                  Kru Ploy
                 </h4>
                 <p className="text-white/90 text-xs sm:text-sm text-center mt-1">
-                  MA. ENGLISH
+                  Instructor
                 </p>
               </div>
             </div>
@@ -65,10 +65,10 @@ function Instructors() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end items-center p-4 sm:p-5 md:p-6">
                 <h4 className="text-white font-semibold text-sm sm:text-base md:text-lg text-center">
-                  Ms.Panida Mounjoy
+                   Kru Mind
                 </h4>
                 <p className="text-white/90 text-xs sm:text-sm text-center mt-1">
-                  MA. ENGLISH
+                  Instructor
                 </p>
               </div>
             </div>

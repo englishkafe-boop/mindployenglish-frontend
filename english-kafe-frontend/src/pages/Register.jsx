@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { register as registerRequest } from '../services/authService'
-const logo = '/Nav/Logo.PNG'
+const logo = '/login/Login-logo.png'
 
 function Register() {
   const [name, setName] = useState('')
@@ -46,7 +46,7 @@ function Register() {
         <div className="hidden md:flex justify-center">
           <div className="relative">
             <img 
-              src="/login/young-students-learning-together-group-study.jpg" 
+              src="/login/Login-bg.jpg" 
               alt="English Kafé" 
               className="w-full h-screen/2 object-cover rounded-2xl"
               style={{ height: '550px' }}
@@ -58,7 +58,7 @@ function Register() {
               <img 
                 src={logo} 
                 alt="English Kafé Logo" 
-                className="w-70 h-70 object-contain drop-shadow-lg"
+                className="w-25  sm:w-20 md:w-23 lg:w-25 h-25 sm:h-20 md:h-23 lg:h-25 object-contain drop-shadow-lg"
               />
             </div>
           </div>

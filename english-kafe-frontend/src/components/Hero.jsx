@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 const lineIcon = "/logo/Line.svg";
 const facebookIcon = "/logo/facebook.svg";
 const instagramIcon = "/logo/instagram.svg";
-const landing0 = "/hero/landing-0.jpg";
-const landing = "/hero/landing.jpg";
+const landing0 = "/hero/hero2.jpg";
+const landing = "/hero/hero1.jpg";
 
 function Hero() {
   const navigate = useNavigate();
