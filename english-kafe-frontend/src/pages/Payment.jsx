@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import {TvMinimalPlay } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -152,7 +153,7 @@ function Payment() {
                   <img
                     src={course.image}
                     alt={course.title}
-                    className="w-full h-44 sm:h-56 md:h-72 lg:h-80 object-cover rounded-2xl"
+                    className="w-full h-44 sm:h-56 md:h-72 lg:h-90 object-cover rounded-2xl"
                   />
                 ) : (
                   <div className="flex w-full h-44 sm:h-56 md:h-72 lg:h-80 items-center justify-center rounded-2xl bg-gray-100 text-gray-500">
@@ -169,25 +170,40 @@ function Payment() {
               </div>
 
               {/* Info */}
-              <div className="mb-4">
-                <h1 className="text-lg sm:text-xl md:text-2xl font-semibold">
-                  Course Title — {course.title}
+              <div className="mb-2">
+                <h1 className="text-lg sm:text-xl md:text-2xl font-medium">
+                  Course name — {course.title}
                 </h1>
-                <h2 className="mt-2 font-semibold text-gray-700 text-sm sm:text-base">
-                  Price — {course.price}
-                </h2>
-                <h2 className="text-gray-700 font-semibold text-sm sm:text-base">
-                  Total lessons — {course.lessons} lessons
-                </h2>
-              </div>
+                <div className="space-y-3">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
+                    <div className="flex items-center gap-2">
+                      <TvMinimalPlay
+                        className="h-5 w-5 text-gray-700"
+                        strokeWidth={2}
+                        aria-hidden="true"
+                      />
+                      <span className="text-gray-700 font-semibold text-sm sm:text-base">
+                        {course.lessons} lessons
+                      </span>
+                    </div>
 
-              {/* Rating */}
-              <div className="flex items-center gap-3">
-                {renderStars(course.rating)}
-                <span className="text-gray-600 font-semibold text-sm sm:text-base">
-                  ({course.rating.toFixed(1)}/5)
-                </span>
-              </div>
+                    <div className="flex items-center gap-2">
+                      {renderStars(course.rating)}
+                      <span className="text-gray-700 font-semibold text-sm sm:text-base">
+                        ({course.rating.toFixed(1)}/5)
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-gray-600 text-sm sm:text-base md:text-md leading-relaxed">
+                  {course.fullDescription}
+                </p>
+
+                  <div className="text-xl sm:text-2xl font-semibold text-gray-900">
+                    Price - {course.price}
+                  </div>
+                </div>
+              </div>             
             </div>
 
             {/* Right — Payment Section */}

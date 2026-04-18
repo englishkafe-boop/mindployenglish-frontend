@@ -1,3 +1,5 @@
+import { ArrowUpRight } from "lucide-react";
+
 const instructor1Url = "/instructors/instructor2.jpg";
 const instructor2Url = "/instructors/instructor1.jpg";
 
@@ -92,18 +94,10 @@ function Instructors() {
                   className="w-5 sm:w-6 h-5 sm:h-6 rounded-sm flex items-center justify-center shrink-0 mt-0.5 border border-gray-300"
                   style={{ backgroundColor: "#FCDCE2" }}
                 >
-                  <svg
-                    className="w-3 sm:w-3.5 h-3 sm:h-3.5"
-                    viewBox="0 0 24 24"
-                    stroke="black"
-                    strokeWidth="2.5"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <line x1="5" y1="19" x2="19" y2="5" />
-                    <polyline points="12 5 19 5 19 12" />
-                  </svg>
+                  <ArrowUpRight
+                    className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-black"
+                    strokeWidth={2.5}
+                  />
                 </div>
                 <p className="text-gray-700 font-medium text-xs sm:text-sm md:text-base">
                   {text}

@@ -1,4 +1,5 @@
 const logo = "/Nav/Logo.PNG"
+import { Menu, X } from "lucide-react"
 import { useNavigate, useLocation } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
@@ -153,34 +154,9 @@ function Navbar() {
           aria-label={showMobileMenu ? "Close navigation menu" : "Open navigation menu"}
         >
           {showMobileMenu ? (
-            <svg
-              className="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
+            <X className="h-5 w-5" aria-hidden="true" />
           ) : (
-            <svg
-              className="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M4 12h16" />
-              <path d="M4 6h16" />
-              <path d="M4 18h16" />
-            </svg>
+            <Menu className="h-5 w-5" aria-hidden="true" />
           )}
         </button>
       </div>

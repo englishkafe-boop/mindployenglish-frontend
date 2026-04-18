@@ -40,7 +40,7 @@ function Hero() {
           </button>
 
           {/* Divider */}
-          <div className="w-24 h-[2px] bg-black mt-10"></div>
+          <div className="w-74 h-[2px] bg-black mt-10"></div>
 
           {/* OFFER */}
           <div className="mt-6">

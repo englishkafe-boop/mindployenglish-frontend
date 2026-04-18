@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Check, TvMinimalPlay } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CourseCard from "../components/CourseCard";
@@ -133,22 +134,50 @@ function CourseDetail() {
 
           <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 md:p-10 lg:p-12">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-10 lg:gap-12">
-              <div className="flex items-start justify-center">
-                {course.image ? (
-                  <img
-                    src={course.image}
-                    alt={course.title}
-                    className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-xl"
-                  />
-                ) : (
-                  <div className="flex h-48 w-full items-center justify-center rounded-2xl bg-gray-100 text-gray-500">
-                    No image
+              <div className="space-y-4 sm:space-y-5">
+                <div className="flex items-start justify-center">
+                  {course.image ? (
+                    <img
+                      src={course.image}
+                      alt={course.title}
+                      className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-xl"
+                    />
+                  ) : (
+                    <div className="flex h-48 w-full items-center justify-center rounded-2xl bg-gray-100 text-gray-500">
+                      No image
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-3  p-4 sm:p-5">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
+                    <div className="flex items-center gap-2">
+                      <TvMinimalPlay
+                        className="h-5 w-5 text-gray-700"
+                        strokeWidth={2}
+                        aria-hidden="true"
+                      />
+                      <span className="text-gray-700 font-semibold text-sm sm:text-base">
+                        {course.lessons} lessons
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      {renderStars(course.rating)}
+                      <span className="text-gray-700 font-semibold text-sm sm:text-base">
+                        ({course.rating.toFixed(1)}/5)
+                      </span>
+                    </div>
                   </div>
-                )}
+
+                  <div className="text-xl sm:text-2xl font-semibold text-gray-900">
+                    Price - {course.price}
+                  </div>
+                </div>
               </div>
 
               <div className="flex flex-col justify-center space-y-4 sm:space-y-5 md:space-y-6">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-gray-900">
                   {course.title}
                 </h2>
 
@@ -157,7 +186,7 @@ function CourseDetail() {
                 </p>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
+                  <h3 className="text-lg sm:text-xl font-medium text-gray-900 mb-3 sm:mb-4">
                     What you'll learn:
                   </h3>
                   <ul className="space-y-2 sm:space-y-3">
@@ -175,32 +204,14 @@ function CourseDetail() {
                   </ul>
                 </div>
 
-                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-6 pt-4 sm:pt-6 border-t border-gray-200">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">📄</span>
-                    <span className="text-gray-700 font-semibold text-sm sm:text-base">
-                      {course.lessons} lessons
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {renderStars(course.rating)}
-                    <span className="text-gray-700 font-semibold text-sm sm:text-base">
-                      ({course.rating.toFixed(1)}/5)
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between  sm:pt-2 gap-2 sm:gap-4">
-                  <div className="text-2xl sm:text-3xl font-bold text-gray-900">
-                    Price - {course.price}
-                  </div>
+                
                   <button
                     onClick={() => navigate(`/enroll/${course.id}`)}
                     className="w-full sm:w-auto bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-3 sm:py-4 px-8 sm:px-12 rounded-full transition-colors text-sm sm:text-base md:text-lg"
                   >
                     Enroll Now
                   </button>
-                </div>
+                
               </div>
             </div>
           </div>
@@ -330,9 +341,11 @@ function CourseDetail() {
                   ].map((item, index) => (
                     <li key={index} className="flex items-start gap-3 sm:gap-4">
                       <div className="flex-shrink-0 w-5 sm:w-6 h-5 sm:h-6 bg-black rounded-full flex items-center justify-center mt-0.5">
-                        <span className="text-white text-xs sm:text-sm font-bold">
-                          ✓
-                        </span>
+                        <Check
+                          className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-white"
+                          strokeWidth={3}
+                          aria-hidden="true"
+                        />
                       </div>
                       <span className="text-gray-700 text-sm sm:text-base">
                         {item}

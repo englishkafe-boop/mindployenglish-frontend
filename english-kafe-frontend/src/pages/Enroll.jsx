@@ -1,41 +1,42 @@
-import { useParams, useNavigate } from 'react-router-dom'
-import { Fragment, useEffect, useState } from 'react'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
-import LoadingSpinner from '../components/LoadingSpinner'
-import { fetchCourseById } from '../services/courseService'
-import { useAuth } from '../contexts/AuthContext'
+import { useParams, useNavigate } from "react-router-dom";
+import { Fragment, useEffect, useState } from "react";
+import { TvMinimalPlay } from "lucide-react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { fetchCourseById } from "../services/courseService";
+import { useAuth } from "../contexts/AuthContext";
 
 function Enroll() {
-  const { courseId } = useParams()
-  const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
-  const [course, setCourse] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const { courseId } = useParams();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const [course, setCourse] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function loadCourse() {
       try {
-        setLoading(true)
-        setError('')
-        setCourse(await fetchCourseById(courseId))
+        setLoading(true);
+        setError("");
+        setCourse(await fetchCourseById(courseId));
       } catch (loadError) {
-        setError(loadError.message)
+        setError(loadError.message);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
-    loadCourse()
-  }, [courseId])
+    loadCourse();
+  }, [courseId]);
 
   const handleEnrollClick = () => {
     if (!isAuthenticated) {
-      navigate('/login')
+      navigate("/login");
     } else {
-      navigate(`/payment/${course.id}`)
+      navigate(`/payment/${course.id}`);
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -45,7 +46,7 @@ function Enroll() {
           <LoadingSpinner message="Loading course..." />
         </div>
       </div>
-    )
+    );
   }
 
   if (!course) {
@@ -53,21 +54,28 @@ function Enroll() {
       <div className="min-h-screen bg-white">
         <Navbar />
         <div className="flex items-center justify-center h-screen">
-          <p className="text-lg sm:text-2xl text-gray-600">{error || 'Course not found'}</p>
+          <p className="text-lg sm:text-2xl text-gray-600">
+            {error || "Course not found"}
+          </p>
         </div>
       </div>
-    )
+    );
   }
 
   const renderStars = (rating) => (
     <div className="flex gap-1">
       {[...Array(5)].map((_, i) => (
-        <span key={i} className={i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'}>
+        <span
+          key={i}
+          className={
+            i < Math.floor(rating) ? "text-yellow-400" : "text-gray-300"
+          }
+        >
           ★
         </span>
       ))}
     </div>
-  )
+  );
 
   return (
     <Fragment>
@@ -78,7 +86,7 @@ function Enroll() {
         <div className="px-4 sm:px-6 md:px-10 pt-6 sm:pt-8">
           <div className="max-w-7xl mx-auto">
             <button
-              onClick={() => navigate('/courses')}
+              onClick={() => navigate("/courses")}
               className="flex items-center gap-2 text-gray-700 hover:text-gray-900 font-semibold transition-colors text-sm sm:text-base"
             >
               <span className="text-xl sm:text-2xl">←</span>
@@ -89,7 +97,6 @@ function Enroll() {
 
         <div className="px-4 sm:px-6 md:px-10 py-8 sm:py-10 md:py-12">
           <div className="max-w-7xl mx-auto">
-
             {/* Header */}
             <div className="text-center mb-8 sm:mb-10 md:mb-12">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">
@@ -104,11 +111,9 @@ function Enroll() {
               - 1024px+ → 3 cols, course gets 2, summary gets 1
             */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
-
               {/* Course Details */}
               <div className="md:col-span-1 lg:col-span-2">
                 <div className="bg-white rounded-3xl p-5 sm:p-6 md:p-8 shadow-lg">
-
                   <div className="mb-5 sm:mb-6">
                     <img
                       src={course.image}
@@ -127,19 +132,29 @@ function Enroll() {
                     <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold">
                       Course Title — {course.title}
                     </h1>
-                    <h2 className="mt-2 font-semibold text-gray-700 text-sm sm:text-base">
-                      Price — {course.price}
-                    </h2>
-                    <h2 className="text-gray-700 font-semibold text-sm sm:text-base">
-                      Total lessons — {course.lessons} lessons
-                    </h2>
+                    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
+                      <div className="flex items-center gap-2">
+                        <TvMinimalPlay
+                          className="h-5 w-5 text-gray-700"
+                          strokeWidth={2}
+                          aria-hidden="true"
+                        />
+                        <span className="text-gray-700 font-semibold text-sm sm:text-base">
+                          {course.lessons} lessons
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        {renderStars(course.rating)}
+                        <span className="text-gray-700 font-semibold text-sm sm:text-base">
+                          ({course.rating.toFixed(1)}/5)
+                        </span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    {renderStars(course.rating)}
-                    <span className="text-gray-600 font-semibold text-sm sm:text-base">
-                      ({course.rating.toFixed(1)}/5)
-                    </span>
+                  <div className="text-xl sm:text-2xl font-semibold text-gray-900">
+                    Price - {course.price}
                   </div>
                 </div>
               </div>
@@ -147,23 +162,34 @@ function Enroll() {
               {/* Order Summary */}
               <div className="md:col-span-1 lg:col-span-1">
                 <div className="bg-white rounded-3xl p-5 sm:p-6 md:p-6 shadow-lg md:sticky md:top-20">
-
                   <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-5">
                     Order Summary
                   </h3>
 
                   <div className="space-y-3 mb-4 sm:mb-5">
                     <div className="flex justify-between items-start gap-3">
-                      <span className="text-gray-700 font-semibold text-xs sm:text-sm shrink-0">Course name:</span>
-                      <span className="text-gray-900 font-semibold text-xs sm:text-sm text-right">{course.title}</span>
+                      <span className="text-gray-700 font-semibold text-xs sm:text-sm shrink-0">
+                        Course name:
+                      </span>
+                      <span className="text-gray-900 font-semibold text-xs sm:text-sm text-right">
+                        {course.title}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center pb-3 border-b border-gray-300">
-                      <span className="text-gray-700 font-semibold text-xs sm:text-sm">Price:</span>
-                      <span className="text-gray-900 font-semibold text-xs sm:text-sm">{course.price}</span>
+                      <span className="text-gray-700 font-semibold text-xs sm:text-sm">
+                        Price:
+                      </span>
+                      <span className="text-gray-900 font-semibold text-xs sm:text-sm">
+                        {course.price}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center pt-1">
-                      <span className="text-sm font-bold text-gray-900">Total:</span>
-                      <span className="text-sm font-bold text-gray-900">{course.price}</span>
+                      <span className="text-sm font-bold text-gray-900">
+                        Total:
+                      </span>
+                      <span className="text-sm font-bold text-gray-900">
+                        {course.price}
+                      </span>
                     </div>
                   </div>
 
@@ -173,11 +199,21 @@ function Enroll() {
                       How to Enroll
                     </h4>
                     <ol className="space-y-2 text-xs text-gray-700">
-                      <li><span className="font-semibold">Step 1.</span> Scan the QR code to complete your payment.</li>
-                      <li><span className="font-semibold">Step 2.</span> Upload your payment receipt.</li>
                       <li>
-                        <span className="font-semibold">Step 3.</span> Wait for admin verification. Check status in{" "}
-                        <span className="font-bold">Profile → My Course Orders</span>.
+                        <span className="font-semibold">Step 1.</span> Scan the
+                        QR code to complete your payment.
+                      </li>
+                      <li>
+                        <span className="font-semibold">Step 2.</span> Upload
+                        your payment receipt.
+                      </li>
+                      <li>
+                        <span className="font-semibold">Step 3.</span> Wait for
+                        admin verification. Check status in{" "}
+                        <span className="font-bold">
+                          Profile → My Course Orders
+                        </span>
+                        .
                       </li>
                     </ol>
                   </div>
@@ -199,7 +235,6 @@ function Enroll() {
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -207,7 +242,7 @@ function Enroll() {
         <Footer />
       </div>
     </Fragment>
-  )
+  );
 }
 
-export default Enroll
+export default Enroll;
