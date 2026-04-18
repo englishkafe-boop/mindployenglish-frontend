@@ -1,11 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {TvMinimalPlay } from "lucide-react";
+import { Maximize2, TvMinimalPlay, X } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { fetchCourseById } from "../services/courseService";
 import { createPayment } from "../services/paymentService";
+import { fetchPaymentSettings } from "../services/paymentSettingsService";
 import { validateFileSize } from "../utils/fileValidation";
 
 const paymentSteps = ["Payment", "Upload Receipt", "Verification"];
@@ -18,6 +19,8 @@ function Payment() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [paymentQr, setPaymentQr] = useState("");
+  const [qrPreviewOpen, setQrPreviewOpen] = useState(false);
   const [receiptFile, setReceiptFile] = useState(null);
   const [receiptName, setReceiptName] = useState("");
 
@@ -26,7 +29,12 @@ function Payment() {
       try {
         setLoading(true);
         setError("");
-        setCourse(await fetchCourseById(courseId));
+        const [loadedCourse, paymentSettings] = await Promise.all([
+          fetchCourseById(courseId),
+          fetchPaymentSettings(),
+        ]);
+        setCourse(loadedCourse);
+        setPaymentQr(loadedCourse.paymentQr || paymentSettings.paymentQr || "");
       } catch (loadError) {
         setError(loadError.message);
       } finally {
@@ -196,14 +204,14 @@ function Payment() {
                   </div>
 
                   <p className="text-gray-600 text-sm sm:text-base md:text-md leading-relaxed">
-                  {course.fullDescription}
-                </p>
+                    {course.fullDescription}
+                  </p>
 
                   <div className="text-xl sm:text-2xl font-semibold text-gray-900">
                     Price - {course.price}
                   </div>
                 </div>
-              </div>             
+              </div>
             </div>
 
             {/* Right — Payment Section */}
@@ -274,16 +282,30 @@ function Payment() {
                     </p>
                   </div>
 
-                  <div className="bg-gray-100 p-6 sm:p-8 rounded-xl flex items-center justify-center">
-                    <div className="border-4 border-gray-300 p-3 sm:p-4 bg-white rounded-lg">
-                      <svg
-                        className="w-24 sm:w-32 h-24 sm:h-32 text-gray-400"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
+                  <div className="bg-gray-100 p-2 sm:p-4 rounded-xl flex items-center justify-center">
+                    {paymentQr ? (
+                      <button
+                        type="button"
+                        onClick={() => setQrPreviewOpen(true)}
+                        className="group relative rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300"
+                        aria-label="Open payment QR preview"
                       >
-                        <path d="M3 3h8v8H3V3zm10 10h8v8h-8v-8zM7 7h4v4H7V7zm8-4h4v4h-4V3zm4 12h4v4h-4v-4zM3 13h4v4H3v-4z" />
-                      </svg>
-                    </div>
+                        <img
+                          src={paymentQr}
+                          alt="Bank QR code for payment"
+                          className="w-32 sm:w-54 h-32 sm:h-54 object-contain transition-transform group-hover:scale-[1.02]"
+                        />
+                        <div className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                          <div className="bg-[#F8B2C0] text-black p-1.5 rounded-lg shadow-sm">
+                            <Maximize2 size={12} />
+                          </div>
+                        </div>
+                      </button>
+                    ) : (
+                      <div className="flex h-32 w-32 items-center justify-center px-3 text-center text-xs text-gray-500 sm:h-54 sm:w-54 sm:text-sm">
+                        Payment QR is not available yet. Please contact support.
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3">
@@ -388,6 +410,27 @@ function Payment() {
           </div>
         </div>
       </div>
+
+      {qrPreviewOpen && paymentQr ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="relative w-full max-w-md rounded-3xl bg-white p-4 shadow-2xl sm:p-5">
+            <button
+              type="button"
+              onClick={() => setQrPreviewOpen(false)}
+              className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
+              aria-label="Close QR preview"
+            >
+              <X size={20} />
+            </button>
+
+            <img
+              src={paymentQr}
+              alt="Enlarged bank QR code for payment"
+              className="mx-auto mt-6 max-h-[70vh] w-full rounded-2xl object-contain"
+            />
+          </div>
+        </div>
+      ) : null}
 
       <Footer />
     </div>

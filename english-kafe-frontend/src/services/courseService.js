@@ -74,6 +74,7 @@ export function normalizeCourse(course) {
     reviews: Number(course.reviews || 0),
     lessons: Number(course.lessonCount || 0),
     image: course.thumbnail || "",
+    paymentQr: course.paymentQr || "",
     features: Array.isArray(course.features) ? course.features : [],
     isPublished: Boolean(course.isPublished),
   };

@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const defaultAuthorLogo = "/Nav/Logo.PNG";
@@ -62,7 +63,7 @@ function ArticleCard({ id, image, title, description, authorLogo, authorName, da
             className="flex h-10 w-14 items-center justify-center rounded-full bg-[#F8B2C0] text-lg text-gray-900 transition-all hover:bg-[#F8C2C0]"
             aria-label={`Read ${title}`}
           >
-            →
+            <ArrowRight className="h-5 w-5" strokeWidth={2.25} aria-hidden="true" />
           </button>
         </div>
       </div>

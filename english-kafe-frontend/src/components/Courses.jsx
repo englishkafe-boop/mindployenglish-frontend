@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import CourseCard from "./CourseCard"
@@ -75,7 +76,7 @@ function Courses() {
             style={{backgroundColor: "#B5E0F8"}}
           >
             View All Courses
-            <span className="text-lg text-black">→</span>
+            <ArrowRight className="h-5 w-5 text-black" strokeWidth={2.25} aria-hidden="true" />
           </button>
         </div>
       </div>
