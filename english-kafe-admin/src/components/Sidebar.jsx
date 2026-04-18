@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom'
-import { LayoutGrid, BookOpen, FileText, Users, CreditCard, LogOut } from 'lucide-react'
+import { LayoutGrid, BookOpen, FileText, Users, CreditCard, Settings, LogOut } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 
 function Sidebar({ isOpen = true }) {
@@ -25,6 +25,7 @@ function Sidebar({ isOpen = true }) {
     { label: 'Manage blog', path: '/blog', icon: FileText },
     { label: 'Manage user', path: '/users', icon: Users },
     { label: 'Review payment', path: '/review-payment', icon: CreditCard },
+    { label: 'Settings', path: '/settings', icon: Settings },
   ]
 
   return (

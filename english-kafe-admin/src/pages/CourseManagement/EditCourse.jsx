@@ -15,6 +15,8 @@ function EditCourse() {
     learnings: [''],
     image: '',
     imageFile: null,
+    paymentQr: '',
+    paymentQrFile: null,
     isPublished: false,
   })
   const [loading, setLoading] = useState(true)
@@ -36,6 +38,8 @@ function EditCourse() {
           learnings: course.learnings.length ? course.learnings : [''],
           image: course.image,
           imageFile: null,
+          paymentQr: course.paymentQr,
+          paymentQrFile: null,
           isPublished: course.isPublished,
         })
       } catch (loadError) {
@@ -85,6 +89,28 @@ function EditCourse() {
       ...prev,
       learnings: newLearnings
     }))
+  }
+
+  const handlePaymentQrUpload = (e) => {
+    const file = e.target.files[0]
+    if (!file) {
+      return
+    }
+
+    const sizeError = validateFileSize(file, 'Payment QR')
+    if (sizeError) {
+      setError(sizeError)
+      e.target.value = ''
+      return
+    }
+
+    const previewUrl = URL.createObjectURL(file)
+    setFormData((prev) => ({
+      ...prev,
+      paymentQr: previewUrl,
+      paymentQrFile: file
+    }))
+    setError('')
   }
 
   const addLearning = () => {
@@ -154,7 +180,7 @@ function EditCourse() {
 
       <div className="p-4 sm:p-6 md:p-8">
         <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-3">
-          <div className="col-span-1">
+          <div className="col-span-1 space-y-6">
             <label className="mb-3 block text-xs font-semibold text-gray-900 sm:text-sm">
               Upload course image:
             </label>
@@ -185,6 +211,39 @@ function EditCourse() {
               )}
             </div>
             <p className="mt-2 text-xs text-gray-500">Image must be 5 MB or smaller.</p>
+
+            <div>
+              <label className="mb-3 block text-xs font-semibold text-gray-900 sm:text-sm">
+                Optional course payment QR:
+              </label>
+              <div className="relative flex min-h-52 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-6 transition-colors hover:bg-gray-100 group">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePaymentQrUpload}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                />
+                {formData.paymentQr ? (
+                  <div className="w-full h-full flex flex-col items-center justify-center">
+                    <img
+                      src={formData.paymentQr}
+                      alt="Payment QR preview"
+                      className="w-full h-full object-contain rounded-lg"
+                    />
+                    <div className="absolute mt-2 flex items-center gap-2 rounded-lg bg-black bg-opacity-50 px-3 py-1 text-white">
+                      <Upload size={16} />
+                      <span className="text-xs font-medium">Update QR</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center gap-2 text-gray-500 sm:gap-3">
+                    <Upload size={28} className="sm:h-8 sm:w-8" />
+                    <span className="text-xs font-medium sm:text-sm">Upload QR override</span>
+                  </div>
+                )}
+              </div>
+              <p className="mt-2 text-xs text-gray-500">Optional. If empty, students will see the global payment QR from Settings.</p>
+            </div>
           </div>
 
           <div className="col-span-1 space-y-4 sm:space-y-6 lg:col-span-2">

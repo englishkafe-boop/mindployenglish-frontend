@@ -14,6 +14,8 @@ function AddCourse() {
     learnings: [''],
     image: '',
     imageFile: null,
+    paymentQr: '',
+    paymentQrFile: null,
     isPublished: false,
   })
   const [loading, setLoading] = useState(false)
@@ -58,6 +60,29 @@ function AddCourse() {
       ...prev,
       learnings: newLearnings
     }))
+  }
+
+  const handlePaymentQrUpload = (e) => {
+    const file = e.target.files[0]
+    if (!file) {
+      return
+    }
+
+    const sizeError = validateFileSize(file, 'Payment QR')
+    if (sizeError) {
+      setError(sizeError)
+      e.target.value = ''
+      return
+    }
+
+    const previewUrl = URL.createObjectURL(file)
+
+    setFormData((prev) => ({
+      ...prev,
+      paymentQr: previewUrl,
+      paymentQrFile: file
+    }))
+    setError('')
   }
 
   const addLearning = () => {
@@ -123,7 +148,7 @@ function AddCourse() {
 
       <div className="p-4 sm:p-6 md:p-8">
         <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-          <div className="col-span-1">
+          <div className="col-span-1 space-y-6">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900 mb-3">
               Upload course image:
             </label>
@@ -148,6 +173,33 @@ function AddCourse() {
               )}
             </div>
             <p className="mt-2 text-xs text-gray-500">Image must be 5 MB or smaller.</p>
+
+            <div>
+              <label className="block text-xs sm:text-sm font-semibold text-gray-900 mb-3">
+                Optional course payment QR:
+              </label>
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 sm:p-8 flex flex-col items-center justify-center min-h-52 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer relative group">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePaymentQrUpload}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                />
+                {formData.paymentQr ? (
+                  <img
+                    src={formData.paymentQr}
+                    alt="Payment QR preview"
+                    className="w-full h-full object-contain rounded-lg"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-2 sm:gap-3 text-gray-500">
+                    <Upload size={28} className="sm:w-8 sm:h-8" />
+                    <span className="text-xs sm:text-sm font-medium">Upload QR override</span>
+                  </div>
+                )}
+              </div>
+              <p className="mt-2 text-xs text-gray-500">Optional. If empty, the global payment QR from Settings will be used.</p>
+            </div>
           </div>
 
           <div className="col-span-1 lg:col-span-2 space-y-4 sm:space-y-6">

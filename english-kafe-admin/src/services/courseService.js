@@ -14,6 +14,7 @@ export function normalizeCourse(course) {
     rating: Number(course.rating || 0),
     reviews: Number(course.reviews || 0),
     image: course.thumbnail || "",
+    paymentQr: course.paymentQr || "",
     learnings: Array.isArray(course.features) ? course.features : [],
     isPublished: Boolean(course.isPublished),
     lessons: Number(course.lessonCount || 0),
@@ -37,6 +38,12 @@ function buildCourseFormData(payload) {
     formData.append("thumbnail", payload.imageFile);
   } else if (payload.image) {
     formData.append("thumbnail", payload.image);
+  }
+
+  if (payload.paymentQrFile) {
+    formData.append("paymentQr", payload.paymentQrFile);
+  } else if (payload.paymentQr) {
+    formData.append("paymentQr", payload.paymentQr);
   }
 
   return formData;
