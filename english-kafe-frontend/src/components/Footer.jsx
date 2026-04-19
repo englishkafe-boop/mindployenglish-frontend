@@ -1,11 +1,13 @@
 function Footer() {
+  const currentYear = new Date().getFullYear()
+
   return (
     <footer className="bg-white border-t border-gray-200 py-8">
       <div className="max-w-7xl mx-auto px-2 md:px-4 lg:px-4">
         <div className=" flex flex-col md:flex-row justify-between items-center gap-6">
           {/* Left - Copyright */}
           <div className="text-gray-700 text-sm md:text-base">
-            Copyright 2026 © <span className="font-bold">mindployenglish</span>. All rights reserved.
+            Copyright {currentYear} © <span className="font-bold">mindployenglish</span>. All rights reserved.
           </div>
 
           {/* Right - Links */}
