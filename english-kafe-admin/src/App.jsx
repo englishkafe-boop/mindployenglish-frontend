@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom'
 import { useState } from 'react'
 import AdminLogin from './pages/AdminLogin'
 import Dashboard from './pages/Dashboard'
@@ -19,6 +19,7 @@ import Instructors from './pages/InstructorManagement/Instructors'
 import Analytics from './pages/Reports/Analytics'
 import Settings from './pages/Settings/GeneralSettings'
 import AdminProfile from './pages/AdminProfile'
+import NotFound from './pages/NotFound'
 import RequireAdmin from './routes/RequireAdmin'
 
 function ProtectedLayout() {
@@ -63,7 +64,7 @@ function App() {
             <Route path="/admin-profile" element={<AdminProfile />} />
           </Route>
         </Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   )
