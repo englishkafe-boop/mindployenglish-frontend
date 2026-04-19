@@ -16,6 +16,7 @@ import CourseLessons from "./pages/CourseLessons"
 import OrderStatus from "./pages/OrderStatus"
 import Blog from "./pages/Blog"
 import Service from "./pages/Service"
+import NotFound from "./pages/NotFound"
 import RequireAuth from "./routes/RequireAuth"
 import ScrollToTop from "./components/ScrollToTop"
 
@@ -43,6 +44,7 @@ function App() {
           <Route path="/order-status/:orderId" element={<OrderStatus />} />
           <Route path="/course-lessons/:courseId" element={<CourseLessons />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   )
