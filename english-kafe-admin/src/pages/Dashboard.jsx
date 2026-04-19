@@ -1,11 +1,13 @@
 import { BookOpen, FileText, Users, CreditCard, Trash2, Eye } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { fetchCourses } from '../services/courseService'
 import { fetchAllPayments } from '../services/paymentService'
 import { fetchUsers, deleteUser } from '../services/userService'
 import { apiClient } from '../api/client'
 
 function Dashboard() {
+  const navigate = useNavigate()
   const [stats, setStats] = useState([])
   const [recentUsers, setRecentUsers] = useState([])
   const [error, setError] = useState('')
@@ -34,24 +36,28 @@ function Dashboard() {
             label: 'Course',
             value: String(courses.length),
             icon: BookOpen,
+            path: '/courses',
             lastUpdated: latestCourse ? `Last created: ${latestCourse.title}` : 'No courses yet'
           },
           {
             label: 'Blog',
             value: String(blogs.length),
             icon: FileText,
+            path: '/blog',
             lastUpdated: latestBlog ? `Last created: ${latestBlog.title}` : 'No blogs yet'
           },
           {
             label: 'User',
             value: String(users.length),
             icon: Users,
+            path: '/users',
             lastUpdated: latestUser ? `Last joined: ${latestUser.name}` : 'No users yet'
           },
           {
             label: 'Payment',
             value: String(payments.length),
             icon: CreditCard,
+            path: '/review-payment',
             lastUpdated: latestPayment ? `Last reviewed: ${latestPayment.courseName}` : 'No payments yet'
           },
         ])
@@ -97,7 +103,12 @@ function Dashboard() {
         {(loading ? [] : stats).map((stat, index) => {
           const Icon = stat.icon
           return (
-            <div key={index} className="bg-pink-100 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
+            <button
+              key={index}
+              type="button"
+              onClick={() => navigate(stat.path)}
+              className="bg-pink-100 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow text-left focus:outline-none focus:ring-2 focus:ring-pink-300"
+            >
               <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
                 <div className="p-2 sm:p-3 bg-pink-200 rounded-lg shrink-0">
                   <Icon size={20} className="sm:w-6 sm:h-6 text-gray-700" />
@@ -106,7 +117,7 @@ function Dashboard() {
               </div>
               <p className="text-3xl sm:text-4xl font-bold text-gray-900 mb-1 sm:mb-2">{stat.value}</p>
               <p className="text-xs sm:text-sm text-gray-600">{stat.lastUpdated}</p>
-            </div>
+            </button>
           )
         })}
 
@@ -155,7 +166,11 @@ function Dashboard() {
                   </td>
                   <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
                     <div className="flex items-center gap-1 sm:gap-2">
-                      <button className="p-1.5 sm:p-2 hover:bg-blue-50 rounded-lg transition-colors" title="View user">
+                      <button
+                        onClick={() => navigate('/users')}
+                        className="p-1.5 sm:p-2 hover:bg-blue-50 rounded-lg transition-colors"
+                        title="View user"
+                      >
                         <Eye size={16} className="sm:w-[18px] sm:h-[18px] text-gray-600" />
                       </button>
                       <button
