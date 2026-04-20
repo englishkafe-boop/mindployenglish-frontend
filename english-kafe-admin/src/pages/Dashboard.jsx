@@ -1,4 +1,4 @@
-import { BookOpen, FileText, Users, CreditCard, Trash2, Eye } from 'lucide-react'
+import { BookOpen, FileText, Users, CreditCard, Trash2} from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { fetchCourses } from '../services/courseService'
@@ -166,13 +166,6 @@ function Dashboard() {
                   </td>
                   <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
                     <div className="flex items-center gap-1 sm:gap-2">
-                      <button
-                        onClick={() => navigate('/users')}
-                        className="p-1.5 sm:p-2 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="View user"
-                      >
-                        <Eye size={16} className="sm:w-[18px] sm:h-[18px] text-gray-600" />
-                      </button>
                       <button
                         onClick={() => handleDeleteUser(user.id)}
                         className="p-1.5 sm:p-2 hover:bg-red-50 rounded-lg transition-colors"
