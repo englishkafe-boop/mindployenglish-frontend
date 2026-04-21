@@ -31,19 +31,20 @@ function Courses() {
   }, [])
 
   const handleDeleteClick = (id) => {
-    setCourseToDelete(id)
+    const selectedCourse = courses.find((course) => course.id === id) || null
+    setCourseToDelete(selectedCourse)
     setShowConfirmation(true)
   }
 
   const handleConfirmDelete = async () => {
-    if (!courseToDelete) {
+    if (!courseToDelete?.id) {
       return
     }
 
     try {
-      await deleteCourse(courseToDelete)
+      await deleteCourse(courseToDelete.id)
       setCourses((currentCourses) =>
-        currentCourses.filter((course) => course.id !== courseToDelete)
+        currentCourses.filter((course) => course.id !== courseToDelete.id)
       )
     } catch (deleteError) {
       setError(deleteError.message)
@@ -105,7 +106,17 @@ function Courses() {
       <ConfirmationModal
         isOpen={showConfirmation}
         title="Delete Course"
-        message="Are you sure you want to delete this course? This action cannot be undone."
+        message={
+          courseToDelete?.enrollmentCount > 0
+            ? (
+              <p>
+                This course currently has{" "}
+                <span className="font-bold">{courseToDelete.enrollmentCount}</span>{" "}
+                enrolled user{courseToDelete.enrollmentCount > 1 ? 's' : ''}. Are you sure you want to delete it? This action cannot be undone.
+              </p>
+            )
+            : "Are you sure you want to delete this course? This action cannot be undone."
+        }
         confirmText="Delete"
         cancelText="Cancel"
         onConfirm={handleConfirmDelete}

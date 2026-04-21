@@ -95,7 +95,11 @@ function Users() {
 
   const handleOpenAddCourseModal = (user) => {
     setSelectedUserForCourse(user)
-    setSelectedCourses(user.purchasedCourses.map((course) => course.id))
+    setSelectedCourses(
+      user.purchasedCourses
+        .map((course) => course.id)
+        .filter(Boolean)
+    )
     setAddCourseModalOpen(true)
   }
 

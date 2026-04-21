@@ -7,6 +7,7 @@ import { validateFileSize } from "../../utils/fileValidation";
 function AddBlog() {
   const navigate = useNavigate();
   const contentRef = useRef(null);
+  const selectedRangeRef = useRef(null);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -16,6 +17,12 @@ function AddBlog() {
   const [isEditorEmpty, setIsEditorEmpty] = useState(true);
   const [toolbar, setToolbar] = useState({
     visible: false,
+    top: 0,
+    left: 0,
+  });
+  const [linkInput, setLinkInput] = useState({
+    visible: false,
+    url: "https://",
     top: 0,
     left: 0,
   });
@@ -69,10 +76,12 @@ function AddBlog() {
 
     if (!selectedText.length) {
       setToolbar((prev) => ({ ...prev, visible: false }));
+      setLinkInput((prev) => ({ ...prev, visible: false }));
       return;
     }
 
     const rect = selection.getRangeAt(0).getBoundingClientRect();
+    selectedRangeRef.current = selection.getRangeAt(0).cloneRange();
     setToolbar({
       visible: true,
       top: rect.top - 60,
@@ -104,14 +113,18 @@ function AddBlog() {
       case "link": {
         const selection = window.getSelection();
         if (!selection?.toString()) {
-          alert("Please select text first");
+          setError("Please select text before adding a link.");
           return;
         }
 
-        const url = prompt("Enter URL:", "https://");
-        if (url) {
-          document.execCommand("createLink", false, url);
-        }
+        const rect = selection.getRangeAt(0).getBoundingClientRect();
+        selectedRangeRef.current = selection.getRangeAt(0).cloneRange();
+        setLinkInput({
+          visible: true,
+          url: "https://",
+          top: rect.top - 8,
+          left: rect.left + 50,
+        });
         break;
       }
       default:
@@ -119,7 +132,34 @@ function AddBlog() {
     }
 
     handleEditorChange();
+    if (format !== "link") {
+      setToolbar((prev) => ({ ...prev, visible: false }));
+    }
+  };
+
+  const handleLinkApply = () => {
+    const editor = contentRef.current;
+    const url = linkInput.url.trim();
+
+    if (!editor || !selectedRangeRef.current || !url) {
+      setError("Please enter a valid URL.");
+      return;
+    }
+
+    editor.focus();
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(selectedRangeRef.current);
+    document.execCommand("createLink", false, url);
+
+    handleEditorChange();
+    setLinkInput((prev) => ({ ...prev, visible: false }));
     setToolbar((prev) => ({ ...prev, visible: false }));
+    setError("");
+  };
+
+  const handleLinkCancel = () => {
+    setLinkInput((prev) => ({ ...prev, visible: false }));
   };
 
   const handleSubmit = async (e) => {
@@ -287,6 +327,42 @@ function AddBlog() {
           >
             <Link2 size={18} />
           </button>
+        </div>
+      ) : null}
+
+      {linkInput.visible ? (
+        <div
+          className="animate-fadeIn fixed z-[60] w-72 rounded-xl border border-gray-200 bg-white p-3 shadow-xl"
+          style={{ top: `${linkInput.top}px`, left: `${linkInput.left}px` }}
+        >
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+            Insert Link
+          </label>
+          <input
+            type="url"
+            value={linkInput.url}
+            onChange={(e) =>
+              setLinkInput((prev) => ({ ...prev, url: e.target.value }))
+            }
+            placeholder="https://example.com"
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 outline-none transition-all focus:border-pink-300 focus:ring-2 focus:ring-pink-200"
+          />
+          <div className="mt-3 flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={handleLinkCancel}
+              className="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleLinkApply}
+              className="rounded-lg bg-pink-300 px-3 py-2 text-sm font-medium text-gray-900 transition-colors hover:bg-pink-400"
+            >
+              Apply
+            </button>
+          </div>
         </div>
       ) : null}
 

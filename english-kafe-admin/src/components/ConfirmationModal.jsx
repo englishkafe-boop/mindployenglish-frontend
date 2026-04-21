@@ -29,7 +29,7 @@ function ConfirmationModal({
 
         {/* Content */}
         <div className="p-6">
-          <p className="text-gray-700 text-base">{message}</p>
+          <div className="text-gray-700 text-base">{message}</div>
         </div>
 
         {/* Footer */}

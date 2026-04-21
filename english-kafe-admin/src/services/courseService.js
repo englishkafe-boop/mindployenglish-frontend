@@ -18,6 +18,7 @@ export function normalizeCourse(course) {
     learnings: Array.isArray(course.features) ? course.features : [],
     isPublished: Boolean(course.isPublished),
     lessons: Number(course.lessonCount || 0),
+    enrollmentCount: Number(course.enrollmentCount || 0),
     createdBy: course.createdBy || null,
   };
 }
