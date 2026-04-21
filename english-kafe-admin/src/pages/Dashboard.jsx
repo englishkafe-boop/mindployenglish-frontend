@@ -1,6 +1,7 @@
 import { BookOpen, FileText, Users, CreditCard, Trash2} from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ConfirmationModal from '../components/ConfirmationModal'
 import { fetchCourses } from '../services/courseService'
 import { fetchAllPayments } from '../services/paymentService'
 import { fetchUsers, deleteUser } from '../services/userService'
@@ -12,6 +13,8 @@ function Dashboard() {
   const [recentUsers, setRecentUsers] = useState([])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [selectedUserId, setSelectedUserId] = useState(null)
 
   useEffect(() => {
     async function loadDashboard() {
@@ -73,10 +76,15 @@ function Dashboard() {
     loadDashboard()
   }, [])
 
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteClick = (userId) => {
+    setSelectedUserId(userId)
+    setDeleteModalOpen(true)
+  }
+
+  const handleDeleteUser = async () => {
     try {
-      await deleteUser(userId)
-      setRecentUsers((currentUsers) => currentUsers.filter((user) => user.id !== userId))
+      await deleteUser(selectedUserId)
+      setRecentUsers((currentUsers) => currentUsers.filter((user) => user.id !== selectedUserId))
       setStats((currentStats) =>
         currentStats.map((stat) =>
           stat.label === 'User'
@@ -84,6 +92,8 @@ function Dashboard() {
             : stat
         )
       )
+      setDeleteModalOpen(false)
+      setSelectedUserId(null)
     } catch (deleteError) {
       setError(deleteError.message)
     }
@@ -167,7 +177,7 @@ function Dashboard() {
                   <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
                     <div className="flex items-center gap-1 sm:gap-2">
                       <button
-                        onClick={() => handleDeleteUser(user.id)}
+                        onClick={() => handleDeleteClick(user.id)}
                         className="p-1.5 sm:p-2 hover:bg-red-50 rounded-lg transition-colors"
                         title="Delete user"
                       >
@@ -189,6 +199,20 @@ function Dashboard() {
           </table>
         </div>
       </div>
+
+      <ConfirmationModal
+        isOpen={deleteModalOpen}
+        title="Delete User"
+        message="Are you sure you want to delete this user? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleDeleteUser}
+        onCancel={() => {
+          setDeleteModalOpen(false)
+          setSelectedUserId(null)
+        }}
+        isDangerous={true}
+      />
     </div>
   )
 }
