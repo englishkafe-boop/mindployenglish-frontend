@@ -22,7 +22,7 @@ function Login() {
   const redirectTo = location.state?.from?.pathname || '/'
   const canResendVerification =
     location.state?.emailSent === false ||
-    error === 'Please verify your email before logging in'
+    error === 'Invalid email, password, or account status'
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -116,7 +116,7 @@ function Login() {
 
           {canResendVerification ? (
             <p className="text-sm text-gray-600 mb-4 sm:mb-6">
-              If your account is still unverified, enter your email below and request a new verification link.
+              If you still need account access help, you can request a new verification email below.
             </p>
           ) : null}
 

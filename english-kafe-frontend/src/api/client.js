@@ -38,7 +38,7 @@ async function request(path, options = {}) {
   const data = await response.json().catch(() => null);
 
   if (!response.ok) {
-    if (response.status === 401) {
+    if (response.status === 401 && token) {
       clearToken();
       window.dispatchEvent(
         new CustomEvent(SESSION_EXPIRED_EVENT, {

@@ -6,6 +6,7 @@ import ContactSection from "../components/ContactSection";
 import Footer from "../components/Footer";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { fetchBlogs } from "../services/blogService";
+import { sanitizeHtmlContent } from "../utils/sanitizeHtmlContent";
 
 const logo = "/Nav/Logo.PNG";
 const fallbackImage =
@@ -114,7 +115,7 @@ function Blog() {
                 {isExpanded ? (
                   <div
                     className="blog-content mb-6 sm:mb-8 max-w-full overflow-hidden"
-                    dangerouslySetInnerHTML={{ __html: featuredBlog.content }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(featuredBlog.content) }}
                   />
                 ) : null}
 
