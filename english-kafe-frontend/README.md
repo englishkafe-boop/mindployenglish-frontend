@@ -1,16 +1,59 @@
-# React + Vite
+# English Kafé Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Public-facing student website for the English Kafé learning platform built with React and Vite.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Course browsing and discovery
+- Instructor listing
+- Login and session handling
+- Token authentication via backend
+- Responsive UI with Tailwind CSS
 
-## React Compiler
+## Technologies
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19
+- Vite
+- React Router v7
+- Tailwind CSS
+- Lucide React icons
 
-## Expanding the ESLint configuration
+## Install
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+```
+
+## Development
+
+```bash
+npm run dev
+```
+
+The app runs on `http://localhost:5173` by default.
+
+## Build
+
+```bash
+npm run build
+```
+
+## Preview
+
+```bash
+npm run preview
+```
+
+## Environment
+
+Create a `.env` file with the backend API endpoint, for example:
+
+```bash
+VITE_API_URL=http://localhost:3000
+```
+
+## Notes
+
+- The frontend uses native `fetch` for API calls.
+- Be sure the backend is running and accessible from the frontend.
+- Keep `package.json` and `package-lock.json` in sync when updating dependencies.
