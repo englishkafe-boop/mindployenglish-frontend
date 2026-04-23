@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { resetPassword as resetPasswordRequest } from "../services/authService";
 
-const logo = "/Nav/Logo.PNG";
+const logo = "/login/Login-logo.png";
 
 function ResetPassword() {
   const { token } = useParams();
@@ -56,7 +56,7 @@ function ResetPassword() {
         <div className="hidden md:flex justify-center">
           <div className="relative">
             <img
-              src="/login/young-students-learning-together-group-study.jpg"
+              src="/login/Login-bg.jpg"
               alt="English Kafe"
               className="w-full object-cover rounded-2xl"
               style={{ height: "500px" }}
@@ -66,7 +66,7 @@ function ResetPassword() {
               <img
                 src={logo}
                 alt="English Kafe Logo"
-                className="w-52 sm:w-60 md:w-64 lg:w-70 h-52 sm:h-60 md:h-64 lg:h-70 object-contain drop-shadow-lg"
+                className="w-25  sm:w-20 md:w-23 lg:w-25 h-25 sm:h-20 md:h-23 lg:h-25 object-contain drop-shadow-lg"
               />
             </div>
           </div>
