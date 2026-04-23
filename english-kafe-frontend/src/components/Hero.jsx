@@ -36,7 +36,7 @@ function Hero() {
             className="mt-8 bg-black text-white px-8 py-3 rounded-xl font-medium 
             hover:bg-gray-800 transition-all duration-300 shadow-md hover:shadow-lg flex items-center gap-2"
           >
-            Explore Courses →
+            ดูคอร์สเรียน →
           </button>
 
           {/* Divider */}
