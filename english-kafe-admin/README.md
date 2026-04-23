@@ -1,82 +1,73 @@
 # English Kafé Admin Dashboard
 
-Admin dashboard for English Kafé learning platform built with React, Vite, and Tailwind CSS.
+Admin dashboard for the English Kafé learning platform built with React, Vite, and Tailwind CSS.
 
 ## Features
 
 - 📊 Dashboard with statistics
-- 📚 Course Management (Create, Read, Update, Delete)
-- 👥 User Management
-- 🛒 Order Management
-- 👨‍🏫 Instructor Management
-- 📈 Analytics & Reports
-- ⚙️ Settings Management
-- 👤 Admin Profile Management
+- 📚 Course management
+- 👥 User management
+- 💳 Payment and enrollment review
+- 👨‍🏫 Instructor management
+- 📈 Reports and analytics
+- ⚙️ Settings management
+- 👤 Admin profile
 
-## Quick Start
-
-### Installation
-
-```bash
-npm install
-```
-
-### Development
-
-```bash
-npm run dev
-```
-
-The admin dashboard will run on `http://localhost:5174`
-
-### Build for Production
-
-```bash
-npm run build
-```
-
-## Project Structure
-
-```
-src/
-├── components/          # Reusable components
-├── pages/              # Page components
-│   ├── CourseManagement/
-│   ├── UserManagement/
-│   ├── OrderManagement/
-│   ├── InstructorManagement/
-│   ├── Reports/
-│   ├── Settings/
-│   └── Dashboard.jsx
-├── services/           # API services (to be implemented)
-├── hooks/             # Custom React hooks
-├── context/           # React context
-├── utils/             # Utility functions
-├── styles/            # Global styles
-├── App.jsx            # Main app component
-└── main.jsx           # Entry point
-```
-
-## Login Credentials (Demo)
-
-- **Email**: admin@example.com
-- **Password**: (any value)
-
-## Technologies Used
+## Technologies
 
 - React 18
 - Vite
 - React Router v6
 - Tailwind CSS
-- Lucide Icons
-- Recharts (for charts)
-- Axios (for API calls)
+- Lucide React icons
+- Recharts for charts
 
-## Next Steps
+## Install
 
-1. Implement course management features
-2. Add data tables and filtering
-3. Integrate with backend API
-4. Add analytics charts
-5. Implement user management
-6. Add export/report generation
+```bash
+npm install
+```
+
+## Development
+
+```bash
+npm run dev
+```
+
+The admin dashboard runs on `http://localhost:5174` by default.
+
+## Build
+
+```bash
+npm run build
+```
+
+## Preview
+
+```bash
+npm run preview
+```
+
+## Project Structure
+
+- `src/components/` — Reusable UI components
+- `src/pages/` — Page views and feature screens
+- `src/services/` — API request helpers and service calls
+- `src/contexts/` — Authentication and app context
+- `src/utils/` — Utility helpers
+- `src/App.jsx` — Main app container
+- `src/main.jsx` — Vite entry point
+
+## Environment
+
+Create a `.env` file with the backend URL:
+
+```bash
+VITE_API_URL=http://localhost:3000
+```
+
+## Notes
+
+- The admin interface currently uses native `fetch` in API client code.
+- Keep the backend server running so the admin dashboard can connect to the API.
+- Commit both `package.json` and `package-lock.json` when dependencies change.
