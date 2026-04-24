@@ -50,7 +50,7 @@ function MotivationBanner() {
                   will proudly use tomorrow.
                 </h2>
                 <p className="text-[#8B6F61] text-xs sm:text-sm md:text-base lg:text-lg">
-                  Learn smarter, progress quicker, and speak with confidence.
+                  Learn smarter, progress faster, and speak with confidence.
                 </p>
               </div>
             </div>

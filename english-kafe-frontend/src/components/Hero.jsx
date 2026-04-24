@@ -26,8 +26,8 @@ function Hero() {
             <span className="text-[#F8A2C0]">Mind Ploy English</span>
           </h1>
 
-          <p className="text-[#8B6F61] mt-5 text-base md:text-lg leading-relaxed">
-            Where English learning feels relaxed, practical, and enjoyable.
+          <p className="text-[#8B6F61] mt-5 text-base md:text-xl leading-relaxed">
+            เรียนอังกฤษแบบสบายๆ ใช้ได้จริง สนุกได้ทุกการเรียนรู้
           </p>
 
           {/* CTA */}
@@ -45,12 +45,12 @@ function Hero() {
           {/* OFFER */}
           <div className="mt-6">
             <h3 className="font-semibold text-gray-800 mb-2 text-base">
-              What we offer:
+              คอร์สและบริการของเรา:
             </h3>
             <ul className="space-y-2 text-gray-700 text-sm">
-              <li>• One-on-One English Coaching</li>
-              <li>• IELTS Preparation Guidance</li>
-              <li>• Conversational English Training</li>
+              <li>• ติวสอนตัวต่อตัว ทั้งแบบ online และ onsite</li>
+              <li>• ฝึกทำโจทย์เตรียมสอบ TCAS TOEIC IELTS</li>
+              <li>• คอร์สสนทนา ฟังพูด</li>
             </ul>
           </div>
 
@@ -80,9 +80,8 @@ function Hero() {
         <div className="relative">
           {/* MOBILE */}
           <div className="md:hidden flex flex-col gap-4">
-            <div className="rounded-xl shadow-md p-4 bg-[#FCDCE2]">
+            <div className="rounded-xl text-center shadow-md p-4 bg-[#FCDCE2]">
               <h4 className="font-bold text-sm">Grammar Foundations</h4>
-              <p className="text-xs text-gray-500">12 LESSONS • 60 MINUTES</p>
             </div>
 
             <div className="flex gap-3 h-56">
@@ -90,9 +89,8 @@ function Hero() {
               <img src={landing} className="rounded-xl w-1/2 object-cover" />
             </div>
 
-            <div className="rounded-xl shadow-md p-4 bg-[#DDF1FC]">
+            <div className="rounded-xl shadow-md text-center p-4 bg-[#DDF1FC]">
               <h4 className="font-bold text-sm">English Communication</h4>
-              <p className="text-xs text-gray-500">15 LESSONS • 50 MINUTES</p>
             </div>
           </div>
 
@@ -109,15 +107,13 @@ function Hero() {
             </div>
 
             {/* Card 1 */}
-            <div className="absolute top-6 left-0 bg-[#FCDCE2] backdrop-blur-md shadow-lg p-4 rounded-xl w-56">
+            <div className="absolute top-6 left-0 bg-[#FCDCE2] backdrop-blur-md shadow-lg p-4 text-center rounded-xl w-56">
               <h4 className="font-bold text-sm">Grammar Foundations</h4>
-              <p className="text-xs text-gray-500">12 LESSONS • 60 MINUTES</p>
             </div>
 
             {/* Card 2 */}
-            <div className="absolute bottom-6 right-0 bg-[#DDF1FC] backdrop-blur-md shadow-lg p-4 rounded-xl w-56">
+            <div className="absolute bottom-6 right-0 bg-[#DDF1FC] backdrop-blur-md shadow-lg p-4 text-center rounded-xl w-56">
               <h4 className="font-bold text-sm">English Communication</h4>
-              <p className="text-xs text-gray-500">15 LESSONS • 50 MINUTES</p>
             </div>
           </div>
         </div>

@@ -1,6 +1,8 @@
+import { Mail, MapIcon } from "lucide-react";
 const lineIcon = "/logo/Line.svg"
 const facebookIcon = "/logo/facebook.svg"
 const instagramIcon = "/logo/instagram.svg"
+
 
 function ContactSection() {
   return (
@@ -13,23 +15,12 @@ function ContactSection() {
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 sm:mb-8">
               Contact Us
             </h2>
-
-            {/* Phone */}
-            <div className="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-6">
-              <div className="text-gray-900 mt-0.5 shrink-0">
-                <svg className="w-5 sm:w-6 h-5 sm:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 00.948.684l2.482 5.265a1 1 0 00.578.578l5.265 2.482a1 1 0 00.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-              </div>
-              <p className="text-base sm:text-lg font-semibold text-gray-900">089 191 5555</p>
-            </div>
+            
 
             {/* Email */}
             <div className="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-6">
               <div className="text-gray-900 mt-0.5 shrink-0">
-                <svg className="w-5 sm:w-6 h-5 sm:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
+                <Mail />
               </div>
               <p className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 break-all">
                 mindployenglish@gmail.com
@@ -39,13 +30,10 @@ function ContactSection() {
             {/* Address */}
             <div className="flex items-start gap-3 sm:gap-4 mb-6 sm:mb-8">
               <div className="text-gray-900 mt-0.5 shrink-0">
-                <svg className="w-5 sm:w-6 h-5 sm:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+                <MapIcon />
               </div>
               <p className="text-gray-900 font-semibold text-sm sm:text-base leading-relaxed">
-                355 สินโดงหลวง ซอย 6 Tambon Rop Wiang,<br />
+                355 สันโค้งหลวง ซอย 6 Tambon Rop Wiang,<br />
                 Mueang Chiang Rai District, Chiang Rai 57000, Thailand
               </p>
             </div>

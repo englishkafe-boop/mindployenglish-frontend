@@ -163,13 +163,13 @@ function Enroll() {
               <div className="md:col-span-1 lg:col-span-1">
                 <div className="bg-white rounded-3xl p-5 sm:p-6 md:p-6 shadow-lg md:sticky md:top-20">
                   <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-5">
-                    Order Summary
+                    สรุปรายการ 
                   </h3>
 
                   <div className="space-y-3 mb-4 sm:mb-5">
                     <div className="flex justify-between items-start gap-3">
                       <span className="text-gray-700 font-semibold text-xs sm:text-sm shrink-0">
-                        Course name:
+                        ชื่อคอร์ส::
                       </span>
                       <span className="text-gray-900 font-semibold text-xs sm:text-sm text-right">
                         {course.title}
@@ -177,7 +177,7 @@ function Enroll() {
                     </div>
                     <div className="flex justify-between items-center pb-3 border-b border-gray-300">
                       <span className="text-gray-700 font-semibold text-xs sm:text-sm">
-                        Price:
+                        ราคา:
                       </span>
                       <span className="text-gray-900 font-semibold text-xs sm:text-sm">
                         {course.price}
@@ -185,7 +185,7 @@ function Enroll() {
                     </div>
                     <div className="flex justify-between items-center pt-1">
                       <span className="text-sm font-bold text-gray-900">
-                        Total:
+                        ยอดชำระสุทธิ:
                       </span>
                       <span className="text-sm font-bold text-gray-900">
                         {course.price}
@@ -196,20 +196,17 @@ function Enroll() {
                   {/* How to Enroll */}
                   <div className="bg-gray-50 rounded-2xl p-3 sm:p-4 mb-4 sm:mb-5">
                     <h4 className="font-bold text-gray-900 mb-2 sm:mb-3 text-xs sm:text-sm">
-                      How to Enroll
+                      ขั้นตอนการสมัครเรียน
                     </h4>
                     <ol className="space-y-2 text-xs text-gray-700">
                       <li>
-                        <span className="font-semibold">Step 1.</span> Scan the
-                        QR code to complete your payment.
+                        <span className="font-semibold">ขั้นตอนที่ 1.</span> สแกน QR Code เพื่อชำระเงิน.
                       </li>
                       <li>
-                        <span className="font-semibold">Step 2.</span> Upload
-                        your payment receipt.
+                        <span className="font-semibold">ขั้นตอนที่ 2.</span> แนบหลักฐานการโอนเงิน (สลิป)
                       </li>
                       <li>
-                        <span className="font-semibold">Step 3.</span> Wait for
-                        admin verification. Check status in{" "}
+                        <span className="font-semibold">ขั้นตอนที่ 3.</span> รอเจ้าหน้าที่ตรวจสอบ . Check status in{" "}
                         <span className="font-bold">
                           Profile → My Course Orders
                         </span>
@@ -224,13 +221,13 @@ function Enroll() {
                       onClick={() => navigate(`/courses/${courseId}`)}
                       className="flex-1 border-2 border-gray-300 text-gray-900 font-bold py-2 sm:py-2.5 rounded-full hover:bg-gray-50 transition-colors text-xs sm:text-sm"
                     >
-                      Cancel
+                      ยกเลิก
                     </button>
                     <button
                       onClick={handleEnrollClick}
                       className="flex-1 bg-[#F8B2C0] hover:bg-[#F8C2C0] text-gray-900 font-bold py-2 sm:py-2.5 rounded-full transition-colors text-xs sm:text-sm"
                     >
-                      Enroll Now
+                      สมัครเรียนเลย 
                     </button>
                   </div>
                 </div>

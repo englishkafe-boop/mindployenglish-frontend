@@ -55,10 +55,10 @@ function Courses() {
       
       <div className="px-4 sm:px-6 md:px-10 py-8 sm:py-12 md:py-16 text-center bg-gray-50">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6">
-          Explore Our Online Video Courses
+          ยกระดับภาษาอังกฤษด้วยคอร์สออนไลน์และหนังสือของเรา
         </h1>
         <p className="text-gray-600 text-xs sm:text-sm md:text-base max-w-2xl mx-auto">
-          Browse a curated collection of self-paced English video courses designed to improve your speaking, grammar, and real-world communication skills.
+          รวบรวมคอร์สเรียนวิดีโอและหนังสือภาษาอังกฤษที่คัดสรรมาเพื่อคุณโดยเฉพาะ ให้คุณเลือกเรียนรู้ได้ตามจังหวะของตัวเอง เน้นพัฒนาทั้งการพูด ไวยากรณ์ และทักษะการสื่อสารที่นำไปใช้ได้จริงในทุกสถานการณ์
         </p>
       </div>
 
@@ -144,7 +144,7 @@ function Courses() {
           </div>
         </div>
         <p className="text-[#8B6F61] text-xs sm:text-sm md:text-base lg:text-lg mt-4 sm:mt-5 md:mt-6 max-w-3xl mx-auto">
-          Learn smarter, progress quicker, and speak with confidence.
+          Learn smarter, progress faster, and speak with confidence.
         </p>
       </div>
 

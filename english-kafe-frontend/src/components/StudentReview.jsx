@@ -4,7 +4,7 @@ const student2 = "/review/young-chinese-woman-standing-white-background-showing-
 
 function StudentReview() {
   return (
-    <section className="px-4 sm:px-6 md:px-10 py-10 sm:py-14 md:py-16 bg-blue-50">
+    <section className="px-4 sm:px-6 md:px-10 py-10 sm:py-14 md:py-16 bg-white">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
